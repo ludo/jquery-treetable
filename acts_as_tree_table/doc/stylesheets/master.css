@@ -3,8 +3,7 @@ body {
 	color: #000;
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: .8em;
-	margin: 0;
-	padding: 0;
+	line-height: 1.5;
 }
 
 /* TABLE
@@ -13,6 +12,7 @@ table {
 	border: 1px solid #888;
 	border-collapse: collapse;
 	cursor: default;
+	line-height: 1;
 	margin: 1em auto;
 	width: 90%;
 }

@@ -13,8 +13,7 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function()  {
-		$("#example1").acts_as_tree_table();
-		$("#example2").acts_as_tree_table();
+		$(".example").acts_as_tree_table();
 	});
 	
 	</script>
@@ -23,8 +22,69 @@
 </head>
 <body>
 
-<table id="example1">
-	<caption>Example 1: Displaying a directory structure</caption>
+<h1>ActsAsTreeTable</h1>
+<h2>Table of Contents</h2>
+
+<ol>
+	<li><a href="#introduction">Introduction</a></li>
+	<li><a href="#installation">Installation</a></li>
+	<li><a href="#usage">Usage</a></li>
+	<li><a href="#examples">Examples</a>
+		<ol>
+			<li><a href="#example-1">Displaying a directory structure</a></li>
+			<li><a href="#example-2">A more advanced tree</a></li>
+		</ol>
+	</li>
+</ol>
+
+<h2>1. <a name="introduction">Introduction</a></h2>
+<p>ActssTreeTable is a plugin for <a href="http://jquery.com">jQuery</a>, the 'Write Less, Do More, JavaScript Library'. With this plugin you can display a tree in a table, i.e. a directory structure or a nested list. Why not use a list, you say? Because lists are great for displaying a tree, and tables are not. Oh wait, but this plugin uses tables, doesn't it? Yes. Why do I use a table to display a list? Because I need multiple columns to display additional data besides the tree.</p>
+
+<h4>Unobtrusiveness</h4>
+<p>I wanted this plugin to be as unobtrusive as possible. Being 'unobtrusive' is very cool nowadays, so that was an important requirement. But it is cool for a reason: it keeps your html documents clean and it allows my code to degrade nicely when JavaScript is not available.</p>
+
+<p>Unfortunately, the ActsAsTreeTable plugin requires that you add <tt>class</tt> and <tt>id</tt> attributes to every row that is part of the tree. It would have been great if this weren't necessary, because it doesn't look pretty in your html, but the plugin needs to know what your tree looks like. Otherwise, it would have to guess the structure of the tree and it wouldn't be very successful in doing that. See the <a href="#usage">Usage</a> chapter for more information on how to describe a tree.</p>
+
+<h4>Features</h4>
+<ul>
+	<li>It can display a tree of data in a table column.</li>
+	<li>It does this as unobtrusively as possible.</li>
+	<li>It allows branches to be collapsed and expanded (think of how a directory structure works in most file explorers).</li>
+	<li>It allows unlimited tree depth.</li>
+	<li>It uses the lightweight <a href="http://jquery.com">jQuery</a> JavaScript libray.</li>
+</ul>
+
+<h4>Example</h4>
+<p>See the <a href="#examples">Examples</a> chapter for more examples.</p>
+
+<table class="example">
+	<caption>Example 0: Simple tree</caption>
+	<tr id="ex0-node-1">
+		<td>Node 1: Click on the icon in front of me to collapse this branch.</td>
+	</tr>
+	<tr id="ex0-node-1-1" class="child-of-ex0-node-1">
+		<td>Node 1.1: Look, I am a table row <em>and</em> I am part of a tree!</td>
+	</tr>
+	<tr id="ex0-node-1-1-1" class="child-of-ex0-node-1-1">
+		<td>Node 1.1.1: I am part of the tree too!</td>
+	</tr>
+</table>
+
+<h2>2. <a name="installation">Installation</a></h2>
+
+<p>Installing this plugin is simple. You will have to copy several files and, if necessary, adjust some paths so that every file is available to the plugin.</p>
+
+<p>Required: jQuery >= 1.2.6</p>
+
+<h2>3. <a name="usage">Usage</a></h2>
+
+<h2>4. <a name="examples">Examples</a></h2>
+<p>The examples in this chapter all use the ActsAsTableTree plugin to display a tree in a table, with collapsable branches. View the source code of this file to see how it is done and read the <a href="#usage">Usage</a> chapter for further details.</p>
+
+<h3>4.1 <a name="example-1">Displaying a directory structure</a></h3>
+
+<table class="example">
+	<caption>Example 1: Displaying a directory structure.</caption>
 	<thead>
 		<tr>
 			<th>Title</th>
@@ -150,8 +210,10 @@
 	</tbody>
 </table>
 
-<table id="example2">
-	<caption>Example 2: Simple Tree</caption>
+<h3>4.2 <a name="example-2">A more advanced tree</a></h3>
+
+<table class="example">
+	<caption>Example 2: A more advanced tree.</caption>
 	<tr id="ex2-node-1">
 		<td>Node 1</td>
 	</tr>
