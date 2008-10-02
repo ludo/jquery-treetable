@@ -35,7 +35,9 @@
 	<li><a href="#installation">Installation</a></li>
 	<li><a href="#usage">Usage</a>
 		<ol>
-			<li><a href="#settings">Settings</a></li>
+			<li><a href="#head">Include the plugin in your html document</a></li>
+			<li><a href="#tree">Representing your tree in a table</a></li>
+			<li><a href="#settings">Optional settings</a></li>
 		</ol>
 	</li>
 	<li><a href="#examples">Examples</a>
@@ -98,6 +100,7 @@
 <h2>3. <a name="usage">Usage</a></h2>
 <p><b>Note:</b> This chapter assumes that you have already installed jQuery as described on their website.</p>
 
+<h3>3.1 <a name="head">Include the plugin in your html document</a></h3>
 <p>Paste the following code between the <tt>head</tt> tags in your html document, <b>underneath</b> the part where you include jQuery. Change the <b style="color: #f00;">red</b> parts to reflect your situation.</p>
 
 <pre class="listing">
@@ -112,7 +115,24 @@ $(document).ready(function()  {
 &lt;/script&gt;
 </pre>
 
-<h3>3.1 <a name="settings">Settings</a></h3>
+<h3>3.2 <a name="tree">Representing your tree in a table</a></h3>
+<p>When you pasted the above code and adjusted it to reflect your situation, you enabled the <em>possibility</em> of displaying a tree in your table. To make the tree actually display as a tree you have to add <tt>id</tt> and <tt>class</tt> attributes to your table rows (<tt>tr</tt>).</p>
+
+<h4>How to do this?</h4>
+<p>First, you should add a <em>unique</em> <tt>id</tt> to each of the rows in your table, for example '<tt>node-<em>x</em></tt>' where <em>x</em> is a number. Then you add a <tt>class</tt> attribute to each child of a node, give this class a name of '<tt>child-of-<em>node-x</em></tt>'. The <em>node-x</em> part should be the same as the <tt>id</tt> of its parent. Do you still follow me? Let me show you an example of a very simple tree: a single parent with a single child. For more examples you should view the source code of this page, where you find several tables for the examples in the <a href="#examples">Examples</a> chapter.</p>
+
+<pre class="listing">
+&lt;table id="tree"&gt;
+  &lt;tr id="node-1"&gt;
+    &lt;td&gt;Parent&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr id="node-2" class="child-of-node-1"&gt;
+    &lt;td&gt;Child&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</pre>
+
+<h3>3.3 <a name="settings">Optional settings</a></h3>
 <p>There are several settings that let you adjust the behavior of the plugin. Each of these settings is described in this section. See <a href="#example-3">Example 3</a> for an example of how to change these settings.</p>
 
 <table>
@@ -169,6 +189,12 @@ $(document).ready(function()  {
 		</tr>
 	</thead>
 	<tbody>
+		<tr id="node-20">
+			<td><span class="file">CHANGELOG</span></td>
+			<td>4 KB</td>
+			<td>Plain text</td>
+		</tr>
+
 		<tr id="node-1">
 			<td><span class="folder">doc</span></td>
 			<td>--</td>
