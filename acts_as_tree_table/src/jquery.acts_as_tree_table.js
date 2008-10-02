@@ -1,21 +1,8 @@
-// acts_as_tree plugin for jQuery
-// TODO Better name? Will it apply to tables only? Or for lists too?
-// TODO Look into class stuff with jQuery? Can I make methods of my private functions? Do I want to do this?
-
-// acts_as_tree_table?
-
+// TODO Come up with a better name. Will it apply to tables only? Or for lists too?
 // TODO Find out what jQuery's problem with colgroup is?
+// TODO Rename .folder to .parent?
 
 (function($) {
-	
-	// options = { 
-	//	 tree_column: which column contains tree data? (number, possibly add option to use col/colgroup?)
-	//		 if integer: use column number
-	//		 if selector: calculate column number based on colgroup <col>'s
-	//   expandable: true // Expand/collapse functionality?
-	//   initial_state: "expanded" | "collapsed"
-	//	 indent: 19 // In pixels
-	// }
 	
 	// The settings for this plugin should be available to all functions in this
 	// plugin.
@@ -32,7 +19,7 @@
 				var node = $(this);
 				
 				// Every node in the tree that has child nodes is marked as a 'folder',
-				// unless this has already been done by the user.
+				// unless this has already been done manually.
 				if(node.not(".folder") && children_of(node).size() > 0) {
 					node.addClass("folder");
 				}
@@ -40,15 +27,25 @@
 				// Make each .folder row collapsable by adding some html to the column
 				// that is displayed as tree.
 				if(node.is(".folder")) {
-					branch(node);
+					init_branch(node);
 				}
 			});
 		});
 	};
 	
 	// Default settings
+	//
+	// options = { 
+	//	 tree_column: which column contains tree data? (number, possibly add option to use col/colgroup?)
+	//		 if integer: use column number
+	//		 if selector: calculate column number based on colgroup <col>'s
+	//   expandable: true // Expand/collapse functionality?
+	//   initial_state: "expanded" | "collapsed"
+	//	 indent: 19 // In pixels
+	// }
+	
 	$.fn.acts_as_tree_table.defaults = {
-		test_bool: true,
+		indent: 19,
 	};
 	
 	// === Private Methods
@@ -86,7 +83,7 @@
 	};
 
 	// Add stuff to cell that contains stuff to make the tree collapsable.
-	function branch(node) {
+	function init_branch(node) {
 		// Select cell in column that should display the tree
 		var cell = $(node.children("td")[0]); // TODO Add tree_column option here
 

@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Example 1 - jquery.acts_as_tree_table</title>
+ 	<link href="../stylesheets/master.css" rel="stylesheet" type="text/css" />
+ 	<link href="../../src/stylesheets/jquery.acts_as_tree_table.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="../javascripts/jquery.js"></script>
+	<script type="text/javascript" src="../../src/jquery.acts_as_tree_table.js"></script>
+	<script type="text/javascript">
+	
+	$(document).ready(function()  {
+		$("#tree").acts_as_tree_table();
+	});
+	
+	</script>
+</head>
+<body>
+
+<table>
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Kind</th>
+		</tr>
+	</thead>
+	<tbody id="tree">
+		<tr id="node-1">
+			<td><span class="page">Homepage</span></td>
+			<td>Page</td>
+		</tr>
+		
+		<tr id="node-2" class="child-of-node-1">
+			<td><span class="page">Contact</span></td>
+			<td>Page</td>
+		</tr>
+
+		<tr id="node-3" class="child-of-node-1">
+			<td><span class="news">News</span></td>
+			<td>News</td>
+		</tr>
+
+		<tr id="node-4" class="child-of-node-3">
+			<td><span class="page">Cubicphuse to Acquire Big Company</span></td>
+			<td>News Item</td>
+		</tr>
+
+		<tr id="node-5" class="child-of-node-3">
+			<td><span class="page">What Comes Around, Goes Around</span></td>
+			<td>News Item</td>
+		</tr>
+
+		<tr id="node-9" class="child-of-node-5">
+			<td><span class="page">Sub sub sub!</span></td>
+			<td>News Item</td>
+		</tr>
+
+		<tr id="node-6" class="child-of-node-1">
+			<td><span class="news">Blog</span></td>
+			<td>Blog</td>
+		</tr>
+
+		<tr id="node-7" class="child-of-node-6">
+			<td><span class="page">Summer, At Last</span></td>
+			<td>News Item</td>
+		</tr>
+
+		<tr id="node-8" class="child-of-node-6">
+			<td><span class="page">Tractor</span></td>
+			<td>News Item</td>
+		</tr>
+	</tbody>
+</tabe>
+
+</body>
+</html>
