@@ -1,6 +1,6 @@
 // TODO Come up with a better name. Will it apply to tables only? Or for lists too?
 // TODO Find out what jQuery's problem with colgroup is?
-// TODO Rename .folder to .parent?
+// TODO Rename .parent to .parent?
 
 (function($) {
 	
@@ -18,15 +18,15 @@
 			$(this).children("tr").each(function() {
 				var node = $(this);
 				
-				// Every node in the tree that has child nodes is marked as a 'folder',
+				// Every node in the tree that has child nodes is marked as a 'parent',
 				// unless this has already been done manually.
-				if(node.not(".folder") && children_of(node).size() > 0) {
-					node.addClass("folder");
+				if(node.not(".parent") && children_of(node).size() > 0) {
+					node.addClass("parent");
 				}
 				
-				// Make each .folder row collapsable by adding some html to the column
+				// Make each .parent row collapsable by adding some html to the column
 				// that is displayed as tree.
-				if(node.is(".folder")) {
+				if(node.is(".parent")) {
 					init_branch(node);
 				}
 			});
@@ -72,9 +72,9 @@
 		children_of(node).each(function() {
 			var child = $(this);
 			
-			// Recursively expand any descending nodes that are folders which where
+			// Recursively expand any descending nodes that are parents which where
 			// expanded before too.
-			if(child.is(".expanded.folder")) {
+			if(child.is(".expanded.parent")) {
 				expand(child);
 			}
 			

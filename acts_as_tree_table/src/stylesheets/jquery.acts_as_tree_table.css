@@ -1,0 +1,16 @@
+/* EXPANDER
+ * ========================================================================= */
+.expander {
+	background-image: url(../images/bullet_toggle_minus.png);
+	background-position: left center;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+.collapsed .expander {
+	background-image: url(../images/bullet_toggle_plus.png);
+}
+
+.expanded .expander {
+	background-image: url(../images/bullet_toggle_minus.png);
+}

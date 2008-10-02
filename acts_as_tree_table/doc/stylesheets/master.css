@@ -1,0 +1,63 @@
+body {
+	background: #fff;
+	color: #000;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: .8em;
+	margin: 0;
+	padding: 0;
+}
+
+/* TABLE
+ * ========================================================================= */
+table {
+	border-collapse: collapse;
+	cursor: default;
+	margin: 1em auto;
+	width: 90%;
+}
+
+/* Header
+ * ------------------------------------------------------------------------- */
+table thead {
+	background: #aaa url(../images/bg-table-thead.png) repeat-x top left;
+	font-size: .9em;
+}
+
+table thead tr th {
+	border: 1px solid #888;
+	font-weight: normal;
+	padding: .3em 1.67em .1em 1.67em;
+	text-align: left;
+}
+
+/* Body
+ * ------------------------------------------------------------------------- */
+table tbody tr td {
+	padding: .3em 1.5em;
+}
+
+table tbody tr.even {
+	background: #f3f3f3;
+}
+
+table tbody tr.odd {
+	background: #fff;
+}
+
+table tbody tr td img.icon {
+	vertical-align: middle;
+}
+
+table span {
+	background-position: center left;
+	background-repeat: no-repeat;
+	padding: .2em 0 .2em 1.5em;
+}
+
+table .file {
+	background-image: url(../images/page_white_text.png);
+}
+
+table .folder {
+	background-image: url(../images/folder.png);
+}
