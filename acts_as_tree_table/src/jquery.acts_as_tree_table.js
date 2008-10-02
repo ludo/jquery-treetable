@@ -1,18 +1,8 @@
+// TODO Alternating row colors???
+
 /*
  * jQuery ActsAsTreeTable plugin 1.0
  * =================================
- *
- * Display a data tree in a table, i.e. a directory structure or a nested list.
- * Branches can be expanded/collapsed to show/hide nodes.
- *
- * Examples
- * -------- 
- * 
- *  $('#tree').acts_as_tree_table();
- * 
- * Options
- * -------
- * TODO Describe options here
  *
  * License
  * -------
@@ -75,16 +65,10 @@
 	};
 	
 	// Default settings
-	//
-	// tree_column: which column contains tree data? (number, possibly add option to use col/colgroup?)
-	//	 if integer: use column number
-	//   if selector: calculate column number based on colgroup <col>'s
-	// expandable: true // Expand/collapse functionality?
-	// initial_state: "expanded" | "collapsed"
-	// indent: 19 // The number of pixels that each branch should be indented with.
 	$.fn.acts_as_tree_table.defaults = {
-		tree_column: 0,
+		expandable: true,
 		indent: 19,
+		tree_column: 0,
 	};
 	
 	// === Private Methods
@@ -132,15 +116,15 @@
 			$($(this).children("td")[settings.tree_column]).css("padding-left", padding + "px");
 		});
 
-		// Add clickable expander buttons (plus and minus icon thingies)
-		//
-		// Why do I use a z-index on the expander?
-		// Otherwise the expander would not be visible in Safari/Webkit browsers.
-		//
-		// TODO if(options.expandable):
-		cell.prepend('<span style="margin-left: -' + settings.indent + 'px; z-index: 100;" class="expander"></span>');
-		var expander = $(cell[0].firstChild);
-		expander.click(function() { toggle(node); });
+		if(settings.expandable) {
+			// Add clickable expander buttons (plus and minus icon thingies)
+			//
+			// Why do I use a z-index on the expander?
+			// Otherwise the expander would not be visible in Safari/Webkit browsers.
+			cell.prepend('<span style="margin-left: -' + settings.indent + 'px; z-index: 100;" class="expander"></span>');
+			var expander = $(cell[0].firstChild);
+			expander.click(function() { toggle(node); });
+		}
 	};
 	
 	// Toggle a node

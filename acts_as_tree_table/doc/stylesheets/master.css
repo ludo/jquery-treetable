@@ -6,6 +6,18 @@ body {
 	line-height: 1.5;
 }
 
+pre.listing {
+	background: #eee;
+	border: 1px solid #ccc;
+	margin: .3em auto;
+	padding: .1em .3em;
+	width: 90%;
+}
+
+pre.listing b {
+	color: #f00;
+}
+
 /* TABLE
  * ========================================================================= */
 table {
