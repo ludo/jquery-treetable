@@ -6,3 +6,5 @@ Branches can be expanded/collapsed to show/hide nodes.
 
 Documentation
 -------------
+
+See the file doc/index.html for documentation or visit http://blog.cubicphuse.nl/projects.
