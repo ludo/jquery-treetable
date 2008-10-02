@@ -13,8 +13,8 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function()  {
-		$("#example1 tbody").acts_as_tree_table();
-		$("#example2 tbody").acts_as_tree_table();
+		$("#example1").acts_as_tree_table();
+		$("#example2").acts_as_tree_table();
 	});
 	
 	</script>
@@ -38,7 +38,7 @@
 			<td>--</td>
 			<td>Folder</td>
 		</tr>
-		
+
 		<tr id="node-2" class="child-of-node-1">
 			<td><span class="folder">images</span></td>
 			<td>--</td>
@@ -56,13 +56,13 @@
 			<td>4 KB</td>
 			<td>Portable Network Graphics image</td>
 		</tr>
-		
+
 		<tr id="node-10" class="child-of-node-2">
 			<td><span class="file">page_white_text.png</span></td>
 			<td>4 KB</td>
 			<td>Portable Network Graphics image</td>
 		</tr>
-		
+
 		<tr id="node-3" class="child-of-node-1">
 			<td><span class="file">index.html</span></td>
 			<td>4 KB</td>
@@ -80,19 +80,19 @@
 			<td>56 KB</td>
 			<td>JavaScript source</td>
 		</tr>
-		
+
 		<tr id="node-6" class="child-of-node-1">
 			<td><span class="folder">stylesheets</span></td>
 			<td>--</td>
 			<td>Folder</td>
 		</tr>
-		
+
 		<tr id="node-7" class="child-of-node-6">
 			<td><span class="file">master.css</span></td>
 			<td>4 KB</td>
 			<td>CSS style sheet</td>
 		</tr>
-		
+
 		<tr id="node-14">
 			<td><span class="file">MIT-LICENSE</span></td>
 			<td>4 KB</td>
@@ -148,7 +148,44 @@
 		</tr>
 
 	</tbody>
-</tabe>
+</table>
+
+<table id="example2">
+	<caption>Example 2: Simple Tree</caption>
+	<tr id="ex2-node-1">
+		<td>Node 1</td>
+	</tr>
+	<tr id="ex2-node-1-1" class="child-of-ex2-node-1">
+		<td>Node 1.1</td>
+	</tr>
+	<tr id="ex2-node-1-2" class="child-of-ex2-node-1">
+		<td>Node 1.2</td>
+	</tr>
+	<tr id="ex2-node-1-3" class="child-of-ex2-node-1">
+		<td>Node 1.3</td>
+	</tr>
+	<tr id="ex2-node-2">
+		<td>Node 2</td>
+	</tr>
+	<tr id="ex2-node-2-1" class="child-of-ex2-node-2">
+		<td>Node 2.1</td>
+	</tr>
+	<tr id="ex2-node-2-1-1" class="child-of-ex2-node-2-1">
+		<td>Node 2.1.1</td>
+	</tr>
+	<tr id="ex2-node-2-2" class="child-of-ex2-node-2">
+		<td>Node 2.2</td>
+	</tr>
+	<tr id="ex2-node-2-2-1" class="child-of-ex2-node-2-2">
+		<td>Node 2.2.1</td>
+	</tr>
+	<tr id="ex2-node-2-2-1-1" class="child-of-ex2-node-2-2-1">
+		<td>Node 2.2.1.1</td>
+	</tr>
+	<tr id="ex2-node-2-2-2" class="child-of-ex2-node-2-2">
+		<td>Node 2.2.2</td>
+	</tr>
+</table>
 
 </body>
 </html>

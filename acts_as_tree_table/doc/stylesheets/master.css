@@ -10,6 +10,7 @@ body {
 /* TABLE
  * ========================================================================= */
 table {
+	border: 1px solid #888;
 	border-collapse: collapse;
 	cursor: default;
 	margin: 1em auto;
@@ -21,7 +22,6 @@ table {
 table caption {
 	font-size: .9em;
 	font-weight: bold;
-	margin-bottom: .3em;
 }
 
 /* Header
@@ -52,20 +52,16 @@ table tbody tr.odd {
 	background: #fff;
 }
 
-table tbody tr td img.icon {
-	vertical-align: middle;
-}
-
 table span {
 	background-position: center left;
 	background-repeat: no-repeat;
 	padding: .2em 0 .2em 1.5em;
 }
 
-table .file {
+table span.file {
 	background-image: url(../images/page_white_text.png);
 }
 
-table .folder {
+table span.folder {
 	background-image: url(../images/folder.png);
 }

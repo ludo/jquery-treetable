@@ -8,7 +8,7 @@
  * Examples
  * -------- 
  * 
- *  $('table#tree').acts_as_tree_table();
+ *  $('#tree').acts_as_tree_table();
  * 
  * Options
  * -------
@@ -49,14 +49,14 @@
 		settings = $.extend({}, $.fn.acts_as_tree_table.defaults, opts);
 		
 		return this.each(function() {
-			var tree = $(this);
+			var table = $(this);
 			
 			// Add class to enable styles specific to this plugin.
-			tree.addClass("acts_as_tree_table");
+			table.addClass("acts_as_tree_table");
 			
 			// Walk through each 'node' that is part of the tree, enabling tree
 			// behavior on parent/branch nodes.
-			tree.children("tr").each(function() {
+			table.children("tbody").children("tbody tr").each(function() {
 				var node = $(this);
 				
 				// Every node in the tree that has child nodes is marked as a 'parent',
