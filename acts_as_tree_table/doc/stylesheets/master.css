@@ -23,7 +23,6 @@ pre.listing b {
 table {
 	border: 1px solid #888;
 	border-collapse: collapse;
-	cursor: default;
 	line-height: 1;
 	margin: 1em auto;
 	width: 90%;
