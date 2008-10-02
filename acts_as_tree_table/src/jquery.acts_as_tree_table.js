@@ -1,5 +1,3 @@
-// TODO Alternating row colors???
-
 /*
  * jQuery ActsAsTreeTable plugin 1.0
  * =================================
@@ -35,6 +33,8 @@
 	var settings;
 	
 	// TableTree Plugin: display a tree in a table.
+	//
+	// TODO Look into possibility to add alternating row colors
 	$.fn.acts_as_tree_table = function(opts) {
 		settings = $.extend({}, $.fn.acts_as_tree_table.defaults, opts);
 		
