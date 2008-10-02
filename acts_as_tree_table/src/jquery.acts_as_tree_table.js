@@ -1,13 +1,47 @@
-// TODO Come up with a better name. Will it apply to tables only? Or for lists too?
-// TODO Find out what jQuery's problem with colgroup is?
-// TODO Rename .parent to .parent?
-
+/*
+ * jQuery ActsAsTreeTable plugin 1.0
+ * =================================
+ *
+ * Display a data tree in a table, i.e. a directory structure or a nested list.
+ * Branches can be expanded/collapsed to show/hide nodes.
+ *
+ * Examples
+ * -------- 
+ * 
+ *  $('table#tree').acts_as_tree_table();
+ * 
+ * Options
+ * -------
+ * TODO Describe options here
+ *
+ * License
+ * -------
+ *
+ * Copyright (c) 2008 Ludo van den Boom
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 (function($) {
 	
 	// The settings for this plugin should be available to all functions in this
 	// plugin.
-	//
-	// TODO Find out whether this is safe or not? I'm no JS/jQuery guru yet...
 	var settings;
 	
 	// TableTree Plugin: display a tree in a table.
