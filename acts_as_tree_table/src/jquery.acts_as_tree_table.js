@@ -15,7 +15,14 @@
 		settings = $.extend({}, $.fn.acts_as_tree_table.defaults, opts);
 		
 		return this.each(function() {
-			$(this).children("tr").each(function() {
+			var tree = $(this);
+			
+			// Add class to enable styles specific to this plugin.
+			tree.addClass("acts_as_tree_table");
+			
+			// Walk through each 'node' that is part of the tree, enabling tree
+			// behavior on parent/branch nodes.
+			tree.children("tr").each(function() {
 				var node = $(this);
 				
 				// Every node in the tree that has child nodes is marked as a 'parent',
@@ -27,7 +34,7 @@
 				// Make each .parent row collapsable by adding some html to the column
 				// that is displayed as tree.
 				if(node.is(".parent")) {
-					init_branch(node);
+					init_parent(node);
 				}
 			});
 		});
@@ -35,16 +42,14 @@
 	
 	// Default settings
 	//
-	// options = { 
-	//	 tree_column: which column contains tree data? (number, possibly add option to use col/colgroup?)
-	//		 if integer: use column number
-	//		 if selector: calculate column number based on colgroup <col>'s
-	//   expandable: true // Expand/collapse functionality?
-	//   initial_state: "expanded" | "collapsed"
-	//	 indent: 19 // In pixels
-	// }
-	
+	// tree_column: which column contains tree data? (number, possibly add option to use col/colgroup?)
+	//	 if integer: use column number
+	//   if selector: calculate column number based on colgroup <col>'s
+	// expandable: true // Expand/collapse functionality?
+	// initial_state: "expanded" | "collapsed"
+	// indent: 19 // The number of pixels that each branch should be indented with.
 	$.fn.acts_as_tree_table.defaults = {
+		tree_column: 0,
 		indent: 19,
 	};
 	
@@ -83,24 +88,23 @@
 	};
 
 	// Add stuff to cell that contains stuff to make the tree collapsable.
-	function init_branch(node) {
+	function init_parent(node) {
 		// Select cell in column that should display the tree
-		var cell = $(node.children("td")[0]); // TODO Add tree_column option here
+		var cell = $(node.children("td")[settings.tree_column]);
 
 		// Calculate left padding
-		var padding = parseInt(cell.css("padding-left")) + 19; // TODO Add padding option number
+		var padding = parseInt(cell.css("padding-left")) + settings.indent;
 		children_of(node).each(function() {
-			$($(this).children("td")[0]).css("padding-left", padding + "px");
+			$($(this).children("td")[settings.tree_column]).css("padding-left", padding + "px");
 		});
 
 		// Add clickable expander buttons (plus and minus icon thingies)
 		//
-    // TODO Add padding option number
-		//
 		// Why do I use a z-index on the expander?
 		// Otherwise the expander would not be visible in Safari/Webkit browsers.
+		//
 		// TODO if(options.expandable):
-		cell.prepend('<span style="margin-left: -' + 19 + 'px; z-index: 100;" class="expander"></span>');
+		cell.prepend('<span style="margin-left: -' + settings.indent + 'px; z-index: 100;" class="expander"></span>');
 		var expander = $(cell[0].firstChild);
 		expander.click(function() { toggle(node); });
 	};

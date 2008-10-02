@@ -4,71 +4,143 @@
 <head>
 	<title>Documentation - jquery.acts_as_tree_table</title>
  	<link href="stylesheets/master.css" rel="stylesheet" type="text/css" />
- 	<link href="../src/stylesheets/jquery.acts_as_tree_table.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="javascripts/jquery.js"></script>
+
+	<!-- BEGIN Plugin Code -->
+	
+ 	<link href="../src/stylesheets/jquery.acts_as_tree_table.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="../src/jquery.acts_as_tree_table.js"></script>
 	<script type="text/javascript">
 	
 	$(document).ready(function()  {
-		$("#tree tbody").acts_as_tree_table();
+		$("#example1 tbody").acts_as_tree_table();
+		$("#example2 tbody").acts_as_tree_table();
 	});
 	
 	</script>
+
+	<!-- END Plugin Code -->
 </head>
 <body>
 
-<table id="tree">
+<table id="example1">
+	<caption>Example 1: Displaying a directory structure</caption>
 	<thead>
 		<tr>
 			<th>Title</th>
+			<th>Size</th>
 			<th>Kind</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr id="node-1">
-			<td><span class="folder">Project</span></td>
+			<td><span class="folder">doc</span></td>
+			<td>--</td>
 			<td>Folder</td>
 		</tr>
 		
 		<tr id="node-2" class="child-of-node-1">
-			<td><span class="file">Contact</span></td>
-			<td>Text Document</td>
+			<td><span class="folder">images</span></td>
+			<td>--</td>
+			<td>Folder</td>
 		</tr>
 
+		<tr id="node-8" class="child-of-node-2">
+			<td><span class="file">bg-table-thead.png</span></td>
+			<td>52 KB</td>
+			<td>Portable Network Graphics image</td>
+		</tr>
+
+		<tr id="node-9" class="child-of-node-2">
+			<td><span class="file">folder.png</span></td>
+			<td>4 KB</td>
+			<td>Portable Network Graphics image</td>
+		</tr>
+		
+		<tr id="node-10" class="child-of-node-2">
+			<td><span class="file">page_white_text.png</span></td>
+			<td>4 KB</td>
+			<td>Portable Network Graphics image</td>
+		</tr>
+		
 		<tr id="node-3" class="child-of-node-1">
-			<td><span class="folder">News</span></td>
+			<td><span class="file">index.html</span></td>
+			<td>4 KB</td>
+			<td>HTML document</td>
+		</tr>
+
+		<tr id="node-4" class="child-of-node-1">
+			<td><span class="folder">javascripts</span></td>
+			<td>--</td>
 			<td>Folder</td>
 		</tr>
 
-		<tr id="node-4" class="child-of-node-3">
-			<td><span class="file">Cubicphuse to Acquire Big Company</span></td>
-			<td>Text Document</td>
+		<tr id="node-5" class="child-of-node-4">
+			<td><span class="file">jquery.js</span></td>
+			<td>56 KB</td>
+			<td>JavaScript source</td>
 		</tr>
-
-		<tr id="node-5" class="child-of-node-3">
-			<td><span class="folder">What Comes Around, Goes Around</span></td>
-			<td>Folder</td>
-		</tr>
-
-		<tr id="node-9" class="child-of-node-5">
-			<td><span class="file">Sub sub sub!</span></td>
-			<td>Text Document</td>
-		</tr>
-
+		
 		<tr id="node-6" class="child-of-node-1">
-			<td><span class="folder">Blog</span></td>
+			<td><span class="folder">stylesheets</span></td>
+			<td>--</td>
+			<td>Folder</td>
+		</tr>
+		
+		<tr id="node-7" class="child-of-node-6">
+			<td><span class="file">master.css</span></td>
+			<td>4 KB</td>
+			<td>CSS style sheet</td>
+		</tr>
+		
+		<tr id="node-11">
+			<td><span class="folder">src</span></td>
+			<td>--</td>
 			<td>Folder</td>
 		</tr>
 
-		<tr id="node-7" class="child-of-node-6">
-			<td><span class="file">Summer, At Last</span></td>
-			<td>Text Document</td>
+		<tr id="node-12" class="child-of-node-11">
+			<td><span class="folder">images</span></td>
+			<td>--</td>
+			<td>Folder</td>
 		</tr>
 
-		<tr id="node-8" class="child-of-node-6">
-			<td><span class="file">Tractor</span></td>
-			<td>Text Document</td>
+		<tr id="node-15" class="child-of-node-12">
+			<td><span class="file">bullet_toggle_minus.png</span></td>
+			<td>4 KB</td>
+			<td>Portable Network Graphics image</td>
 		</tr>
+
+		<tr id="node-16" class="child-of-node-12">
+			<td><span class="file">bullet_toggle_plus.png</span></td>
+			<td>4 KB</td>
+			<td>Portable Network Graphics image</td>
+		</tr>
+
+		<tr id="node-13" class="child-of-node-11">
+			<td><span class="folder">stylesheets</span></td>
+			<td>--</td>
+			<td>Folder</td>
+		</tr>
+
+		<tr id="node-17" class="child-of-node-13">
+			<td><span class="file">jquery.acts_as_tree_table.css</span></td>
+			<td>4 KB</td>
+			<td>CSS style sheet</td>
+		</tr>
+
+		<tr id="node-15" class="child-of-node-11">
+			<td><span class="file">jquery.acts_as_tree_table.js</span></td>
+			<td>4 KB</td>
+			<td>JavaScript source</td>
+		</tr>
+
+		<tr id="node-14">
+			<td><span class="file">README.markdown</span></td>
+			<td>4 KB</td>
+			<td>Markdown document</td>
+		</tr>
+
 	</tbody>
 </tabe>
 

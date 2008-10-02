@@ -1,16 +1,20 @@
-/* EXPANDER
+/* ActsAsTreeTable
  * ========================================================================= */
-.expander {
+
+/* Expander
+ * ------------------------------------------------------------------------- */
+.acts_as_tree_table tr td span.expander {
 	background-image: url(../images/bullet_toggle_minus.png);
 	background-position: left center;
 	background-repeat: no-repeat;
 	cursor: pointer;
+	padding: .2em 0 .2em 19px;
 }
 
-.collapsed .expander {
+.acts_as_tree_table tr.collapsed td span.expander {
 	background-image: url(../images/bullet_toggle_plus.png);
 }
 
-.expanded .expander {
+.acts_as_tree_table tr.expanded td span.expander {
 	background-image: url(../images/bullet_toggle_minus.png);
 }
