@@ -1,4 +1,6 @@
 == HEAD
+* Fix JavaScript errors in IE7 due to comma-madness
+* Fix collapse/expand behavior in IE7
 
 == 1.0 - 2 October 2008
 * Public release
