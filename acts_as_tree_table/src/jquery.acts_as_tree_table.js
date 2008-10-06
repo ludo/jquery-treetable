@@ -28,15 +28,15 @@
  */
 (function($) {
 	
-	// The settings for this plugin should be available to all functions in this
+	// The options for this plugin should be available to all functions in this
 	// plugin.
-	var settings;
+	var options;
 	
 	// TableTree Plugin: display a tree in a table.
 	//
 	// TODO Look into possibility to add alternating row colors
 	$.fn.acts_as_tree_table = function(opts) {
-		settings = $.extend({}, $.fn.acts_as_tree_table.defaults, opts);
+		options = $.extend({}, $.fn.acts_as_tree_table.defaults, opts);
 		
 		return this.each(function() {
 			var table = $(this);
@@ -64,11 +64,11 @@
 		});
 	};
 	
-	// Default settings
+	// Default options
 	$.fn.acts_as_tree_table.defaults = {
 		expandable: true,
 		indent: 19,
-		tree_column: 0,
+		tree_column: 0
 	};
 	
 	// === Private Methods
@@ -108,20 +108,21 @@
 	// Add stuff to cell that contains stuff to make the tree collapsable.
 	function init_parent(node) {
 		// Select cell in column that should display the tree
-		var cell = $(node.children("td")[settings.tree_column]);
+		var cell = $(node.children("td")[options.tree_column]);
 
 		// Calculate left padding
-		var padding = parseInt(cell.css("padding-left")) + settings.indent;
+		var padding = parseInt(cell.css("padding-left")) + options.indent;
+		
 		children_of(node).each(function() {
-			$($(this).children("td")[settings.tree_column]).css("padding-left", padding + "px");
+			$($(this).children("td")[options.tree_column]).css("padding-left", padding + "px");
 		});
 
-		if(settings.expandable) {
+		if(options.expandable) {
 			// Add clickable expander buttons (plus and minus icon thingies)
 			//
 			// Why do I use a z-index on the expander?
 			// Otherwise the expander would not be visible in Safari/Webkit browsers.
-			cell.prepend('<span style="margin-left: -' + settings.indent + 'px; z-index: 100;" class="expander"></span>');
+			cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
 			var expander = $(cell[0].firstChild);
 			expander.click(function() { toggle(node); });
 		}
