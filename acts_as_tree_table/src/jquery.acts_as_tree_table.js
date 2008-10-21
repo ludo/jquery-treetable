@@ -1,5 +1,5 @@
 /*
- * jQuery ActsAsTreeTable plugin 1.0
+ * jQuery ActsAsTreeTable plugin 1.1
  * =================================
  *
  * License
