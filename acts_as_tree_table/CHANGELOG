@@ -1,3 +1,7 @@
+== 1.2 - HEAD
+* Added option 'default_state'
+* Expose additional functions: collapse, expand and toggleBranch
+
 == 1.1 - 21 October 2008
 * Fix JavaScript errors in IE7 due to comma-madness
 * Fix collapse/expand behavior in IE7

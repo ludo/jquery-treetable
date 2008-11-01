@@ -1,5 +1,5 @@
 /*
- * jQuery ActsAsTreeTable plugin 1.1
+ * jQuery ActsAsTreeTable plugin 1.2
  * =================================
  *
  * License
@@ -67,8 +67,24 @@
 	// Default options
 	$.fn.acts_as_tree_table.defaults = {
 		expandable: true,
+		default_state: 'expanded',
 		indent: 19,
 		tree_column: 0
+	};
+	
+	// Extend function to jQuery
+	$.fn.collapse = function() {
+  	collapse(this);
+	};
+
+	// Extend function to jQuery
+	$.fn.expand = function() {
+		expand(this);
+	};
+
+	// Extend function to jQuery
+	$.fn.toggleBranch = function() {
+		toggle(this);
 	};
 	
 	// === Private Methods
@@ -125,6 +141,18 @@
 			cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
 			var expander = $(cell[0].firstChild);
 			expander.click(function() { toggle(node); });
+			
+			// Check for a class set explicitly by the user, otherwise set the default class
+			if( !(node.is(".expanded") || node.is(".collapsed")) ) {
+			  node.addClass(options.default_state);
+			}
+			
+			// Apply the default state
+			if(node.is(".collapsed")) {
+				collapse(node);
+			} else if (node.is(".expanded")) {
+				expand(node);
+			}
 		}
 	};
 	
