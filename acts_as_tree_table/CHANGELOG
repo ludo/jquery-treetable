@@ -1,4 +1,4 @@
-== 1.2 - HEAD
+== 1.2 - 3 November 2008
 * Added option 'default_state'
 * Expose additional functions: collapse, expand and toggleBranch
 
