@@ -32,9 +32,7 @@
 	// plugin.
 	var options;
 	
-	// TableTree Plugin: display a tree in a table.
-	//
-	// TODO Look into possibility to add alternating row colors
+	// ActsAsTreeTable Plugin: display a tree in a table.
 	$.fn.acts_as_tree_table = function(opts) {
 		options = $.extend({}, $.fn.acts_as_tree_table.defaults, opts);
 		
@@ -72,19 +70,46 @@
 		tree_column: 0
 	};
 	
-	// Extend function to jQuery
+	// Recursively hide all children of a node.
 	$.fn.collapse = function() {
-  	collapse(this);
+		children_of($(this)).each(function() {
+			var child = $(this);
+
+			// Recursively collapse any descending nodes too
+			child.collapse();
+			
+			child.hide();
+		});
 	};
 
-	// Extend function to jQuery
+	// Recursively show all children of a node.
 	$.fn.expand = function() {
-		expand(this);
+		children_of($(this)).each(function() {
+			var child = $(this);
+			
+			// Recursively expand any descending nodes that are parents which where
+			// expanded before too.
+			if(child.is(".expanded.parent")) {
+				child.expand();
+			}
+			
+			child.show();
+		});
 	};
-
-	// Extend function to jQuery
+	
+	// Toggle an entire branch
 	$.fn.toggleBranch = function() {
-		toggle(this);
+		var node = $(this);
+		
+		if(node.is(".collapsed")) {
+			node.removeClass("collapsed");
+			node.addClass("expanded");
+			node.expand();
+		}	else {
+			node.removeClass("expanded");
+			node.addClass("collapsed");
+			node.collapse();
+		}
 	};
 	
 	// === Private Methods
@@ -92,33 +117,6 @@
 	// Select all children of a node.	
 	function children_of(node) {
 		return $("tr.child-of-" + node[0].id);
-	};
-	
-	// Hide all descendants of a node.
-	function collapse(node) {
-		children_of(node).each(function() {
-			var child = $(this);
-
-			// Recursively collapse any descending nodes too
-			collapse(child);
-
-			child.hide();
-		});
-	};
-	
-	// Show all children of a node.
-	function expand(node) {
-		children_of(node).each(function() {
-			var child = $(this);
-			
-			// Recursively expand any descending nodes that are parents which where
-			// expanded before too.
-			if(child.is(".expanded.parent")) {
-				expand(child);
-			}
-			
-			child.show();
-		});
 	};
 
 	// Add stuff to cell that contains stuff to make the tree collapsable.
@@ -140,7 +138,7 @@
 			// Otherwise the expander would not be visible in Safari/Webkit browsers.
 			cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
 			var expander = $(cell[0].firstChild);
-			expander.click(function() { toggle(node); });
+			expander.click(function() { node.toggleBranch(); });
 			
 			// Check for a class set explicitly by the user, otherwise set the default class
 			if( !(node.is(".expanded") || node.is(".collapsed")) ) {
@@ -149,25 +147,10 @@
 			
 			// Apply the default state
 			if(node.is(".collapsed")) {
-				collapse(node);
+				node.collapse();
 			} else if (node.is(".expanded")) {
-				expand(node);
+				node.expand();
 			}
 		}
 	};
-	
-	// Toggle a node
-	function toggle(node) {
-		if(node.is(".collapsed")) {
-			node.removeClass("collapsed");
-			node.addClass("expanded");
-			expand(node);
-		}
-		else {
-			node.removeClass("expanded");
-			node.addClass("collapsed");
-			collapse(node);
-		}
-	};
-	
 })(jQuery);
