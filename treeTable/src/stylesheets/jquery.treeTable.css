@@ -7,7 +7,6 @@
 /* jquery.treeTable.collapsible
  * ------------------------------------------------------------------------- */
 .treeTable tr td .expander {
-	background-image: url(../images/toggle-collapse.png);
 	background-position: left center;
 	background-repeat: no-repeat;
 	cursor: pointer;
@@ -16,19 +15,11 @@
 }
 
 .treeTable tr.collapsed td .expander {
-	background-image: url(../images/toggle-expand.png);
-}
-
-.treeTable tr.collapsed.selected td .expander {
-	background-image: url(../images/toggle-expand-white.png);
+	background-image: url(../images/toggle-expand-dark.png);
 }
 
 .treeTable tr.expanded td .expander {
-	background-image: url(../images/toggle-collapse.png);
-}
-
-.treeTable tr.expanded.selected td .expander {
-	background-image: url(../images/toggle-collapse-white.png);
+	background-image: url(../images/toggle-collapse-dark.png);
 }
 
 /* jquery.treeTable.sortable
@@ -36,4 +27,12 @@
 .treeTable tr.selected, .treeTable tr.accept {
 	background-color: #3875d7;
 	color: #fff;
+}
+
+.treeTable tr.collapsed.selected td .expander {
+	background-image: url(../images/toggle-expand-light.png);
+}
+
+.treeTable tr.expanded.selected td .expander {
+	background-image: url(../images/toggle-collapse-light.png);
 }
