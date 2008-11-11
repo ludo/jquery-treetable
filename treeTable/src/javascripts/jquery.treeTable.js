@@ -17,8 +17,7 @@
 		expandable: true,
 		indent: 19,
 		initialState: "collapsed",
-		treeColumn: 0,
-		userSelect: true
+		treeColumn: 0
 	};
 	
 	// Recursively hide all node's children in a tree
@@ -42,6 +41,38 @@
 		return this;
 	};
 	
+	// Add an entire branch to +destination+
+	$.fn.moveBranchTo = function(destination) {
+		var node = $(this);
+		var parent = parentOf(node);
+		
+		var ancestorNames = $.map(ancestorsOf($(destination)), function(a) { return a.id; });
+			
+		// Conditions:
+		// 1: +node+ should not be inserted in a location in a branch if this would
+		//    result in +node+ being an ancestor of itself.
+		// 2: +node+ should not have a parent OR the destination should not be the
+		//    same as +node+'s current parent (this last condition prevents +node+
+		//    from being moved to the same location where it already is).
+		// 3: +node+ should not be inserted as a child of +node+ itself.
+		if($.inArray(node[0].id, ancestorNames) == -1 && (!parent || (destination.id != parent[0].id)) && destination.id != node[0].id) {
+			indent(node, ancestorsOf(node).length * options.indent * -1); // Remove indentation
+			
+			if(parent) { node.removeClass(options.childPrefix + parent[0].id); }
+			
+			node.addClass(options.childPrefix + destination.id);
+			move(node, destination); // Recursively move nodes to new location
+			indent(node, ancestorsOf(node).length * options.indent);
+		}
+
+		return this;
+	};
+	
+	// Add reverse() function from JS Arrays
+	$.fn.reverse = function() {
+	  return this.pushStack(this.get().reverse(), arguments);
+	};
+
 	// Toggle an entire branch
 	$.fn.toggleBranch = function() {
 		if($(this).is(".collapsed")) {
@@ -57,9 +88,9 @@
 	
 	function ancestorsOf(node) {
 		var ancestors = [];
-		while(ancestor = parentOf(node)) {
-			ancestors[ancestors.length] = ancestor[0];
-		}		
+		while(node = parentOf(node)) {
+			ancestors[ancestors.length] = node[0];
+		}
 		return ancestors;
 	};
 	
@@ -67,12 +98,14 @@
 		return $("tr." + options.childPrefix + node[0].id);
 	};
 
-	function indent(node) {
-		var treeCell = $(node.children("td")[options.treeColumn]);
-		var padding = parseInt(treeCell.css("padding-left")) + options.indent;
+	function indent(node, value) {
+		var cell = $(node.children("td")[options.treeColumn]);
+		var padding = parseInt(cell.css("padding-left")) + value;
 
+		cell.css("padding-left", + padding + "px");
+		
 		childrenOf(node).each(function() {
-			$($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
+			indent($(this), value);
 		});
 	};
 
@@ -82,10 +115,14 @@
 		}
 
 		if(node.is(".parent")) {
-			indent(node);
+			var cell = $(node.children("td")[options.treeColumn]);
+			var padding = parseInt(cell.css("padding-left")) + options.indent;
+
+			childrenOf(node).each(function() {
+				$($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
+			});
 			
 			if(options.expandable) {
-				var cell = $(node.children("td")[options.treeColumn]);
 				cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
 				$(cell[0].firstChild).click(function() { node.toggleBranch(); });
 				
@@ -101,6 +138,11 @@
 				}
 			}
 		}
+	};
+	
+	function move(node, destination) {
+		node.insertAfter(destination);
+		childrenOf(node).reverse().each(function() { move($(this), node[0]); });
 	};
 	
 	function parentOf(node) {

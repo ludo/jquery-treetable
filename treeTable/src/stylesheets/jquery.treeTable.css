@@ -36,3 +36,8 @@
 .treeTable tr.expanded.selected td .expander {
 	background-image: url(../images/toggle-collapse-light.png);
 }
+
+.treeTable .ui-draggable-dragging {
+	color: #000;
+	z-index: 1;
+}
