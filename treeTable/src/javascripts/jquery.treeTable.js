@@ -27,7 +27,7 @@
 			$(this).collapse().hide();
 		});
 		
-		return this; // Satisfy jQuery function chain
+		return this;
 	};
 	
 	// Recursively show all node's children in a tree
@@ -39,7 +39,7 @@
 			$(this).show();
 		});
 		
-		return this; // Satisfy jQuery function chain
+		return this;
 	};
 	
 	// Toggle an entire branch
@@ -50,32 +50,42 @@
 			$(this).removeClass("expanded").addClass("collapsed").collapse();
 		}
 
-		return this; // Satisfy jQuery function chain
+		return this;
 	};
 	
 	// === Private functions
 	
-	// Get children of a node
+	function ancestorsOf(node) {
+		var ancestors = [];
+		while(ancestor = parentOf(node)) {
+			ancestors[ancestors.length] = ancestor[0];
+		}		
+		return ancestors;
+	};
+	
 	function childrenOf(node) {
 		return $("tr." + options.childPrefix + node[0].id);
 	};
 
-	// Initialize a tree node
+	function indent(node) {
+		var treeCell = $(node.children("td")[options.treeColumn]);
+		var padding = parseInt(treeCell.css("padding-left")) + options.indent;
+
+		childrenOf(node).each(function() {
+			$($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
+		});
+	};
+
 	function initialize(node) {
 		if(node.not(".parent") && childrenOf(node).length > 0) {
 			node.addClass("parent");
 		}
 
 		if(node.is(".parent")) {
-			var cell = $(node.children("td")[options.treeColumn]);
-			var padding = parseInt(cell.css("padding-left")) + options.indent;
-		
-			childrenOf(node).each(function() {
-				$($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
-			});
+			indent(node);
 			
 			if(options.expandable) {
-				// Add expand/collapse button
+				var cell = $(node.children("td")[options.treeColumn]);
 				cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
 				$(cell[0].firstChild).click(function() { node.toggleBranch(); });
 				
@@ -89,6 +99,16 @@
 				} else if (node.is(".expanded")) {
 					node.expand();
 				}
+			}
+		}
+	};
+	
+	function parentOf(node) {
+		var classNames = node[0].className.split(' ');
+		
+		for(key in classNames) {
+			if(classNames[key].match("child-of-")) {
+				return $("#" + classNames[key].substring(9));
 			}
 		}
 	};
