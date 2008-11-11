@@ -16,11 +16,11 @@
 	$(document).ready(function() {
 		$(".example").treeTable();
 
-		$(".content, .file, .folder").draggable({
-			helper: 'clone',
+		$(".file, .folder").draggable({
+			helper: "clone",
 			opacity: .75,
 			refreshPositions: true, // Performance?
-			revert: 'invalid',
+			revert: "invalid",
 			revertDuration: 300,
 			scroll: true
 		});
@@ -29,10 +29,7 @@
 			$(this).parents("tr").droppable({
 				accept: ".file, .folder",
 				drop: function(e, ui) { 
-					var droppableRow = this;
-					var draggableRow = $(ui.draggable).parents("tr");
-
-					$(draggableRow).moveBranchTo(droppableRow);
+					$($(ui.draggable).parents("tr")).moveBranchTo(this);
 				},
 				hoverClass: "accept",
 				over: function(e, ui) {
