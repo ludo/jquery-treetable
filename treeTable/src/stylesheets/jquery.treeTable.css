@@ -29,11 +29,11 @@
 	color: #fff;
 }
 
-.treeTable tr.collapsed.selected td .expander {
+.treeTable tr.collapsed.selected td .expander, .treeTable tr.collapsed.accept td .expander {
 	background-image: url(../images/toggle-expand-light.png);
 }
 
-.treeTable tr.expanded.selected td .expander {
+.treeTable tr.expanded.selected td .expander, .treeTable tr.expanded.accept td .expander {
 	background-image: url(../images/toggle-collapse-light.png);
 }
 

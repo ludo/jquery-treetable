@@ -1,5 +1,7 @@
-== 2.0 - Not Released Yet
+== 2.0 - 12 November 2008
 * Renamed plugin from ActsAsTreeTable to treeTable
+* Added appendBranchTo function for easier manipulation of the tree with drag & drop
+* Added option 'child_prefix' to allow customisation of the prefix used for node classes (default: 'child-of-')
 * Renamed option 'default_state' to 'initialState'
 * Changed initialState from 'expanded' to 'collapsed'
 * Refactored collapse/expand behavior

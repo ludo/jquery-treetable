@@ -1,4 +1,4 @@
-/* jQuery TreeTable 2.0 */
+/* jQuery treeTable Plugin 2.0 - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
 (function($) {
 	var options; // Helps to make options available to all functions
 	
@@ -42,7 +42,7 @@
 	};
 	
 	// Add an entire branch to +destination+
-	$.fn.moveBranchTo = function(destination) {
+	$.fn.appendBranchTo = function(destination) {
 		var node = $(this);
 		var parent = parentOf(node);
 		
@@ -100,7 +100,7 @@
 
 	function indent(node, value) {
 		var cell = $(node.children("td")[options.treeColumn]);
-		var padding = parseInt(cell.css("padding-left")) + value;
+		var padding = parseInt(cell.css("padding-left"), 10) + value;
 
 		cell.css("padding-left", + padding + "px");
 		
@@ -116,7 +116,7 @@
 
 		if(node.is(".parent")) {
 			var cell = $(node.children("td")[options.treeColumn]);
-			var padding = parseInt(cell.css("padding-left")) + options.indent;
+			var padding = parseInt(cell.css("padding-left"), 10) + options.indent;
 
 			childrenOf(node).each(function() {
 				$($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
