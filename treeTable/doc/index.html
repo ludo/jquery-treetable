@@ -5,6 +5,7 @@
 	<title>jQuery treeTable Plugin Documentation</title>
  	<link href="stylesheets/master.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="javascripts/jquery.js"></script>
+	<script type="text/javascript" src="javascripts/jquery.ui.js"></script>
 
 	<!-- BEGIN Plugin Code -->
 	
@@ -17,6 +18,42 @@
 
 		$("#example3").treeTable({
 			expandable: false
+		});
+		
+		// Drag & Drop Example Code
+		$("#dnd-example .file, #dnd-example .folder").draggable({
+			helper: "clone",
+			opacity: .75,
+			refreshPositions: true, // Performance?
+			revert: "invalid",
+			revertDuration: 300,
+			scroll: true
+		});
+		
+		$("#dnd-example .folder").each(function() {
+			$(this).parents("tr").droppable({
+				accept: ".file, .folder",
+				drop: function(e, ui) { 
+					$($(ui.draggable).parents("tr")).appendBranchTo(this);
+				},
+				hoverClass: "accept",
+				over: function(e, ui) {
+					if(this.id != ui.draggable.parents("tr")[0].id && !$(this).is(".expanded")) {
+						$(this).expand();
+					}
+				}
+			});
+		});
+		
+		// Make visible that a row is clicked
+		$("table#dnd-example tbody tr").mousedown(function() {
+			$("tr.selected").removeClass("selected"); // Deselect currently selected rows
+			$(this).addClass("selected");
+		});
+
+		// Make sure row is selected when span is clicked
+		$("table#dnd-example tbody tr span").mousedown(function() {
+			$($(this).parents("tr")[0]).trigger("mousedown");
 		});
 	});
 	
@@ -68,9 +105,9 @@
 	</li>
 	<li><a href="#examples">Examples</a>
 		<ol>
-			<li><a href="#example-1">Displaying a directory structure</a></li>
 			<li><a href="#example-2">A complex tree</a></li>
 			<li><a href="#example-3">A tree that is not collapsable</a></li>
+			<li><a href="#example-1">Dragging and dropping example</a></li>
 		</ol>
 	</li>
 </ol>
@@ -193,10 +230,110 @@ $(document).ready(function()  {
 <h2>4. <a name="examples">Examples</a></h2>
 <p>The examples in this chapter all use the treeTable plugin to display a tree in a table, with collapsable branches. View the source code of this file to see how it is done and read the <a href="#usage">Usage</a> chapter for further details.</p>
 
-<h3>4.1 <a name="example-1">Displaying a directory structure</a></h3>
+<h3>4.1 <a name="example-2">A complex tree</a></h3>
 
 <table class="example">
-	<caption>Example 1: Displaying a directory structure.</caption>
+	<caption>Example 1: A complex tree.</caption>
+	<tr id="ex2-node-1">
+		<td>Node 1</td>
+	</tr>
+	<tr id="ex2-node-1-1" class="child-of-ex2-node-1">
+		<td>Node 1.1</td>
+	</tr>
+	<tr id="ex2-node-1-2" class="child-of-ex2-node-1">
+		<td>Node 1.2</td>
+	</tr>
+	<tr id="ex2-node-1-3" class="child-of-ex2-node-1">
+		<td>Node 1.3</td>
+	</tr>
+	<tr id="ex2-node-2">
+		<td>Node 2</td>
+	</tr>
+	<tr id="ex2-node-2-1" class="child-of-ex2-node-2">
+		<td>Node 2.1</td>
+	</tr>
+	<tr id="ex2-node-2-1-1" class="child-of-ex2-node-2-1">
+		<td>Node 2.1.1</td>
+	</tr>
+	<tr id="ex2-node-2-2" class="child-of-ex2-node-2">
+		<td>Node 2.2</td>
+	</tr>
+	<tr id="ex2-node-2-2-1" class="child-of-ex2-node-2-2">
+		<td>Node 2.2.1</td>
+	</tr>
+	<tr id="ex2-node-2-2-1-1" class="child-of-ex2-node-2-2-1">
+		<td>Node 2.2.1.1</td>
+	</tr>
+	<tr id="ex2-node-2-2-2" class="child-of-ex2-node-2-2">
+		<td>Node 2.2.2</td>
+	</tr>
+</table>
+
+<h3>4.2 <a name="example-3">A tree that is not collapsable</a></h3>
+
+<pre class="listing">
+$("#example3").treeTable({
+	expandable: false
+});
+</pre>	
+
+<table id="example3">
+	<caption>Example 2: A tree that is not collapsable.</caption>
+	<thead>
+		<tr>
+			<th>Tree column</th>
+			<th>Column 2</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr id="ex3-node-1">
+			<td>Node 1</td>
+			<td>Second column</td>
+		</tr>
+		<tr id="ex3-node-1-1" class="child-of-ex3-node-1">
+			<td>Node 1.1</td>
+			<td>Second column</td>
+		</tr>
+		<tr id="ex3-node-1-2" class="child-of-ex3-node-1">
+			<td>Node 1.2</td>
+			<td>Second column</td>
+		</tr>
+		<tr id="ex3-node-1-3" class="child-of-ex3-node-1">
+			<td>Node 1.3</td>
+			<td>Second column</td>
+		</tr>
+		<tr id="ex3-node-2">
+			<td>Node 2</td>
+			<td>Second column</td>
+		</tr>
+		<tr id="ex3-node-2-1" class="child-of-ex3-node-2">
+			<td>Node 2.1</td>
+			<td>Second column</td>
+		</tr>
+		<tr id="ex3-node-2-1-1" class="child-of-ex3-node-2-1">
+			<td>Node 2.1.1</td>
+			<td>Second column</td>
+		</tr>
+		<tr id="ex3-node-2-2" class="child-of-ex3-node-2">
+			<td>Node 2.2</td>
+			<td>Second column</td>
+		</tr>
+		<tr id="ex3-node-2-2-1" class="child-of-ex3-node-2-2">
+			<td>Node 2.2.1</td>
+			<td>Second column</td>
+		</tr>
+		<tr id="ex3-node-2-2-2" class="child-of-ex3-node-2-2">
+			<td>Node 2.2.2</td>
+			<td>Second column</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>4.3 <a name="example-1">Draging and dropping example</a></h3>
+
+<p>This example uses the <a href="http://ui.jquery.com" title="jQuery UI Website">jQuery UI</a> components Draggable and Droppable to create a tree that can be manipulated by dragging and dropping of the nodes. You can drag a node by clicking on it's title and drag it to a different position. This behavior requires a bit more coding than the simple trees above, but it is still pretty straight-forward. The code for this example is listed below. The most interesting line in this code, from the plugin's point of view is <tt>$($(ui.draggable).parents("tr")).appendBranchTo(this);</tt>. Here the <tt>appendBranchTo</tt> function is called to move the selected branch to a new location.</p>
+<table class="example" id="dnd-example">
+	<caption>Example 3: Dragging and dropping example.</caption>
 	<thead>
 		<tr>
 			<th>Title</th>
@@ -328,104 +465,50 @@ $(document).ready(function()  {
 	</tbody>
 </table>
 
-<h3>4.2 <a name="example-2">A complex tree</a></h3>
-
-<table class="example">
-	<caption>Example 2: A complex tree.</caption>
-	<tr id="ex2-node-1">
-		<td>Node 1</td>
-	</tr>
-	<tr id="ex2-node-1-1" class="child-of-ex2-node-1">
-		<td>Node 1.1</td>
-	</tr>
-	<tr id="ex2-node-1-2" class="child-of-ex2-node-1">
-		<td>Node 1.2</td>
-	</tr>
-	<tr id="ex2-node-1-3" class="child-of-ex2-node-1">
-		<td>Node 1.3</td>
-	</tr>
-	<tr id="ex2-node-2">
-		<td>Node 2</td>
-	</tr>
-	<tr id="ex2-node-2-1" class="child-of-ex2-node-2">
-		<td>Node 2.1</td>
-	</tr>
-	<tr id="ex2-node-2-1-1" class="child-of-ex2-node-2-1">
-		<td>Node 2.1.1</td>
-	</tr>
-	<tr id="ex2-node-2-2" class="child-of-ex2-node-2">
-		<td>Node 2.2</td>
-	</tr>
-	<tr id="ex2-node-2-2-1" class="child-of-ex2-node-2-2">
-		<td>Node 2.2.1</td>
-	</tr>
-	<tr id="ex2-node-2-2-1-1" class="child-of-ex2-node-2-2-1">
-		<td>Node 2.2.1.1</td>
-	</tr>
-	<tr id="ex2-node-2-2-2" class="child-of-ex2-node-2-2">
-		<td>Node 2.2.2</td>
-	</tr>
-</table>
-
-<h3>4.3 <a name="example-3">A tree that is not collapsable</a></h3>
-
 <pre class="listing">
-$("#example3").treeTable({
-	expandable: false
+/* NOTE: Do not forget to download the jQuery UI Draggable and Droppable
+ * components if you want to enable dragging and dropping behavior!
+ */
+	
+// Configure draggable nodes
+$("#dnd-example .file, #dnd-example .folder").draggable({
+  helper: "clone",
+  opacity: .75,
+  refreshPositions: true, // Performance?
+  revert: "invalid",
+  revertDuration: 300,
+  scroll: true
 });
-</pre>	
 
-<table id="example3">
-	<caption>Example 3: A tree that is not collapsable.</caption>
-	<thead>
-		<tr>
-			<th>Tree column</th>
-			<th>Column 2</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr id="ex3-node-1">
-			<td>Node 1</td>
-			<td>Second column</td>
-		</tr>
-		<tr id="ex3-node-1-1" class="child-of-ex3-node-1">
-			<td>Node 1.1</td>
-			<td>Second column</td>
-		</tr>
-		<tr id="ex3-node-1-2" class="child-of-ex3-node-1">
-			<td>Node 1.2</td>
-			<td>Second column</td>
-		</tr>
-		<tr id="ex3-node-1-3" class="child-of-ex3-node-1">
-			<td>Node 1.3</td>
-			<td>Second column</td>
-		</tr>
-		<tr id="ex3-node-2">
-			<td>Node 2</td>
-			<td>Second column</td>
-		</tr>
-		<tr id="ex3-node-2-1" class="child-of-ex3-node-2">
-			<td>Node 2.1</td>
-			<td>Second column</td>
-		</tr>
-		<tr id="ex3-node-2-1-1" class="child-of-ex3-node-2-1">
-			<td>Node 2.1.1</td>
-			<td>Second column</td>
-		</tr>
-		<tr id="ex3-node-2-2" class="child-of-ex3-node-2">
-			<td>Node 2.2</td>
-			<td>Second column</td>
-		</tr>
-		<tr id="ex3-node-2-2-1" class="child-of-ex3-node-2-2">
-			<td>Node 2.2.1</td>
-			<td>Second column</td>
-		</tr>
-		<tr id="ex3-node-2-2-2" class="child-of-ex3-node-2-2">
-			<td>Node 2.2.2</td>
-			<td>Second column</td>
-		</tr>
-	</tbody>
-</table>
+// Configure droppable rows
+$("#dnd-example .folder").each(function() {
+  $(this).parents("tr").droppable({
+    accept: ".file, .folder",
+    drop: function(e, ui) { 
+      // Call jQuery treeTable plugin to move the branch
+      $($(ui.draggable).parents("tr")).appendBranchTo(this);
+    },
+    hoverClass: "accept",
+    over: function(e, ui) {
+      // Make the droppable branch expand when a draggable node is moved over it.
+      if(this.id != ui.draggable.parents("tr")[0].id && !$(this).is(".expanded")) {
+        $(this).expand();
+      }
+    }
+  });
+});
+
+// Make visible that a row is clicked
+$("table#dnd-example tbody tr").mousedown(function() {
+  $("tr.selected").removeClass("selected"); // Deselect currently selected rows
+  $(this).addClass("selected");
+});
+
+// Make sure row is selected when span is clicked
+$("table#dnd-example tbody tr span").mousedown(function() {
+  $($(this).parents("tr")[0]).trigger("mousedown");
+});
+</pre>
 
 </body>
 </html>

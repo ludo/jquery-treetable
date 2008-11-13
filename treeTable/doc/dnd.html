@@ -29,7 +29,7 @@
 			$(this).parents("tr").droppable({
 				accept: ".file, .folder",
 				drop: function(e, ui) { 
-					$($(ui.draggable).parents("tr")).moveBranchTo(this);
+					$($(ui.draggable).parents("tr")).appendBranchTo(this);
 				},
 				hoverClass: "accept",
 				over: function(e, ui) {
