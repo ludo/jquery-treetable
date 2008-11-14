@@ -6,9 +6,14 @@
 		options = $.extend({}, $.fn.treeTable.defaults, opts);
 		
 		return this.each(function() {
-			$(this).addClass("treeTable").children("tbody").children("tr").each(function() {
-				initialize($(this));
+			
+			$(this).addClass("treeTable").find("tbody tr").each(function() {
+				// Initialize root nodes only
+				if($(this)[0].className.search("child-of-")) {
+					initialize($(this));
+				}
 			});
+			
 		});
 	};
 	
@@ -32,9 +37,12 @@
 	// Recursively show all node's children in a tree
 	$.fn.expand = function() {
 		childrenOf($(this)).each(function() {
+			initialize($(this));
+						
 			if($(this).is(".expanded.parent")) {
 				$(this).expand();
 			}
+			
 			$(this).show();
 		});
 		
@@ -95,7 +103,7 @@
 	};
 	
 	function childrenOf(node) {
-		return $("tr." + options.childPrefix + node[0].id);
+		return $("table.treeTable tbody tr." + options.childPrefix + node[0].id);
 	};
 
 	function indent(node, value) {
@@ -110,31 +118,40 @@
 	};
 
 	function initialize(node) {
-		if(node.not(".parent") && childrenOf(node).length > 0) {
-			node.addClass("parent");
-		}
+		if(!node.hasClass("initialized")) {
+			console.log(node[0].id + ", init: " + node.hasClass("initialized"));
 
-		if(node.is(".parent")) {
-			var cell = $(node.children("td")[options.treeColumn]);
-			var padding = parseInt(cell.css("padding-left"), 10) + options.indent;
+			// Mark class initialized so we don't do this more than once
+			node.addClass("initialized");
 
-			childrenOf(node).each(function() {
-				$($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
-			});
+			var childNodes = childrenOf(node);
+		
+			if(!node.hasClass("parent") && childNodes.length > 0) {
+				node.addClass("parent");
+			}
+
+			if(node.hasClass("parent")) {
+				var cell = $(node.children("td")[options.treeColumn]);
+				var padding = parseInt(cell.css("padding-left"), 10) + options.indent;
+
+				childNodes.each(function() {
+					$($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
+				});
 			
-			if(options.expandable) {
-				cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
-				$(cell[0].firstChild).click(function() { node.toggleBranch(); });
+				if(options.expandable) {
+					cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
+					$(cell[0].firstChild).click(function() { node.toggleBranch(); });
 				
-				// Check for a class set explicitly by the user, otherwise set the default class
-				if(!(node.is(".expanded") || node.is(".collapsed"))) {
-				  node.addClass(options.initialState);
-				}
+					// Check for a class set explicitly by the user, otherwise set the default class
+					if(!(node.hasClass("expanded") || node.hasClass("collapsed"))) {
+					  node.addClass(options.initialState);
+					}
 
-				if(node.is(".collapsed")) {
-					node.collapse();
-				} else if (node.is(".expanded")) {
-					node.expand();
+					if(node.hasClass("collapsed")) {
+						node.collapse();
+					} else if (node.hasClass("expanded")) {
+						node.expand();
+					}
 				}
 			}
 		}
