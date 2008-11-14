@@ -9,14 +9,12 @@
 		options = $.extend({}, $.fn.treeTable.defaults, opts);
 		
 		return this.each(function() {
-			
 			$(this).addClass("treeTable").find("tbody tr").each(function() {
 				// Initialize root nodes only whenever possible
 				if(!options.expandable || $(this)[0].className.search("child-of-") == -1) {
 					initialize($(this));
 				}
 			});
-			
 		});
 	};
 	
@@ -130,7 +128,6 @@
 
 	function initialize(node) {
 		if(!node.hasClass("initialized")) {
-			// Mark class initialized so we don't do this more than once
 			node.addClass("initialized");
 
 			var childNodes = childrenOf(node);
