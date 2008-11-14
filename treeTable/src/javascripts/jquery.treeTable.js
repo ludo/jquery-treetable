@@ -1,6 +1,9 @@
-/* jQuery treeTable Plugin 2.0 - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
+/* jQuery treeTable Plugin 2.1-dev - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
 (function($) {
-	var options; // Helps to make options available to all functions
+	// Helps to make options available to all functions
+	// TODO: This gives problems when there are both expandable and non-expandable
+	// trees on a page. The options shouldn't be global to all these instances!
+	var options;
 	
 	$.fn.treeTable = function(opts) {
 		options = $.extend({}, $.fn.treeTable.defaults, opts);
@@ -8,8 +11,8 @@
 		return this.each(function() {
 			
 			$(this).addClass("treeTable").find("tbody tr").each(function() {
-				// Initialize root nodes only
-				if($(this)[0].className.search("child-of-")) {
+				// Initialize root nodes only whenever possible
+				if(!options.expandable || $(this)[0].className.search("child-of-") == -1) {
 					initialize($(this));
 				}
 			});
@@ -27,8 +30,14 @@
 	
 	// Recursively hide all node's children in a tree
 	$.fn.collapse = function() {
+		$(this).addClass("collapsed");
+
 		childrenOf($(this)).each(function() {
-			$(this).collapse().hide();
+			if(!$(this).hasClass("collapsed")) {
+				$(this).collapse();
+			}
+			
+			$(this).hide();
 		});
 		
 		return this;
@@ -36,6 +45,8 @@
 	
 	// Recursively show all node's children in a tree
 	$.fn.expand = function() {
+		$(this).removeClass("collapsed").addClass("expanded");
+		
 		childrenOf($(this)).each(function() {
 			initialize($(this));
 						
@@ -83,10 +94,10 @@
 
 	// Toggle an entire branch
 	$.fn.toggleBranch = function() {
-		if($(this).is(".collapsed")) {
-			$(this).removeClass("collapsed").addClass("expanded").expand();
+		if($(this).hasClass("collapsed")) {
+			$(this).expand();
 		}	else {
-			$(this).removeClass("expanded").addClass("collapsed").collapse();
+			$(this).removeClass("expanded").collapse();
 		}
 
 		return this;
@@ -119,8 +130,6 @@
 
 	function initialize(node) {
 		if(!node.hasClass("initialized")) {
-			console.log(node[0].id + ", init: " + node.hasClass("initialized"));
-
 			// Mark class initialized so we don't do this more than once
 			node.addClass("initialized");
 
