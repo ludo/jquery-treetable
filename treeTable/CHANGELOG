@@ -1,6 +1,8 @@
-== 2.1-dev
+== 2.1 - 16 November 2008
 * Optimized for faster initial loading (Issue #1)
 * Implemented lazy initialization of nodes (Issue #1)
+* Added information about the order of the rows in the HTML table to the documentation (Issue 2)
+* Added performance.html with an example of a large table with drag and drop
 
 == 2.0 - 12 November 2008
 * Renamed plugin from ActsAsTreeTable to treeTable
