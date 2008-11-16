@@ -1,4 +1,4 @@
-/* jQuery treeTable Plugin 2.1-dev - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
+/* jQuery treeTable Plugin 2.1 - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
 (function($) {
 	// Helps to make options available to all functions
 	// TODO: This gives problems when there are both expandable and non-expandable
