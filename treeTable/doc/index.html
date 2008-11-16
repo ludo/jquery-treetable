@@ -178,8 +178,13 @@ $(document).ready(function()  {
   &lt;tr id="node-2" class="child-of-node-1"&gt;
     &lt;td&gt;Child&lt;/td&gt;
   &lt;/tr&gt;
+  &lt;tr id="node-3" class="child-of-node-2"&gt;
+    &lt;td&gt;Child&lt;/td&gt;
+  &lt;/tr&gt;
 &lt;/table&gt;
 </pre>
+
+<p>Please note that the plugin expects the rows in the HTML table to be in the same order in which they should be displayed in the tree. For example, suppose you have three nodes: <strong style="color: red;">A</strong>, <strong style="color: navy;">B</strong> (child of node <span style="color: red">A</span>) and <strong style="color: green;">C</strong> (child of node <span style="color: navy">B</span>). If you create rows for these nodes in your HTML table in the following order <span style="color: red">A</span> - <span style="color: green">C</span> - <span style="color: navy">B</span>, then the tree will not display correctly. You have to make sure that the rows are in the order <span style="color: red">A</span> - <span style="color: navy">B</span> - <span style="color: green">C</span>.</p>
 
 <h3>3.3 <a name="settings">Configuration</a></h3>
 <p>There are several settings that let you adjust the behavior of the plugin. Each of these settings is described in this section. See <a href="#example-3">Example 3</a> for an example of how to change these settings.</p>
