@@ -2,60 +2,60 @@
 
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>jQuery treeTable Plugin Documentation</title>
- 	<link href="stylesheets/master.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="javascripts/jquery.js"></script>
-	<script type="text/javascript" src="javascripts/jquery.ui.js"></script>
+  <title>jQuery treeTable Plugin Documentation</title>
+  <link href="stylesheets/master.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="javascripts/jquery.js"></script>
+  <script type="text/javascript" src="javascripts/jquery.ui.js"></script>
 
-	<!-- BEGIN Plugin Code -->
-	
- 	<link href="../src/stylesheets/jquery.treeTable.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="../src/javascripts/jquery.treeTable.js"></script>
-	<script type="text/javascript">
-	
-	$(document).ready(function() {
-		$("#dnd-example").treeTable();
-		
-		// Drag & Drop Example Code
-		$("#dnd-example .file, #dnd-example .folder").draggable({
-			helper: "clone",
-			opacity: .75,
-			refreshPositions: true, // Performance?
-			revert: "invalid",
-			revertDuration: 300,
-			scroll: true
-		});
-		
-		$("#dnd-example .folder").each(function() {
-			$(this).parents("tr").droppable({
-				accept: ".file, .folder",
-				drop: function(e, ui) { 
-					$($(ui.draggable).parents("tr")).appendBranchTo(this);
-				},
-				hoverClass: "accept",
-				over: function(e, ui) {
-					if(this.id != ui.draggable.parents("tr")[0].id && !$(this).is(".expanded")) {
-						$(this).expand();
-					}
-				}
-			});
-		});
-		
-		// Make visible that a row is clicked
-		$("table#dnd-example tbody tr").mousedown(function() {
-			$("tr.selected").removeClass("selected"); // Deselect currently selected rows
-			$(this).addClass("selected");
-		});
+  <!-- BEGIN Plugin Code -->
+  
+  <link href="../src/stylesheets/jquery.treeTable.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../src/javascripts/jquery.treeTable.js"></script>
+  <script type="text/javascript">
+  
+  $(document).ready(function() {
+    $("#dnd-example").treeTable();
+    
+    // Drag & Drop Example Code
+    $("#dnd-example .file, #dnd-example .folder").draggable({
+      helper: "clone",
+      opacity: .75,
+      refreshPositions: true, // Performance?
+      revert: "invalid",
+      revertDuration: 300,
+      scroll: true
+    });
+    
+    $("#dnd-example .folder").each(function() {
+      $($(this).parents("tr")[0]).droppable({
+        accept: ".file, .folder",
+        drop: function(e, ui) { 
+          $($(ui.draggable).parents("tr")[0]).appendBranchTo(this);
+        },
+        hoverClass: "accept",
+        over: function(e, ui) {
+          if(this.id != ui.draggable.parents("tr.parent")[0].id && !$(this).is(".expanded")) {
+            $(this).expand();
+          }
+        }
+      });
+    });
+    
+    // Make visible that a row is clicked
+    $("table#dnd-example tbody tr").mousedown(function() {
+      $("tr.selected").removeClass("selected"); // Deselect currently selected rows
+      $(this).addClass("selected");
+    });
 
-		// Make sure row is selected when span is clicked
-		$("table#dnd-example tbody tr span").mousedown(function() {
-			$($(this).parents("tr")[0]).trigger("mousedown");
-		});
-	});
-	
-	</script>
+    // Make sure row is selected when span is clicked
+    $("table#dnd-example tbody tr span").mousedown(function() {
+      $($(this).parents("tr")[0]).trigger("mousedown");
+    });
+  });
+  
+  </script>
 
-	<!-- END Plugin Code -->
+  <!-- END Plugin Code -->
 </head>
 <body>
 
@@ -66,15 +66,15 @@
 <p>For more information on how to use the treeTable plugin, see the <a href="index.html">documentation</a>.</p>
 
 <table id="dnd-example">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Kind</th>
-			<th>Size</th>
-		</tr>
-	</thead>
-	<tbody>
-	<tr id='node--1' class=''><td><span class='file'>Acknowledgements.rtf</span></td><td>File</td><td>480.95 KB</td></tr>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Kind</th>
+      <th>Size</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr id='node--1' class=''><td><span class='file'>Acknowledgements.rtf</span></td><td>File</td><td>480.95 KB</td></tr>
 <tr id='node--2' class='parent '><td><span class='folder'>CHUD</span></td><td>Folder</td><td>--</td></tr>
 <tr id='node--2-1' class='parent child-of-node--2'><td><span class='folder'>amber</span></td><td>Folder</td><td>--</td></tr>
 <tr id='node--2-1-1' class='child-of-node--2-1'><td><span class='file'>AmberTraceFormats.pdf</span></td><td>File</td><td>124.46 KB</td></tr>
@@ -533,7 +533,7 @@
 <tr id='node--7' class='parent '><td><span class='folder'>RubyCocoa</span></td><td>Folder</td><td>--</td></tr>
 <tr id='node--8' class='parent '><td><span class='folder'>wxWidgets</span></td><td>Folder</td><td>--</td></tr>
 <tr id='node--9' class=''><td><span class='file'>Xcode Tools License.rtf</span></td><td>File</td><td>18.79 KB</td></tr>
-	</tbody>
+  </tbody>
 </table>
 
 </body>

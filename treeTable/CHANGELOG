@@ -1,3 +1,6 @@
+== 2.2 - 18 January 2008
+* [BUG] Fixed expander icon not showing on lazy-initialized nodes
+
 == 2.1 - 16 November 2008
 * Optimized for faster initial loading (Issue #1)
 * Implemented lazy initialization of nodes (Issue #1)
