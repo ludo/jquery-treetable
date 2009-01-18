@@ -1,4 +1,4 @@
-/* jQuery treeTable Plugin 2.1 - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
+/* jQuery treeTable Plugin 2.2-dev - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
 (function($) {
 	// Helps to make options available to all functions
 	// TODO: This gives problems when there are both expandable and non-expandable
@@ -31,6 +31,8 @@
 		$(this).addClass("collapsed");
 
 		childrenOf($(this)).each(function() {
+			initialize($(this));
+			
 			if(!$(this).hasClass("collapsed")) {
 				$(this).collapse();
 			}
