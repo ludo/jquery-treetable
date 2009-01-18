@@ -1,5 +1,8 @@
 == 2.2 - 18 January 2008
-* [BUG] Fixed expander icon not showing on lazy-initialized nodes
+* Fixed expander icon not showing on lazy-initialized nodes
+* Fixed drag and drop example code to work for tables within tables
+* Updated jQuery to version 1.3.0
+* Updated jQuery UI components to 1.6rc5 (Core, Draggable, Droppable)
 
 == 2.1 - 16 November 2008
 * Optimized for faster initial loading (Issue #1)
