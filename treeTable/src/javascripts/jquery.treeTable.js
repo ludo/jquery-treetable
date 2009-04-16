@@ -82,11 +82,17 @@
       node.addClass(options.childPrefix + destination.id);
       move(node, destination); // Recursively move nodes to new location
       indent(node, ancestorsOf(node).length * options.indent);
+
+      // Make sure we reapply or remove any expandable buttons
+      add_expandable_widget($(parent));
+      add_expandable_widget($(destination));
+
     }
 
     return this;
   };
   
+
   // Add reverse() function from JS Arrays
   $.fn.reverse = function() {
     return this.pushStack(this.get().reverse(), arguments);
@@ -145,26 +151,44 @@
         childNodes.each(function() {
           $($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
         });
-      
-        if(options.expandable) {
-          cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
-          $(cell[0].firstChild).click(function() { node.toggleBranch(); });
-        
-          // Check for a class set explicitly by the user, otherwise set the default class
-          if(!(node.hasClass("expanded") || node.hasClass("collapsed"))) {
-            node.addClass(options.initialState);
-          }
 
-          if(node.hasClass("collapsed")) {
-            node.collapse();
-          } else if (node.hasClass("expanded")) {
-            node.expand();
-          }
-        }
+        add_expandable_widget(node);
+
       }
     }
   };
   
+  // Add expandable button to a node
+  function add_expandable_widget(node)
+  {
+
+    if(options.expandable) {
+
+	  var cell = $(node.children("td")[options.treeColumn]);
+
+      if(childrenOf(node).length == 0)
+      {
+        cell.find("span.expander").remove();
+        return;
+      }
+      cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
+      $(cell[0].firstChild).click(function() { node.toggleBranch(); });
+        
+      // Check for a class set explicitly by the user, otherwise set the default class
+      if(!(node.hasClass("expanded") || node.hasClass("collapsed"))) {
+        node.addClass(options.initialState);
+      }
+
+      if(node.hasClass("collapsed")) {
+        node.collapse();
+      } else if (node.hasClass("expanded")) {
+        node.expand();
+      }
+
+    }
+
+  }
+
   function move(node, destination) {
     node.insertAfter(destination);
     childrenOf(node).reverse().each(function() { move($(this), node[0]); });
