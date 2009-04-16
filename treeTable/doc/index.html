@@ -33,7 +33,12 @@
       draggable : true,
       dragTarget : "#sort-example .person",
       dropTarget : "#sort-example .root, #sort-example .person",
-      sortable : true
+      sortable : true,
+      dropCallback : function(e, ui){
+        $("p.serialised_data").html(
+    	  $("#sort-example").serializeTreeTable()
+        );
+      }
     });
 
   });
@@ -468,7 +473,7 @@ $("#dnd-example").treeTable({
 
 <h3>4.3 <a name="example-1">Resorting example</a></h3>
 
-<p>This example uses the <a href="http://ui.jquery.com" title="jQuery UI Website">jQuery UI</a> components Draggable and Droppable to create a tree that can be manipulated by dragging and dropping of the nodes. You can drag a node by clicking on it's title and drag it to a different position. In addition you can resort elements that are in the same parent by dropping them on the grey row that appears.</p>
+<p>This example uses the <a href="http://ui.jquery.com" title="jQuery UI Website">jQuery UI</a> components Draggable and Droppable to create a tree that can be manipulated by dragging and dropping of the nodes. You can drag a node by clicking on it's title and drag it to a different position. In addition you can resort elements that are in the same parent by dropping them on the grey row that appears. This also demonstrates serialisation.</p>
 <table class="example" id="sort-example">
   <caption>Example 3: Resorting example.</caption>
   <thead>
@@ -538,6 +543,9 @@ $("#dnd-example").treeTable({
   </tbody>
 </table>
 
+<h4>Serialised data </h4>
+<p class="serialised_data"></p>
+
 <pre class="listing">
 /* NOTE: Do not forget to download the jQuery UI Draggable and Droppable
  * components if you want to enable dragging and dropping behavior!
@@ -547,7 +555,13 @@ $("#sort-example").treeTable({
   draggable : true,
   dragTarget : "#sort-example .person",
   dropTarget : "#sort-example .root, #sort-example .person",
-  sortable : true
+  sortable : true,
+  dropCallback : function(e, ui){
+	$("p.serialised_data").html(
+	  $("#sort-example").serializeTreeTable();
+    );
+  }
+
 });
 </pre>
 

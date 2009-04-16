@@ -160,6 +160,46 @@
     }
   };
 
+
+
+  var cur_level = 0;
+
+  // This will serialise a table (given a selector) and return a string
+  // for passing to some sort of asyncronous request
+  $.fn.serializeTreeTable = function() {
+	var table_id = this[0].id;
+    var serialised_contents = [];
+    cur_level = 0;
+	  
+    $(this).find("tbody tr").each(function() {
+      if($(this)[0].className.search("child-of-") == -1 && $(this)[0].className.search("ghost_row") == -1) {
+        serializeChildren(table_id, $(this), serialised_contents, "");
+        cur_level++;
+      }
+    });
+
+    return serialised_contents.join("&");
+
+  };
+
+  function serializeChildren(table_id, parent, serialed, cur_child_string) {
+
+    serialed.push(table_id+"["+cur_level+"]"+cur_child_string+"[id]="+parent[0].id);
+	var kids = $(parent).nextAll("tr.child-of-" + parent[0].id);
+
+    cur_child_string += "[children]";
+
+    if(kids.length > 0)
+    {
+      var kid_level = 0;
+      kids.each(function() {
+        serializeChildren(table_id, $(this), serialed, cur_child_string + "["+kid_level+"]");
+        kid_level++;
+      });
+	}
+  };
+
+
   // === Private functions
   
   function ancestorsOf(node) {
@@ -294,7 +334,7 @@
             node.moveBranchAfter($(this).prev("tr"));
 
             // Custom callback
-            options.sortableDropCallback(e, ui);
+            options.dropCallback(e, ui);
 
           }
         });
@@ -343,4 +383,5 @@
   function parentOf(node) {
 	return $(node).parentOf();
   };
+
 })(jQuery);
