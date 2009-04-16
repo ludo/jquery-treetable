@@ -29,6 +29,12 @@
   color: #fff;
 }
 
+.treeTable tr.selected, .treeTable tr.ghost_row td {
+  padding : 5px;
+  background-color : #fff;
+  border : dotted 1px #ccc;
+}
+
 .treeTable tr.collapsed.selected td .expander, .treeTable tr.collapsed.accept td .expander {
   background-image: url(../images/toggle-expand-light.png);
 }

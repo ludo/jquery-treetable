@@ -21,40 +21,21 @@
     });
     
     // Drag & Drop Example Code
-    $("#dnd-example .file, #dnd-example .folder").draggable({
-      helper: "clone",
-      opacity: .75,
-      refreshPositions: true, // Performance?
-      revert: "invalid",
-      revertDuration: 300,
-      scroll: true
-    });
-    
-    $("#dnd-example .folder").each(function() {
-      $($(this).parents("tr")[0]).droppable({
-        accept: ".file, .folder",
-        drop: function(e, ui) { 
-          $($(ui.draggable).parents("tr")[0]).appendBranchTo(this);
-        },
-        hoverClass: "accept",
-        over: function(e, ui) {
-          if(this.id != ui.draggable.parents("tr.parent")[0].id && !$(this).is(".expanded")) {
-            $(this).expand();
-          }
-        }
-      });
-    });
-    
-    // Make visible that a row is clicked
-    $("table#dnd-example tbody tr").mousedown(function() {
-      $("tr.selected").removeClass("selected"); // Deselect currently selected rows
-      $(this).addClass("selected");
+    $("#dnd-example").treeTable({
+      initialState : "expanded",
+      draggable : true,
+      dragTarget : "#dnd-example .file, #dnd-example .folder",
+      dropTarget : "#dnd-example .folder"
     });
 
-    // Make sure row is selected when span is clicked
-    $("table#dnd-example tbody tr span").mousedown(function() {
-      $($(this).parents("tr")[0]).trigger("mousedown");
+    // Sort example code
+    $("#sort-example").treeTable({
+      draggable : true,
+      dragTarget : "#sort-example .person",
+      dropTarget : "#sort-example .root, #sort-example .person",
+      sortable : true
     });
+
   });
   
   </script>
@@ -337,7 +318,7 @@ $("#example3").treeTable({
 
 <h3>4.3 <a name="example-1">Draging and dropping example</a></h3>
 
-<p>This example uses the <a href="http://ui.jquery.com" title="jQuery UI Website">jQuery UI</a> components Draggable and Droppable to create a tree that can be manipulated by dragging and dropping of the nodes. You can drag a node by clicking on it's title and drag it to a different position. This behavior requires a bit more coding than the simple trees above, but it is still pretty straight-forward. The code for this example is listed below. The most interesting line in this code, from the plugin's point of view is <tt>$($(ui.draggable).parents("tr")).appendBranchTo(this);</tt>. Here the <tt>appendBranchTo</tt> function is called to move the selected branch to a new location.</p>
+<p>This example uses the <a href="http://ui.jquery.com" title="jQuery UI Website">jQuery UI</a> components Draggable and Droppable to create a tree that can be manipulated by dragging and dropping of the nodes. You can drag a node by clicking on it's title and drag it to a different position..</p>
 <table class="example" id="dnd-example">
   <caption>Example 3: Dragging and dropping example.</caption>
   <thead>
@@ -476,43 +457,97 @@ $("#example3").treeTable({
  * components if you want to enable dragging and dropping behavior!
  */
   
-// Configure draggable nodes
-$("#dnd-example .file, #dnd-example .folder").draggable({
-  helper: "clone",
-  opacity: .75,
-  refreshPositions: true, // Performance?
-  revert: "invalid",
-  revertDuration: 300,
-  scroll: true
+$("#dnd-example").treeTable({
+  initialState : "expanded",
+  draggable : true,
+  dragTarget : "#dnd-example .file, #dnd-example .folder",
+  dropTarget : "#dnd-example .folder"
 });
+</pre>
 
-// Configure droppable rows
-$("#dnd-example .folder").each(function() {
-  $(this).parents("tr").droppable({
-    accept: ".file, .folder",
-    drop: function(e, ui) { 
-      // Call jQuery treeTable plugin to move the branch
-      $($(ui.draggable).parents("tr")).appendBranchTo(this);
-    },
-    hoverClass: "accept",
-    over: function(e, ui) {
-      // Make the droppable branch expand when a draggable node is moved over it.
-      if(this.id != ui.draggable.parents("tr")[0].id && !$(this).is(".expanded")) {
-        $(this).expand();
-      }
-    }
-  });
-});
 
-// Make visible that a row is clicked
-$("table#dnd-example tbody tr").mousedown(function() {
-  $("tr.selected").removeClass("selected"); // Deselect currently selected rows
-  $(this).addClass("selected");
-});
+<h3>4.3 <a name="example-1">Resorting example</a></h3>
 
-// Make sure row is selected when span is clicked
-$("table#dnd-example tbody tr span").mousedown(function() {
-  $($(this).parents("tr")[0]).trigger("mousedown");
+<p>This example uses the <a href="http://ui.jquery.com" title="jQuery UI Website">jQuery UI</a> components Draggable and Droppable to create a tree that can be manipulated by dragging and dropping of the nodes. You can drag a node by clicking on it's title and drag it to a different position. In addition you can resort elements that are in the same parent by dropping them on the grey row that appears.</p>
+<table class="example" id="sort-example">
+  <caption>Example 3: Resorting example.</caption>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr id="manage-root">
+	  <td>
+        <span class="root">Management heirarchy</span>
+	  </td>
+      <td>--</td>
+    </tr>
+
+    <tr id="person-node-1" class="child-of-manage-root">
+      <td><span class="person">Bob</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+    <tr id="person-node-2" class="child-of-person-node-1">
+      <td><span class="person">Frank</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+    <tr id="person-node-3" class="child-of-person-node-1">
+      <td><span class="person">Carol</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+    <tr id="person-node-4" class="child-of-manage-root">
+      <td><span class="person">Matt</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+    <tr id="person-node-5" class="child-of-person-node-4">
+      <td><span class="person">Fiona</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+    <tr id="person-node-6" class="child-of-person-node-5">
+      <td><span class="person">Simon</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+    <tr id="person-node-7" class="child-of-person-node-5">
+      <td><span class="person">Andy</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+
+    <tr id="consult-root">
+	  <td>
+        <span class="root">Consultancy heirarchy</span>
+	  </td>
+      <td>--</td>
+    </tr>
+
+    <tr id="person-node-8" class="child-of-consult-root">
+      <td><span class="person">June</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+    <tr id="person-node-9" class="child-of-person-node-8">
+      <td><span class="person">Lee</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+    <tr id="person-node-10" class="child-of-person-node-8">
+      <td><span class="person">Nick</span></td>
+      <td><a href="#">Edit</a> - <a href="#">Delete</a></td>
+    </tr>
+
+  </tbody>
+</table>
+
+<pre class="listing">
+/* NOTE: Do not forget to download the jQuery UI Draggable and Droppable
+ * components if you want to enable dragging and dropping behavior!
+ */
+  
+$("#sort-example").treeTable({
+  draggable : true,
+  dragTarget : "#sort-example .person",
+  dropTarget : "#sort-example .root, #sort-example .person",
+  sortable : true
 });
 </pre>
 

@@ -4,11 +4,12 @@
   // TODO: This gives problems when there are both expandable and non-expandable
   // trees on a page. The options shouldn't be global to all these instances!
   var options;
-  
+  var ghost_row;  
+
   $.fn.treeTable = function(opts) {
     options = $.extend({}, $.fn.treeTable.defaults, opts);
     
-    return this.each(function() {
+    var _return = this.each(function() {
       $(this).addClass("treeTable").find("tbody tr").each(function() {
         // Initialize root nodes only whenever possible
         if(!options.expandable || $(this)[0].className.search("child-of-") == -1) {
@@ -16,6 +17,12 @@
         }
       });
     });
+
+    if(options.draggable)
+      initDragDrop($(this));
+
+    return _return;
+
   };
   
   $.fn.treeTable.defaults = {
@@ -23,7 +30,11 @@
     expandable: true,
     indent: 19,
     initialState: "collapsed",
-    treeColumn: 0
+    treeColumn: 0,
+    draggable: false,
+    dragTarget: "tbody tr td .drag_handle",
+    dropTarget: "tbody tr td",
+    sortable: false
   };
   
   // Recursively hide all node's children in a tree
@@ -92,6 +103,33 @@
     return this;
   };
   
+  // Reshuffle an entire branch behind another one
+  $.fn.moveBranchBefore = function(destination) {
+    var node = $(this);
+
+    // Move the node
+    node.insertBefore(destination);
+    childrenOf(node).reverse().each(function() { move($(this), node[0]); });
+
+    return this;
+
+  };
+
+  // Reshuffle an entire branch in front of another one
+  $.fn.moveBranchAfter = function(destination) {
+    var node = $(this);
+
+    // Move the node
+    if(childrenOf(destination).length > 0)  
+      node.insertAfter(lastChildOf(destination));
+    else
+      node.insertAfter(destination);
+
+    childrenOf(node).reverse().each(function() { move($(this), node[0]); });
+
+    return this;
+
+  };
 
   // Add reverse() function from JS Arrays
   $.fn.reverse = function() {
@@ -109,6 +147,17 @@
     return this;
   };
   
+  // Get the parent of the node
+  $.fn.parentOf = function() {
+    var classNames = $(this)[0].className.split(' ');
+    
+    for(key in classNames) {
+      if(classNames[key].match("child-of-")) {
+        return $("#" + classNames[key].substring(9));
+      }
+    }
+  };
+
   // === Private functions
   
   function ancestorsOf(node) {
@@ -121,6 +170,10 @@
   
   function childrenOf(node) {
     return $("table.treeTable tbody tr." + options.childPrefix + node[0].id);
+  };
+
+  function lastChildOf(node) {
+    return $("table.treeTable tbody tr." + options.childPrefix + node[0].id+":last");
   };
 
   function indent(node, value) {
@@ -155,9 +208,92 @@
         add_expandable_widget(node);
 
       }
+
     }
   };
   
+
+  function initDragDrop(table) {
+
+    // Configure draggable nodes
+    $(options.dragTarget).draggable({
+      helper: "clone",
+      opacity: .75,
+      refreshPositions: true, // Performance?
+      revert: "invalid",
+      revertDuration: 300,
+      scroll: true
+    });
+
+    // If we want a sortable one then we need to create a ghosted row
+    if(options.sortable)
+    {
+	  var cell_count = $(options.dropTarget).parents("tr").find("td").length;
+      ghost_row = $("<tr class=\"ghost_row\"><td colspan=\""+cell_count+"\"><span class=\"ghost_text\">Drop here to reorder</span></td></tr>");
+      ghost_row.insertBefore($(table).find("tr:first"));
+      ghost_row.hide();
+    }
+
+    // Configure droppable nodes
+    $(options.dropTarget).each(function() {
+      $(this).parents("tr").droppable({
+        accept: options.dragTarget,
+        drop: function(e, ui) { 
+
+          if(options.sortable)
+            ghost_row.hide();
+
+          // Move the branch when we drop on it
+          $($(ui.draggable).parents("tr")).appendBranchTo(this);
+        },
+        hoverClass: "accept",
+        over: function(e, ui) {
+
+          // Deal with displaying the ghost row when sorting
+          if(options.sortable)
+          {
+            var my_par = $(this).parentOf();
+            var draggy_par = $(ui.draggable.parents("tr")).parentOf();
+
+            if(my_par != undefined && draggy_par != undefined)
+            {
+			  if(my_par[0].id == draggy_par[0].id && $(this)[0].id != $(ui.draggable.parents("tr"))[0].id)
+              {
+                ghost_row.insertAfter(this);
+                ghost_row.show();
+              }
+              else
+                $(ghost_row).hide();
+            }
+
+          }
+
+          if(this.id != ui.draggable.parents("tr")[0].id && !$(this).is(".expanded"))
+            $(this).expand();
+
+        }
+	  });
+    });
+
+    // Sort out resorting if we have it enabled
+    if(options.sortable)
+    {
+
+      $("tr td span.ghost_text").each(function() {
+        $(this).parents("tr").droppable( {
+          accept: options.dragTarget,
+          drop: function(e, ui) { 
+            ghost_row.hide();
+            var node = $(ui.draggable.parents("tr"));
+            node.moveBranchAfter($(this).prev("tr"));
+          }
+        });
+      });
+
+	}
+
+  };
+
   // Add expandable button to a node
   function add_expandable_widget(node)
   {
@@ -195,12 +331,6 @@
   };
   
   function parentOf(node) {
-    var classNames = node[0].className.split(' ');
-    
-    for(key in classNames) {
-      if(classNames[key].match("child-of-")) {
-        return $("#" + classNames[key].substring(9));
-      }
-    }
+	return $(node).parentOf();
   };
 })(jQuery);
