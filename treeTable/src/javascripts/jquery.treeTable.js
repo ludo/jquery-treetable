@@ -34,7 +34,9 @@
     draggable: false,
     dragTarget: "tbody tr td .drag_handle",
     dropTarget: "tbody tr td",
-    sortable: false
+    dropCallback : function(e, ui){ },
+    sortable: false,
+    sortableDropCallback : function(e, ui){ }
   };
   
   // Recursively hide all node's children in a tree
@@ -245,6 +247,10 @@
 
           // Move the branch when we drop on it
           $($(ui.draggable).parents("tr")).appendBranchTo(this);
+
+          // Custom callback
+          options.dropCallback(e, ui);
+
         },
         hoverClass: "accept",
         over: function(e, ui) {
@@ -286,6 +292,10 @@
             ghost_row.hide();
             var node = $(ui.draggable.parents("tr"));
             node.moveBranchAfter($(this).prev("tr"));
+
+            // Custom callback
+            options.sortableDropCallback(e, ui);
+
           }
         });
       });
