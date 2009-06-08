@@ -1,4 +1,4 @@
-/* jQuery treeTable Plugin 2.2.1 - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
+/* jQuery treeTable Plugin 2.2.2-dev - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
 (function($) {
   // Helps to make options available to all functions
   // TODO: This gives problems when there are both expandable and non-expandable
@@ -20,6 +20,7 @@
   
   $.fn.treeTable.defaults = {
     childPrefix: "child-of-",
+    drop_location: "top",
     expandable: true,
     indent: 19,
     initialState: "collapsed",
@@ -29,7 +30,7 @@
   // Recursively hide all node's children in a tree
   $.fn.collapse = function() {
     $(this).addClass("collapsed");
-
+    
     childrenOf($(this)).each(function() {
       initialize($(this));
       
@@ -66,7 +67,14 @@
     var parent = parentOf(node);
     
     var ancestorNames = $.map(ancestorsOf($(destination)), function(a) { return a.id; });
-      
+    
+    // Append branch at bottom of destination's branch when dropped on destination
+    if(options.drop_location == "bottom") {
+      move_to = childrenOf($(destination)).reverse()[0];
+    } else {
+      move_to = destination;
+    }
+    
     // Conditions:
     // 1: +node+ should not be inserted in a location in a branch if this would
     //    result in +node+ being an ancestor of itself.
@@ -80,18 +88,23 @@
       if(parent) { node.removeClass(options.childPrefix + parent[0].id); }
       
       node.addClass(options.childPrefix + destination.id);
-      move(node, destination); // Recursively move nodes to new location
       indent(node, ancestorsOf(node).length * options.indent);
+      
+      move(node, move_to); // Recursively move nodes to new location
     }
-
+    
     return this;
   };
   
+  $.fn.initializeNode = function() {
+    initialize($(this));
+  };
+    
   // Add reverse() function from JS Arrays
   $.fn.reverse = function() {
     return this.pushStack(this.get().reverse(), arguments);
   };
-
+  
   // Toggle an entire branch
   $.fn.toggleBranch = function() {
     if($(this).hasClass("collapsed")) {
@@ -99,7 +112,7 @@
     } else {
       $(this).removeClass("expanded").collapse();
     }
-
+    
     return this;
   };
   
@@ -116,45 +129,44 @@
   function childrenOf(node) {
     return $("table.treeTable tbody tr." + options.childPrefix + node[0].id);
   };
-
+  
   function indent(node, value) {
     var cell = $(node.children("td")[options.treeColumn]);
     var padding = parseInt(cell.css("padding-left"), 10) + value;
-
+    
     cell.css("padding-left", + padding + "px");
     
     childrenOf(node).each(function() {
       indent($(this), value);
     });
   };
-
+  
   function initialize(node) {
     if(!node.hasClass("initialized")) {
       node.addClass("initialized");
-
+      
       var childNodes = childrenOf(node);
-    
+      var cell = $(node.children("td")[options.treeColumn]);
+      var padding = parseInt(cell.css("padding-left"), 10);
+      
       if(!node.hasClass("parent") && childNodes.length > 0) {
         node.addClass("parent");
       }
-
-      if(node.hasClass("parent")) {
-        var cell = $(node.children("td")[options.treeColumn]);
-        var padding = parseInt(cell.css("padding-left"), 10) + options.indent;
-
-        childNodes.each(function() {
-          $($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
-        });
       
-        if(options.expandable) {
-          cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
-          $(cell[0].firstChild).click(function() { node.toggleBranch(); });
+      if(node.hasClass("parent")) {
+        childNodes.each(function() {
+          indent($(this), padding);
+        });
         
+        if(options.expandable) {
+          cell.prepend('<span style="margin-left: ' + options.indent + 'px" class="expander"></span>');
+          $(cell[0].firstChild).click(function() { node.toggleBranch(); });
+          
           // Check for a class set explicitly by the user, otherwise set the default class
           if(!(node.hasClass("expanded") || node.hasClass("collapsed"))) {
             node.addClass(options.initialState);
           }
-
+          
           if(node.hasClass("collapsed")) {
             node.collapse();
           } else if (node.hasClass("expanded")) {
