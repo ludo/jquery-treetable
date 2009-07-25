@@ -1,4 +1,4 @@
-/* jQuery treeTable Plugin 2.2.2-dev - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
+/* jQuery treeTable Plugin 2.2.2 - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
 (function($) {
   // Helps to make options available to all functions
   // TODO: This gives problems when there are both expandable and non-expandable
@@ -22,6 +22,7 @@
   
   $.fn.treeTable.defaults = {
     childPrefix: "child-of-",
+    clickableNodeNames: false,
     expandable: true,
     indent: 19,
     initialState: "collapsed",
@@ -149,7 +150,17 @@
         if(options.expandable) {
           cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
           $(cell[0].firstChild).click(function() { node.toggleBranch(); });
-
+          
+          if(options.clickableNodeNames) {
+            $(cell).css('cursor', 'pointer');
+            $(cell).click(function(e) {
+              // Don't double-toggle if the click is on the existing expander icon
+              if (e.target.className != 'expander') {
+                node.toggleBranch();
+              }
+            });
+          }
+          
           // Check for a class set explicitly by the user, otherwise set the default class
           if(!(node.hasClass("expanded") || node.hasClass("collapsed"))) {
             node.addClass(options.initialState);
