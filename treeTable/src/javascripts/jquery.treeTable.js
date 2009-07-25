@@ -10,9 +10,11 @@
     
     return this.each(function() {
       $(this).addClass("treeTable").find("tbody tr").each(function() {
-        // Initialize root nodes only whenever possible
+        // Initialize root nodes only if possible
         if(!options.expandable || $(this)[0].className.search("child-of-") == -1) {
           initialize($(this));
+        } else if(options.initialState == "collapsed") {
+          this.style.display = "none"; // Performance! $(this).hide() is slow...
         }
       });
     });
@@ -31,8 +33,6 @@
     $(this).addClass("collapsed");
     
     childrenOf($(this)).each(function() {
-      initialize($(this));
-      
       if(!$(this).hasClass("collapsed")) {
         $(this).collapse();
       }
@@ -49,7 +49,7 @@
     
     childrenOf($(this)).each(function() {
       initialize($(this));
-            
+      
       if($(this).is(".expanded.parent")) {
         $(this).expand();
       }
@@ -155,9 +155,7 @@
             node.addClass(options.initialState);
           }
           
-          if(node.hasClass("collapsed")) {
-            node.collapse();
-          } else if (node.hasClass("expanded")) {
+          if(node.hasClass("expanded")) {
             node.expand();
           }
         }
