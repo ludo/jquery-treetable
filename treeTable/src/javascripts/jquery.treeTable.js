@@ -149,12 +149,12 @@
         if(options.expandable) {
           cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
           $(cell[0].firstChild).click(function() { node.toggleBranch(); });
-          
+
           // Check for a class set explicitly by the user, otherwise set the default class
           if(!(node.hasClass("expanded") || node.hasClass("collapsed"))) {
             node.addClass(options.initialState);
           }
-          
+
           if(node.hasClass("expanded")) {
             node.expand();
           }
