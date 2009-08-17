@@ -1,4 +1,4 @@
-/* jQuery treeTable Plugin 2.2.2 - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
+/* jQuery treeTable Plugin 2.2.3-dev - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
 (function($) {
   // Helps to make options available to all functions
   // TODO: This gives problems when there are both expandable and non-expandable
@@ -31,7 +31,7 @@
   
   // Recursively hide all node's children in a tree
   $.fn.collapse = function() {
-    $(this).addClass("collapsed");
+    $(this).removeClass("expanded").addClass("collapsed");
     
     childrenOf($(this)).each(function() {
       if(!$(this).hasClass("collapsed")) {
@@ -98,7 +98,7 @@
     if($(this).hasClass("collapsed")) {
       $(this).expand();
     } else {
-      $(this).removeClass("expanded").collapse();
+      $(this).collapse();
     }
     
     return this;
