@@ -31,14 +31,14 @@
   
   // Recursively hide all node's children in a tree
   $.fn.collapse = function() {
-    $(this).removeClass("expanded").addClass("collapsed");
+    $(this).addClass("collapsed");
     
     childrenOf($(this)).each(function() {
       if(!$(this).hasClass("collapsed")) {
         $(this).collapse();
       }
       
-      $(this).hide();
+      this.style.display = "none"; // Performance! $(this).hide() is slow...
     });
     
     return this;
@@ -55,7 +55,7 @@
         $(this).expand();
       }
       
-      $(this).show();
+      this.style.display = "table-row"; // Performance! $(this).show() is slow...
     });
     
     return this;
@@ -98,7 +98,7 @@
     if($(this).hasClass("collapsed")) {
       $(this).expand();
     } else {
-      $(this).collapse();
+      $(this).removeClass("expanded").collapse();
     }
     
     return this;
@@ -118,11 +118,18 @@
     return $("table.treeTable tbody tr." + options.childPrefix + node[0].id);
   };
   
+  function getPaddingLeft(node) {
+    var paddingLeft = parseInt(node[0].style.paddingLeft, 10);
+    
+    // TODO This is still a problem... options.indent || 0
+    if (isNaN(paddingLeft)) paddingLeft = options.indent;
+    
+    return paddingLeft;
+  }
+  
   function indent(node, value) {
     var cell = $(node.children("td")[options.treeColumn]);
-    var padding = parseInt(cell.css("padding-left"), 10) + value;
-    
-    cell.css("padding-left", + padding + "px");
+    cell[0].style.paddingLeft = getPaddingLeft(cell) + value + "px";
     
     childrenOf(node).each(function() {
       indent($(this), value);
@@ -141,10 +148,10 @@
       
       if(node.hasClass("parent")) {
         var cell = $(node.children("td")[options.treeColumn]);
-        var padding = parseInt(cell.css("padding-left"), 10) + options.indent;
+        var padding = getPaddingLeft(cell) + options.indent;
         
         childNodes.each(function() {
-          $($(this).children("td")[options.treeColumn]).css("padding-left", padding + "px");
+          $(this).children("td")[options.treeColumn].style.paddingLeft = padding + "px";
         });
         
         if(options.expandable) {
@@ -152,7 +159,7 @@
           $(cell[0].firstChild).click(function() { node.toggleBranch(); });
           
           if(options.clickableNodeNames) {
-            $(cell).css('cursor', 'pointer');
+            cell[0].style.cursor = "pointer";
             $(cell).click(function(e) {
               // Don't double-toggle if the click is on the existing expander icon
               if (e.target.className != 'expander') {
