@@ -1,3 +1,6 @@
+== 2.2.3 - 18 August 2009
+* Further optimized performance by eliminating most calls to jQuery's css function
+
 == 2.2.2 - 25 July 2009
 * Optimized performance of tree initialization (with initialState is collapsed)
 * Added option 'clickableNodeNames' to make entire node name clickable to expand branch

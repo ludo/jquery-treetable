@@ -1,9 +1,10 @@
-/* jQuery treeTable Plugin 2.2.3-dev - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
+/* jQuery treeTable Plugin 2.2.3 - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
 (function($) {
   // Helps to make options available to all functions
   // TODO: This gives problems when there are both expandable and non-expandable
   // trees on a page. The options shouldn't be global to all these instances!
   var options;
+  var defaultPaddingLeft;
   
   $.fn.treeTable = function(opts) {
     options = $.extend({}, $.fn.treeTable.defaults, opts);
@@ -12,6 +13,13 @@
       $(this).addClass("treeTable").find("tbody tr").each(function() {
         // Initialize root nodes only if possible
         if(!options.expandable || $(this)[0].className.search("child-of-") == -1) {
+          // To optimize performance of indentation, I retrieve the padding-left
+          // value of the first root node. This way I only have to call +css+ 
+          // once.
+          if (isNaN(defaultPaddingLeft)) {
+            defaultPaddingLeft = parseInt($($(this).children("td")[options.treeColumn]).css('padding-left'), 10);
+          }
+          
           initialize($(this));
         } else if(options.initialState == "collapsed") {
           this.style.display = "none"; // Performance! $(this).hide() is slow...
@@ -55,7 +63,8 @@
         $(this).expand();
       }
       
-      this.style.display = "table-row"; // Performance! $(this).show() is slow...
+      // this.style.display = "table-row"; // Unfortunately this is not possible with IE :-(
+      $(this).show();
     });
     
     return this;
@@ -120,11 +129,7 @@
   
   function getPaddingLeft(node) {
     var paddingLeft = parseInt(node[0].style.paddingLeft, 10);
-    
-    // TODO This is still a problem... options.indent || 0
-    if (isNaN(paddingLeft)) paddingLeft = options.indent;
-    
-    return paddingLeft;
+    return (isNaN(paddingLeft)) ? defaultPaddingLeft : paddingLeft;
   }
   
   function indent(node, value) {
