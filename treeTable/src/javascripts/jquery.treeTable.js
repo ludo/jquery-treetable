@@ -69,6 +69,18 @@
     
     return this;
   };
+
+	//Reveal a node by expanding all ancestors
+	$.fn.reveal = function() {
+	  var ancestors = ancestorsOf($(this));
+    $(ancestors.reverse()).each(function() {
+      initialize($(this));
+      $(this).expand();
+      $(this).show();
+    });
+    return this;
+  };
+
   
   // Add an entire branch to +destination+
   $.fn.appendBranchTo = function(destination) {
