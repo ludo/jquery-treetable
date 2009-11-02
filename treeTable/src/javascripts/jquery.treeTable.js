@@ -1,4 +1,4 @@
-/* jQuery treeTable Plugin 2.2.3 - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
+/* jQuery treeTable Plugin 2.2.4-dev - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
 (function($) {
   // Helps to make options available to all functions
   // TODO: This gives problems when there are both expandable and non-expandable
@@ -12,7 +12,7 @@
     return this.each(function() {
       $(this).addClass("treeTable").find("tbody tr").each(function() {
         // Initialize root nodes only if possible
-        if(!options.expandable || $(this)[0].className.search("child-of-") == -1) {
+        if(!options.expandable || $(this)[0].className.search(options.childPrefix) == -1) {
           // To optimize performance of indentation, I retrieve the padding-left
           // value of the first root node. This way I only have to call +css+ 
           // once.
@@ -195,7 +195,7 @@
     var classNames = node[0].className.split(' ');
     
     for(key in classNames) {
-      if(classNames[key].match("child-of-")) {
+      if(classNames[key].match(options.childPrefix)) {
         return $("#" + classNames[key].substring(9));
       }
     }
