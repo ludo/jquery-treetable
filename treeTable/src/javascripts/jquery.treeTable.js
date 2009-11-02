@@ -70,14 +70,13 @@
     return this;
   };
 
-	//Reveal a node by expanding all ancestors
-	$.fn.reveal = function() {
-	  var ancestors = ancestorsOf($(this));
-    $(ancestors.reverse()).each(function() {
+  // Reveal a node by expanding all ancestors
+  $.fn.reveal = function() {
+    $(ancestorsOf($(this)).reverse()).each(function() {
       initialize($(this));
-      $(this).expand();
-      $(this).show();
+      $(this).expand().show();
     });
+    
     return this;
   };
 

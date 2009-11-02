@@ -1,3 +1,6 @@
+== 2.2.4 - 2 November 2009
+* Add reveal function to expand a tree to a given node
+
 == 2.2.3 - 18 August 2009
 * Further optimized performance by eliminating most calls to jQuery's css function
 
