@@ -80,7 +80,6 @@
     return this;
   };
 
-  
   // Add an entire branch to +destination+
   $.fn.appendBranchTo = function(destination) {
     var node = $(this);
