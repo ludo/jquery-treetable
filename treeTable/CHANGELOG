@@ -1,5 +1,7 @@
-== NOT RELEASED
-* Add reveal function to expand a tree to a given node
+== 2.3.0 - 16 March 2010
+* Added GPL-LICENSE. The jQuery treeTable plugin is now dual-licensed under both the MIT and GPLv2 license.
+* Added reveal function to expand a tree to a given node.
+* Verified compatibility with jQuery 1.4.2.
 
 == 2.2.3 - 18 August 2009
 * Further optimized performance by eliminating most calls to jQuery's css function

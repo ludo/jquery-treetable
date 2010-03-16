@@ -1,4 +1,10 @@
-/* jQuery treeTable Plugin 2.2.4-dev - http://ludo.cubicphuse.nl/jquery-plugins/treeTable/ */
+/*
+ * jQuery treeTable Plugin 2.3.0
+ * http://ludo.cubicphuse.nl/jquery-plugins/treeTable/
+ *
+ * Copyright 2010, Ludo van den Boom
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ */
 (function($) {
   // Helps to make options available to all functions
   // TODO: This gives problems when there are both expandable and non-expandable
