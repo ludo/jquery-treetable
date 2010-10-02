@@ -51,9 +51,9 @@
     draggable: false,
     dragTarget: "tbody tr td.drag_handle",
     dropTarget: "tbody tr",
-    dropCallback : function(e, ui){ },
+    dropCallback : function(node, newParent, e, ui){ },
     sortable: false,
-    sortableDropCallback : function(e, ui){ }
+    sortableDropCallback : function(node, newPrevious, e, ui){ }
   };
   
   // Recursively hide all node's children in a tree
@@ -325,11 +325,12 @@
         if(options.sortable)
           ghost_row.hide();
 
+        var node = $($(ui.draggable).parents("tr"));
         // Move the branch when we drop on it
-        $($(ui.draggable).parents("tr")).appendBranchTo(this);
+        node.appendBranchTo(this);
 
         // Custom callback
-        options.dropCallback(e, ui);
+        options.dropCallback(node, $(this), e, ui);
 
       },
       hoverClass: "accept",
@@ -370,10 +371,11 @@
           drop: function(e, ui) { 
             ghost_row.hide();
             var node = $(ui.draggable.parents("tr"));
-            node.moveBranchAfter($(this).prev("tr"));
+            var newPrevious = $(this).prev("tr")
+            node.moveBranchAfter(newPrevious);
 
             // Custom callback
-            options.dropCallback(e, ui);
+            options.sortableDropCallback(node, newPrevious, e, ui);
 
           }
         });
