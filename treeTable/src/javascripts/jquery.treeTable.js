@@ -49,8 +49,8 @@
     initialState: "collapsed",
     treeColumn: 0,
     draggable: false,
-    dragTarget: "tbody tr td .drag_handle",
-    dropTarget: "tbody tr td",
+    dragTarget: "tbody tr td.drag_handle",
+    dropTarget: "tbody tr",
     dropCallback : function(e, ui){ },
     sortable: false,
     sortableDropCallback : function(e, ui){ }
@@ -296,7 +296,11 @@
 
     // Configure draggable nodes
     $(options.dragTarget).draggable({
-      helper: "clone",
+      helper: function () {
+        var helper = $(this).clone()
+        helper.find('span.expander').remove();
+        return helper;
+      },
       opacity: .75,
       refreshPositions: true, // Performance?
       revert: "invalid",
@@ -314,48 +318,46 @@
     }
 
     // Configure droppable nodes
-    $(options.dropTarget).each(function() {
-      $(this).parents("tr").droppable({
-        accept: options.dragTarget,
-        drop: function(e, ui) { 
+    $(options.dropTarget).droppable({
+      accept: options.dragTarget,
+      drop: function(e, ui) {
 
-          if(options.sortable)
-            ghost_row.hide();
+        if(options.sortable)
+          ghost_row.hide();
 
-          // Move the branch when we drop on it
-          $($(ui.draggable).parents("tr")).appendBranchTo(this);
+        // Move the branch when we drop on it
+        $($(ui.draggable).parents("tr")).appendBranchTo(this);
 
-          // Custom callback
-          options.dropCallback(e, ui);
+        // Custom callback
+        options.dropCallback(e, ui);
 
-        },
-        hoverClass: "accept",
-        over: function(e, ui) {
+      },
+      hoverClass: "accept",
+      over: function(e, ui) {
 
-          // Deal with displaying the ghost row when sorting
-          if(options.sortable)
+        // Deal with displaying the ghost row when sorting
+        if(options.sortable)
+        {
+          var my_par = $(this).parentOf();
+          var draggy_par = $(ui.draggable.parents("tr")).parentOf();
+
+          if(my_par != undefined && draggy_par != undefined)
           {
-            var my_par = $(this).parentOf();
-            var draggy_par = $(ui.draggable.parents("tr")).parentOf();
-
-            if(my_par != undefined && draggy_par != undefined)
+            if(my_par[0].id == draggy_par[0].id && $(this)[0].id != $(ui.draggable.parents("tr"))[0].id)
             {
-              if(my_par[0].id == draggy_par[0].id && $(this)[0].id != $(ui.draggable.parents("tr"))[0].id)
-              {
-                ghost_row.insertAfter(this);
-                ghost_row.show();
-              }
-              else
-                $(ghost_row).hide();
+              ghost_row.insertAfter(this);
+              ghost_row.show();
             }
-
+            else
+              $(ghost_row).hide();
           }
 
-          if(this.id != ui.draggable.parents("tr")[0].id && !$(this).is(".expanded"))
-            $(this).expand();
-
         }
-      });
+
+        if(this.id != ui.draggable.parents("tr")[0].id && !$(this).is(".expanded"))
+          $(this).expand();
+
+      }
     });
 
     // Sort out resorting if we have it enabled

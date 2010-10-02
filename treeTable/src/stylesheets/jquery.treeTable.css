@@ -29,6 +29,10 @@
   color: #fff;
 }
 
+.treeTable .ui-draggable-dragging {
+  border-width: 0;
+}
+
 .treeTable tr.selected, .treeTable tr.ghost_row td {
   padding : 5px;
   background-color : #ccc;
