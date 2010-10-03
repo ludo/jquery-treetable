@@ -133,7 +133,7 @@
 
       add_expandable_widget($(destination));
 
-      options.branchMovedAsFirstChild(node, parent);
+      options.branchMovedAsFirstChild(node, $(destination));
 
     }
     
