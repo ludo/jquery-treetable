@@ -53,7 +53,10 @@
     dropTarget: "tbody tr",
     dropCallback : function(node, newParent, e, ui){ },
     sortable: false,
-    sortableDropCallback : function(node, newPrevious, e, ui){ }
+    sortableDropCallback : function(node, newPrevious, e, ui){ },
+    branchMovedAsFirstChild : function(node, parent){ },
+    branchMovedAsPrevSibling : function(node, nextSibling){ },
+    branchMovedAsNextSibling : function(node, prevSibling){ }
   };
   
   // Recursively hide all node's children in a tree
@@ -130,6 +133,8 @@
 
       add_expandable_widget($(destination));
 
+      options.branchMovedAsFirstChild(node, parent);
+
     }
     
     return this;
@@ -145,6 +150,8 @@
       move($(this), node[0]);
     });
 
+    options.branchMovedAsPrevSibling(node, destination);
+
     return this;
 
   };
@@ -154,14 +161,17 @@
     var node = $(this);
 
     // Move the node
-    if(childrenOf(destination).length > 0)  
+    if(childrenOf(destination).length > 0) {
       node.insertAfter(lastChildOf(destination));
-    else
+    } else {
       node.insertAfter(destination);
+    }
 
     childrenOf(node).reverse().each(function() {
       move($(this), node[0]);
     });
+
+    options.branchMovedAsNextSibling(node, destination);
 
     return this;
 
