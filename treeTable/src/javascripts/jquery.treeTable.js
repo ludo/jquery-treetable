@@ -107,8 +107,9 @@
   $.fn.appendBranchTo = function(destination) {
     var node = $(this);
     var parent = parentOf(node);
-    
-    var ancestorNames = $.map(ancestorsOf($(destination)), function(a) {
+
+    destination = $(destination);
+    var ancestorNames = $.map(ancestorsOf(destination), function(a) {
       return a.id;
     });
     
@@ -119,7 +120,7 @@
     //    same as +node+'s current parent (this last condition prevents +node+
     //    from being moved to the same location where it already is).
     // 3: +node+ should not be inserted as a child of +node+ itself.
-    if($.inArray(node[0].id, ancestorNames) == -1 && (!parent || (destination.id != parent[0].id)) && destination.id != node[0].id) {
+    if($.inArray(node[0].id, ancestorNames) == -1 && (!parent || (destination.attr('id') != parent[0].id)) && destination.attr('id') != node[0].id) {
       indent(node, ancestorsOf(node).length * options.indent * -1); // Remove indentation
       
       if(parent) {
@@ -127,13 +128,13 @@
         add_expandable_widget($(parent));
       }
       
-      node.addClass(options.childPrefix + destination.id);
+      node.addClass(options.childPrefix + destination.attr('id'));
       move(node, destination); // Recursively move nodes to new location
       indent(node, ancestorsOf(node).length * options.indent);
 
-      add_expandable_widget($(destination));
+      add_expandable_widget(destination);
 
-      options.branchMovedAsFirstChild(node, $(destination));
+      options.branchMovedAsFirstChild(node, destination);
 
     }
     
@@ -241,26 +242,26 @@
         kid_level++;
       });
     }
-  };
+  }
 
 
   // === Private functions
   
   function ancestorsOf(node) {
     var ancestors = [];
-    while(node = parentOf(node)) {
+    while((node = parentOf(node))) {
       ancestors[ancestors.length] = node[0];
     }
     return ancestors;
-  };
+  }
   
   function childrenOf(node) {
     return $("table.treeTable tbody tr." + options.childPrefix + node[0].id);
-  };
+  }
   
   function lastChildOf(node) {
     return $("table.treeTable tbody tr." + options.childPrefix + node[0].id+":last");
-  };
+  }
 
   function getPaddingLeft(node) {
     var paddingLeft = parseInt(node[0].style.paddingLeft, 10);
@@ -274,7 +275,7 @@
     childrenOf(node).each(function() {
       indent($(this), value);
     });
-  };
+  }
   
   function initialize(node) {
     if(!node.hasClass("initialized")) {
@@ -299,7 +300,7 @@
       }
 
     }
-  };
+  }
   
 
   function initDragDrop(table) {
@@ -336,11 +337,15 @@
           ghost_row.hide();
 
         var node = $($(ui.draggable).parents("tr"));
+        var newParent = $(this);
+        if (! newParent.is('tr')) {
+          newParent = newParent.parents('tr');
+        }
         // Move the branch when we drop on it
-        node.appendBranchTo(this);
+        node.appendBranchTo(newParent);
 
         // Custom callback
-        options.dropCallback(node, $(this), e, ui);
+        options.dropCallback(node, newParent, e, ui);
 
       },
       hoverClass: "accept",
@@ -393,7 +398,7 @@
 
     }
 
-  };
+  }
 
   // Add expandable button to a node
   function add_expandable_widget(node)
@@ -439,9 +444,9 @@
     childrenOf(node).reverse().each(function() {
       move($(this), node[0]);
     });
-  };
+  }
   
   function parentOf(node) {
     return $(node).parentOf();
-  };
+  }
 })(jQuery);
