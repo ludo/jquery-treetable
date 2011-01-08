@@ -494,17 +494,14 @@ $("#dnd-example .file, #dnd-example .folder").draggable({
   scroll: true
 });
 
-// Configure droppable rows
 $("#dnd-example .folder").each(function() {
-  $(this).parents("tr").droppable({
+  $($(this).parents("tr")[0]).droppable({
     accept: ".file, .folder",
     drop: function(e, ui) { 
-      // Call jQuery treeTable plugin to move the branch
-      $($(ui.draggable).parents("tr")).appendBranchTo(this);
+      $($(ui.draggable).parents("tr")[0]).appendBranchTo(this);
     },
     hoverClass: "accept",
     over: function(e, ui) {
-      // Make the droppable branch expand when a draggable node is moved over it.
       if(this.id != $(ui.draggable.parents("tr")[0]).id && !$(this).is(".expanded")) {
         $(this).expand();
       }
