@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>jQuery treeTable Plugin Documentation</title>
+  <link href="stylesheets/master.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="javascripts/jquery.js"></script>
+  <script type="text/javascript" src="javascripts/jquery.ui.js"></script>
+
+  <!-- BEGIN Plugin Code -->
+  
+  <link href="../src/stylesheets/jquery.treeTable.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="../src/javascripts/jquery.treeTable.js"></script>
+  <script type="text/javascript">
+  
+  $(document).ready(function() {
+    $(".example").treeTable();
+    
+    // Drag & Drop Example Code
+    $(".example .file, .example .folder").draggable({
+      helper: "clone",
+      opacity: .75,
+      refreshPositions: true, // Performance?
+      revert: "invalid",
+      revertDuration: 300,
+      scroll: true
+    });
+    
+    $(".example .folder").each(function() {
+      $($(this).parents("tr")[0]).droppable({
+        accept: ".file, .folder",
+        drop: function(e, ui) { 
+          $($(ui.draggable).parents("tr")[0]).appendBranchTo(this);
+        },
+        hoverClass: "accept",
+        over: function(e, ui) {
+          if(this.id != $(ui.draggable.parents("tr")[0]).id && !$(this).is(".expanded")) {
+            $(this).expand();
+          }
+        }
+      });
+    });
+    
+    // Make visible that a row is clicked
+    $("table.example tbody tr").mousedown(function() {
+      $("tr.selected").removeClass("selected"); // Deselect currently selected rows
+      $(this).addClass("selected");
+    });
+    
+    // Make sure row is selected when span is clicked
+    $("table.example tbody tr span").mousedown(function() {
+      $($(this).parents("tr")[0]).trigger("mousedown");
+    });
+  });
+  
+  </script>
+
+  <!-- END Plugin Code -->
+</head>
+<body>
+
+<h1>jQuery treeTable Plugin Documentation</h1>
+
+<h3>Multiple droppables</h3>
+
+<p>This example uses the <a href="http://ui.jquery.com" title="jQuery UI Website">jQuery UI</a> components Draggable and Droppable to create a tree that can be manipulated by dragging and dropping of the nodes. You can drag a node by clicking on it's title and drag it to a different position. This behavior requires a bit more coding than the simple trees above, but it is still pretty straight-forward. The code for this example is listed below. The most interesting line in this code, from the plugin's point of view is <tt>$($(ui.draggable).parents("tr")).appendBranchTo(this);</tt>. Here the <tt>appendBranchTo</tt> function is called to move the selected branch to a new location.</p>
+
+<table class="example" id="dnd-example">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Size</th>
+      <th>Kind</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="node-1">
+      <td><span class="folder">doc</span></td>
+      <td>--</td>
+      <td>Folder</td>
+    </tr>
+
+    <tr id="node-2" class="child-of-node-1">
+      <td><span class="folder">images</span></td>
+      <td>--</td>
+      <td>Folder</td>
+    </tr>
+
+    <tr id="node-8" class="child-of-node-2">
+      <td><span class="file">bg-table-thead.png</span></td>
+      <td>52 KB</td>
+      <td>Portable Network Graphics image</td>
+    </tr>
+
+    <tr id="node-9" class="child-of-node-2">
+      <td><span class="file">folder.png</span></td>
+      <td>4 KB</td>
+      <td>Portable Network Graphics image</td>
+    </tr>
+
+    <tr id="node-10" class="child-of-node-2">
+      <td><span class="file">page_white_text.png</span></td>
+      <td>4 KB</td>
+      <td>Portable Network Graphics image</td>
+    </tr>
+
+    <tr id="node-3" class="child-of-node-1">
+      <td><span class="file">index.html</span></td>
+      <td>4 KB</td>
+      <td>HTML document</td>
+    </tr>
+
+    <tr id="node-4" class="child-of-node-1">
+      <td><span class="folder">javascripts</span></td>
+      <td>--</td>
+      <td>Folder</td>
+    </tr>
+
+    <tr id="node-5" class="child-of-node-4">
+      <td><span class="file">jquery.js</span></td>
+      <td>56 KB</td>
+      <td>JavaScript source</td>
+    </tr>
+
+    <tr id="node-6" class="child-of-node-1">
+      <td><span class="folder">stylesheets</span></td>
+      <td>--</td>
+      <td>Folder</td>
+    </tr>
+
+    <tr id="node-7" class="child-of-node-6">
+      <td><span class="file">master.css</span></td>
+      <td>4 KB</td>
+      <td>CSS style sheet</td>
+    </tr>
+
+    <tr id="node-14">
+      <td><span class="file">MIT-LICENSE</span></td>
+      <td>4 KB</td>
+      <td>Plain text</td>
+    </tr>
+
+    <tr id="node-18">
+      <td><span class="file">README.markdown</span></td>
+      <td>4 KB</td>
+      <td>Markdown document</td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="example" id="dnd-example-2">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Size</th>
+      <th>Kind</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="node-11">
+      <td><span class="folder">src</span></td>
+      <td>--</td>
+      <td>Folder</td>
+    </tr>
+
+    <tr id="node-12" class="child-of-node-11">
+      <td><span class="folder">images</span></td>
+      <td>--</td>
+      <td>Folder</td>
+    </tr>
+
+    <tr id="node-15" class="child-of-node-12">
+      <td><span class="file">bullet_toggle_minus.png</span></td>
+      <td>4 KB</td>
+      <td>Portable Network Graphics image</td>
+    </tr>
+
+    <tr id="node-16" class="child-of-node-12">
+      <td><span class="file">bullet_toggle_plus.png</span></td>
+      <td>4 KB</td>
+      <td>Portable Network Graphics image</td>
+    </tr>
+
+    <tr id="node-13" class="child-of-node-11">
+      <td><span class="folder">stylesheets</span></td>
+      <td>--</td>
+      <td>Folder</td>
+    </tr>
+
+    <tr id="node-17" class="child-of-node-13">
+      <td><span class="file">jquery.treeTable.css</span></td>
+      <td>4 KB</td>
+      <td>CSS style sheet</td>
+    </tr>
+
+    <tr id="node-19" class="child-of-node-11">
+      <td><span class="file">jquery.treeTable.js</span></td>
+      <td>8 KB</td>
+      <td>JavaScript source</td>
+    </tr>
+
+  </tbody>
+</table>
+
+</body>
+</html>
