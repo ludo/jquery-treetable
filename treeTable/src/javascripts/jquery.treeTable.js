@@ -12,11 +12,14 @@
     var options;
     var defaultPaddingLeft;
 
+    var cleanup = function (table) {
+        //No rows are allowed to have options.childPrefix as a class.  Next line is simple bugfix for this.
+        table.find('tbody tr.' + options.childPrefix).removeClass(options.childPrefix);
+    };
+
     $.fn.treeTable = function (opts) {
         options = $.extend({}, $.fn.treeTable.defaults, opts);
-
-        //No rows are allowed to have options.childPrefix as a class.  Next line is simple bugfix for this.
-        $(this).find('tbody tr.' + options.childPrefix).removeClass(options.childPrefix);
+        cleanup($(this));
 
         return this.each(function () {
             $(this).addClass("treeTable").find("tbody tr").each(function () {
@@ -39,6 +42,7 @@
 
     $.fn.treeTableRow = function () {
         //Assumes this is a new row in a previously created treeTable.
+        cleanup($(this).closest('table.treeTable'));
         return this.each(function () {
             var item = $(this);
             if (childrenOf(item).length == 0)
