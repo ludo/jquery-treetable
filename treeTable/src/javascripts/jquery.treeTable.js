@@ -211,6 +211,7 @@
     var classNames = node[0].className.split(' ');
 
     for(key in classNames) {
+      if (!key.match(/^[0-9]+$/)) { continue; }
       if(classNames[key].match(options.childPrefix)) {
         return $(node).siblings("tr#" + classNames[key].substring(options.childPrefix.length));
       }
