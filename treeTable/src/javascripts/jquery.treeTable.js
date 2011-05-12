@@ -211,6 +211,7 @@
     var classNames = node[0].className.split(' ');
     
     for(key in classNames) {
+      if (!key.match(/^[0-9]+$/)) { continue; }
       if(classNames[key].match(options.childPrefix)) {
         return $("#" + classNames[key].substring(9));
       }
