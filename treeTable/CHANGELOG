@@ -1,5 +1,5 @@
 == Unreleased
-* Fixed #8, #14
+* Fixed #8, #11, #14
 
 == 2.3.0 - 16 March 2010
 * Added GPL-LICENSE. The jQuery treeTable plugin is now dual-licensed under both the MIT and GPLv2 license.
