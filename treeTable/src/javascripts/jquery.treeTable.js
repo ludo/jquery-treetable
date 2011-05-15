@@ -215,5 +215,7 @@
         return $(node).siblings("tr#" + classNames[key].substring(options.childPrefix.length));
       }
     }
+
+    return null;
   };
 })(jQuery);
