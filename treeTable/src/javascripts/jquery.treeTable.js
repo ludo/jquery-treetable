@@ -210,7 +210,7 @@
   function parentOf(node) {
     var classNames = node[0].className.split(' ');
     
-    for(key in classNames) {
+    for(var key=0; key<classNames.length; key++) {
       if(classNames[key].match(options.childPrefix)) {
         return $("#" + classNames[key].substring(9));
       }
