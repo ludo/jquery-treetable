@@ -215,5 +215,7 @@
         return $("#" + classNames[key].substring(9));
       }
     }
+
+    return null;
   };
 })(jQuery);
