@@ -8,18 +8,18 @@
   <script type="text/javascript" src="javascripts/jquery.ui.js"></script>
 
   <!-- BEGIN Plugin Code -->
-  
+
   <link href="../src/stylesheets/jquery.treeTable.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="../src/javascripts/jquery.treeTable.js"></script>
   <script type="text/javascript">
-  
+
   $(document).ready(function() {
     // TODO Fix issue with multiple treeTables on one page, each with different options
     // Moving the #example3 treeeTable call down will break other treeTables that are expandable...
     $("#example3").treeTable({
       expandable: false
     });
-    
+
     $(".example").treeTable();
 
     // Drag & Drop Example Code
@@ -31,11 +31,11 @@
       revertDuration: 300,
       scroll: true
     });
-    
+
     $("#dnd-example .folder").each(function() {
       $($(this).parents("tr")[0]).droppable({
         accept: ".file, .folder",
-        drop: function(e, ui) { 
+        drop: function(e, ui) {
           $($(ui.draggable).parents("tr")[0]).appendBranchTo(this);
         },
         hoverClass: "accept",
@@ -46,19 +46,19 @@
         }
       });
     });
-    
+
     // Make visible that a row is clicked
     $("table#dnd-example tbody tr").mousedown(function() {
       $("tr.selected").removeClass("selected"); // Deselect currently selected rows
       $(this).addClass("selected");
     });
-    
+
     // Make sure row is selected when span is clicked
     $("table#dnd-example tbody tr span").mousedown(function() {
       $($(this).parents("tr")[0]).trigger("mousedown");
     });
   });
-  
+
   </script>
 
   <!-- END Plugin Code -->
@@ -159,11 +159,11 @@
 &lt;link href="<b>path/to/</b>jquery.treeTable.css" rel="stylesheet" type="text/css" /&gt;
 &lt;script type="text/javascript" src="<b>path/to/</b>jquery.treeTable.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
-  
+
 $(document).ready(function()  {
   $("<b>#your_table_id</b>").treeTable();
 });
-  
+
 &lt;/script&gt;
 </pre>
 
@@ -229,7 +229,7 @@ $(document).ready(function()  {
     <tr>
       <td><tt>initialState</tt></td>
       <td><tt>string</tt></td>
-      <td><tt>&quot;expanded&quot;</tt></td>
+      <td><tt>&quot;collapsed&quot;</tt></td>
       <td>Possible values: <tt>&quot;expanded&quot;</tt> or <tt>&quot;collapsed&quot;</tt>.</td>
     </tr>
     <tr>
@@ -289,7 +289,7 @@ $(document).ready(function()  {
 $("#example3").treeTable({
   expandable: false
 });
-</pre>  
+</pre>
 
 <table id="example3">
   <caption>Example 2: A tree that is not collapsable.</caption>
@@ -483,7 +483,7 @@ $("#example3").treeTable({
 /* NOTE: Do not forget to download the jQuery UI Draggable and Droppable
  * components if you want to enable dragging and dropping behavior!
  */
-  
+
 // Configure draggable nodes
 $("#dnd-example .file, #dnd-example .folder").draggable({
   helper: "clone",
@@ -497,7 +497,7 @@ $("#dnd-example .file, #dnd-example .folder").draggable({
 $("#dnd-example .folder").each(function() {
   $($(this).parents("tr")[0]).droppable({
     accept: ".file, .folder",
-    drop: function(e, ui) { 
+    drop: function(e, ui) {
       $($(ui.draggable).parents("tr")[0]).appendBranchTo(this);
     },
     hoverClass: "accept",
