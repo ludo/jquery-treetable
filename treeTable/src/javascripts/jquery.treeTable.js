@@ -40,6 +40,7 @@
     expandable: true,
     indent: 19,
     initialState: "collapsed",
+    onNodeShow: null,
     treeColumn: 0
   };
 
@@ -71,6 +72,10 @@
 
       // this.style.display = "table-row"; // Unfortunately this is not possible with IE :-(
       $(this).show();
+
+      if($.isFunction(options.onNodeShow)) {
+        options.onNodeShow.call();
+      }
     });
 
     return this;
