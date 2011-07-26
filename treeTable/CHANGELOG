@@ -1,4 +1,6 @@
 == NOT RELEASED
+* Fixed parentOf() did not use options.childPrefix.
+* Fixed problems with multiple same treeTables on the same page.
 * Add reveal function to expand a tree to a given node
 
 == 2.2.3 - 18 August 2009
