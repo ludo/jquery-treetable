@@ -217,7 +217,7 @@
 
     for(var key=0; key<classNames.length; key++) {
       if(classNames[key].match(options.childPrefix)) {
-        return $(node).siblings("#" + classNames[key].substring(9));
+        return $(node).siblings("#" + classNames[key].substring(options.childPrefix.length));
       }
     }
 

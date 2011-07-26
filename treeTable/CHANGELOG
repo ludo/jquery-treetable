@@ -1,4 +1,5 @@
 == Unreleased
+* Fixed parentOf() did not use options.childPrefix.
 * Fixed problems with multiple treeTables with identical rows on the same page.
 * Fixed #8, #11, #14
 
