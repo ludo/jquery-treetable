@@ -206,7 +206,7 @@
 
     for(key in classNames) {
       if(classNames[key].match(options.childPrefix)) {
-        return $(node).closest("table.treeTable tbody").find("tr#" + classNames[key].substring(9));
+        return $(node).closest("table.treeTable tbody").find("tr#" + classNames[key].substring(options.childPrefix.length));
       }
     }
   };
