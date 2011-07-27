@@ -17,19 +17,32 @@
 
     return this.each(function() {
       $(this).addClass("treeTable").find("tbody tr").each(function() {
-        // Initialize root nodes only if possible
-        if(!options.expandable || $(this)[0].className.search(options.childPrefix) == -1) {
-          // To optimize performance of indentation, I retrieve the padding-left
-          // value of the first root node. This way I only have to call +css+
-          // once.
-          if (isNaN(defaultPaddingLeft)) {
-            defaultPaddingLeft = parseInt($($(this).children("td")[options.treeColumn]).css('padding-left'), 10);
-          }
 
-          initialize($(this));
-        } else if(options.initialState == "collapsed") {
-          this.style.display = "none"; // Performance! $(this).hide() is slow...
-        }
+	  // XXX Skip initialized nodes.
+	  if (!$(this).hasClass('initialized')) {
+	      var isRootNode = ($(this)[0].className.search(options.childPrefix) == -1);
+	      
+	      // To optimize performance of indentation, I retrieve the padding-left
+	      // value of the first root node. This way I only have to call +css+
+	      // once.
+	      if (isRootNode && isNaN(defaultPaddingLeft)) {
+		  defaultPaddingLeft = parseInt(
+		      $($(this).children("td")[options.treeColumn]).css('padding-left'), 
+		      10);
+	      }
+	      
+	      // XXX Set child nodes to initial state if we're in expandable mode.
+	      // XXX Ignore initialized nodes!
+	      if(!isRootNode && options.expandable && options.initialState == "collapsed") {
+		  $(this).hide();
+              }
+	      
+              // XXX If we're not in expandable mode, initialize all nodes.
+	      // XXX If we're in expandable mode, only initialize root nodes.
+              if(!options.expandable || isRootNode) {
+		  initialize($(this));
+              }
+	  }
       });
     });
   };
@@ -41,7 +54,9 @@
     indent: 19,
     initialState: "collapsed",
     onNodeShow: null,
-    treeColumn: 0
+    treeColumn: 0,
+    persist: true,
+    persistCookiePrefix: 'treeTable_'
   };
 
   // Recursively hide all node's children in a tree
@@ -53,7 +68,8 @@
         $(this).collapse();
       }
 
-      this.style.display = "none"; // Performance! $(this).hide() is slow...
+	$(this).hide();
+	//this.style.display = "none"; // Performance! $(this).hide() is slow...
     });
 
     return this;
@@ -72,7 +88,7 @@
 
       // this.style.display = "table-row"; // Unfortunately this is not possible with IE :-(
       $(this).show();
-
+	
       if($.isFunction(options.onNodeShow)) {
         options.onNodeShow.call();
       }
@@ -129,6 +145,12 @@
       $(this).expand();
     } else {
       $(this).removeClass("expanded").collapse();
+    }
+
+    if (options.persist) {
+	// Store cookie if this node is expanded, otherwise delete cookie.
+	var cookieName = options.persistCookiePrefix + $(this).attr('id');
+	$.cookie(cookieName, $(this).hasClass('expanded') ? 'true' : null);
     }
 
     return this;
@@ -192,6 +214,13 @@
                 node.toggleBranch();
               }
             });
+          }
+
+	  if (options.persist) {
+	      var cookieName = options.persistCookiePrefix + node.attr('id');
+	      if ($.cookie(cookieName) == 'true') {
+		  node.addClass('expanded');
+	      }
           }
 
           // Check for a class set explicitly by the user, otherwise set the default class
