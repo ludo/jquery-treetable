@@ -1,5 +1,5 @@
 /*
- * jQuery treeTable Plugin unreleased
+ * jQuery treeTable Plugin VERSION
  * http://ludo.cubicphuse.nl/jquery-plugins/treeTable/doc/
  *
  * Copyright 2011, Ludo van den Boom
@@ -20,7 +20,7 @@
         // Skip initialized nodes.
         if (!$(this).hasClass('initialized')) {
           var isRootNode = ($(this)[0].className.search(options.childPrefix) == -1);
-	      
+
           // To optimize performance of indentation, I retrieve the padding-left
           // value of the first root node. This way I only have to call +css+
           // once.
