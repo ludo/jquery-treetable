@@ -1,6 +1,7 @@
 == Unreleased
 * Optionally persist expanded node state using $.cookie (requires
 jquery-cookie plugin)
+* Use addClass('ui-helper-hidden') as suggested by whittet (#15)
 * Fixed parentOf() did not use options.childPrefix.
 * Fixed problems with multiple treeTables with identical rows on the same page.
 * Fixed #8, #11, #14

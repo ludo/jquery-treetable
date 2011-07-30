@@ -1,4 +1,4 @@
-/* jQuery TreeTable Core 2.0 stylesheet
+/* jQuery treeTable stylesheet
  *
  * This file contains styles that are used to display the tree table. Each tree
  * table is assigned the +treeTable+ class.
@@ -41,3 +41,7 @@
   color: #000;
   z-index: 1;
 }
+
+/* Layout helper taken from jQuery UI. This way I don't have to require the
+ * full jQuery UI CSS to be loaded. */
+.ui-helper-hidden { display: none; }

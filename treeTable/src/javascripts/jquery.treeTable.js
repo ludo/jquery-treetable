@@ -30,7 +30,7 @@
 
           // Set child nodes to initial state if we're in expandable mode.
           if(!isRootNode && options.expandable && options.initialState == "collapsed") {
-            this.style.display = "none";
+            $(this).addClass('ui-helper-hidden');
           }
 
           // If we're not in expandable mode, initialize all nodes.
@@ -64,7 +64,7 @@
         $(this).collapse();
       }
 
-      this.style.display = "none"; // Performance! $(this).hide() is slow...
+      $(this).addClass('ui-helper-hidden');
     });
 
     return this;
@@ -81,8 +81,7 @@
         $(this).expand();
       }
 
-      // this.style.display = "table-row"; // Unfortunately this is not possible with IE :-(
-      $(this).show();
+      $(this).removeClass('ui-helper-hidden');
 
       if($.isFunction(options.onNodeShow)) {
         options.onNodeShow.call();
