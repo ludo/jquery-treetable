@@ -50,6 +50,7 @@
     indent: 19,
     initialState: "collapsed",
     onNodeShow: null,
+    onNodeHide: null,
     treeColumn: 0,
     persist: false,
     persistCookiePrefix: 'treeTable_'
@@ -65,6 +66,11 @@
       }
 
       $(this).addClass('ui-helper-hidden');
+      
+      if($.isFunction(options.onNodeHide)) {
+        options.onNodeHide.call();
+      }
+      
     });
 
     return this;
