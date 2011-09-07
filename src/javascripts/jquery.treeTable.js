@@ -11,9 +11,14 @@
   // trees on a page. The options shouldn't be global to all these instances!
   var options;
   var defaultPaddingLeft;
+  var cleanup = function () {
+    //No rows are allowed to have options.childPrefix as a class.  Next line is simple bugfix for this.
+    $('table.treeTable tbody tr.' + options.childPrefix).removeClass(options.childPrefix);
+  };
 
   $.fn.treeTable = function(opts) {
     options = $.extend({}, $.fn.treeTable.defaults, opts);
+    cleanup();
 
     return this.each(function() {
       $(this).addClass("treeTable").find("tbody tr").each(function() {
@@ -40,6 +45,19 @@
           }
         }
       });
+    });
+  };
+
+  $.fn.treeTableRow = function () {
+    //Assumes this is a new row in a previously created treeTable.  Handles new rows with sets of sub rows, i.e. new branches or leaves added to the tree below the selected row.
+    cleanup();
+    return this.each(function () {
+      var branch = $(this);
+      if (branch[0].id == "") return;  //Avoid crash
+      if (childrenOf(branch).length == 0)  //If this is a leaf, then initialize branch.
+        branch = parentOf(branch);
+      branch.removeClass('initialized');
+      initialize(branch);
     });
   };
 
@@ -203,8 +221,10 @@
         });
 
         if(options.expandable) {
-          cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
-          $(cell[0].firstChild).click(function() { node.toggleBranch(); });
+          if (cell.find('span.expander').length == 0) {
+            cell.prepend('<span style="padding-left: ' + options.indent + 'px" class="expander"></span>');
+            $(cell[0].firstChild).click(function() { node.toggleBranch(); });
+          }
 
           if(options.clickableNodeNames) {
             cell[0].style.cursor = "pointer";
