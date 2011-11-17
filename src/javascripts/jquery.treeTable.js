@@ -66,11 +66,11 @@
       }
 
       $(this).addClass('ui-helper-hidden');
-      
+
       if($.isFunction(options.onNodeHide)) {
-        options.onNodeHide.call();
+        options.onNodeHide.call(this);
       }
-      
+
     });
 
     return this;
@@ -90,7 +90,7 @@
       $(this).removeClass('ui-helper-hidden');
 
       if($.isFunction(options.onNodeShow)) {
-        options.onNodeShow.call();
+        options.onNodeShow.call(this);
       }
     });
 
