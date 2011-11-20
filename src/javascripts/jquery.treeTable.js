@@ -53,7 +53,9 @@
     onNodeHide: null,
     treeColumn: 0,
     persist: false,
-    persistCookiePrefix: 'treeTable_'
+    persistCookiePrefix: 'treeTable_',
+    stringExpand: "Expand",
+    stringCollapse: "Collapse"
   };
 
   // Recursively hide all node's children in a tree
@@ -143,8 +145,20 @@
   $.fn.toggleBranch = function() {
     if($(this).hasClass("collapsed")) {
       $(this).expand();
+      // Replace the image src, alt, and title.
+      $(this).children('td:first-child').children('a:first-child').children('img:first-child').attr({
+        src:   getBackgroundImageSrc($(this).children('td:first-child').children('a:first-child')),
+        title: options.stringCollapse,
+        alt:   options.stringCollapse
+      });
     } else {
       $(this).removeClass("expanded").collapse();
+      // Replace the image src, alt, and title.
+      $(this).children('td:first-child').children('a:first-child').children('img:first-child').attr({
+        src:   getBackgroundImageSrc($(this).children('td:first-child').children('a:first-child')),
+        title: options.stringExpand,
+        alt:   options.stringExpand
+      });
     }
 
     if (options.persist) {
@@ -203,8 +217,9 @@
         });
 
         if(options.expandable) {
-          cell.prepend('<span style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></span>');
-          $(cell[0].firstChild).click(function() { node.toggleBranch(); });
+          cell.wrapInner('<a href="#" title="' + options.stringExpand + '" style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></a>');
+          $(cell[0].firstChild).click(function() { node.toggleBranch(); return false; });
+          $(cell[0].firstChild).keydown(function(e) { if(e.keyCode == 13) {node.toggleBranch(); return false; }});
 
           if(options.clickableNodeNames) {
             cell[0].style.cursor = "pointer";
@@ -231,6 +246,10 @@
           if(node.hasClass("expanded")) {
             node.expand();
           }
+
+          // Change the background css image to a foreground image, to provide an accessible UI.
+          backgroundImage = getBackgroundImageSrc($(cell[0].firstChild));
+          $(cell[0].firstChild).prepend('<img src="' + backgroundImage + '" alt="' + options.stringExpand + '" title="' + options.stringExpand + '" />');
         }
       }
     }
@@ -252,4 +271,9 @@
 
     return null;
   };
+
+  function getBackgroundImageSrc(element) {
+    // Take the background-image css attribute, and remove the url("") text.
+    return element.css('background-image').replace(/^url\(\"/, '').replace(/\"\)$/, '');
+  }
 })(jQuery);

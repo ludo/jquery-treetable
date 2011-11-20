@@ -7,7 +7,7 @@
 /* jquery.treeTable.collapsible
  * ------------------------------------------------------------------------- */
 .treeTable tr td .expander {
-  background-position: left center;
+  background-position: -100px 0; /* move the image outside the visible part of the element */
   background-repeat: no-repeat;
   cursor: pointer;
   padding: 0;
@@ -20,6 +20,10 @@
 
 .treeTable tr.expanded td .expander {
   background-image: url(../images/toggle-collapse-dark.png);
+}
+
+.treeTable tr td a.expander:focus {
+  font-weight: bold;
 }
 
 /* jquery.treeTable.sortable
