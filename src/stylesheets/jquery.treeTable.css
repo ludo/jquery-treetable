@@ -7,37 +7,41 @@
 /* jquery.treeTable.collapsible
  * ------------------------------------------------------------------------- */
 .treeTable tr td .expander {
-  background-position: -100px 0; /* move the image outside the visible part of the element */
-  background-repeat: no-repeat;
   cursor: pointer;
   padding: 0;
   zoom: 1; /* IE7 Hack */
 }
 
-.treeTable tr.collapsed td .expander {
+.treeTable tr td a.expander {
+  background-position: left center;
+  background-repeat: no-repeat;
+  color: #000;
+  text-decoration: none;
+}
+
+.treeTable tr.collapsed td a.expander {
   background-image: url(../images/toggle-expand-dark.png);
 }
 
-.treeTable tr.expanded td .expander {
+.treeTable tr.expanded td a.expander {
   background-image: url(../images/toggle-collapse-dark.png);
-}
-
-.treeTable tr td a.expander:focus {
-  font-weight: bold;
 }
 
 /* jquery.treeTable.sortable
  * ------------------------------------------------------------------------- */
 .treeTable tr.selected, .treeTable tr.accept {
   background-color: #3875d7;
+}
+
+.treeTable tr.selected a.expander, .treeTable tr.accept a.expander {
   color: #fff;
 }
 
-.treeTable tr.collapsed.selected td .expander, .treeTable tr.collapsed.accept td .expander {
+.treeTable tr.collapsed.selected td a.expander, .treeTable tr.collapsed.accept td a.expander {
   background-image: url(../images/toggle-expand-light.png);
 }
 
-.treeTable tr.expanded.selected td .expander, .treeTable tr.expanded.accept td .expander {
+.treeTable tr.expanded.selected td a.expander, .treeTable tr.expanded.accept td a.expander {
   background-image: url(../images/toggle-collapse-light.png);
 }
 

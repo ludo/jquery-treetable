@@ -246,10 +246,6 @@
           if(node.hasClass("expanded")) {
             node.expand();
           }
-
-          // Change the background css image to a foreground image, to provide an accessible UI.
-          backgroundImage = getBackgroundImageSrc($(cell[0].firstChild));
-          $(cell[0].firstChild).prepend('<img src="' + backgroundImage + '" alt="' + options.stringExpand + '" title="' + options.stringExpand + '" />');
         }
       }
     }
