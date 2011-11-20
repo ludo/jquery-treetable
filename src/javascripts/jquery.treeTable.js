@@ -255,9 +255,4 @@
 
     return null;
   };
-
-  function getBackgroundImageSrc(element) {
-    // Take the background-image css attribute, and remove the url("") text.
-    return element.css('background-image').replace(/^url\(\"/, '').replace(/\"\)$/, '');
-  }
 })(jQuery);
