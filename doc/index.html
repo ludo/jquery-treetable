@@ -103,6 +103,7 @@
       <li><a href="#head">Include the plugin in your html document</a></li>
       <li><a href="#tree">Representing your tree in a table</a></li>
       <li><a href="#settings">Configuration</a></li>
+      <li><a href="#api">Functions (public API)</a></li>
     </ol>
   </li>
   <li><a href="#examples">Examples</a>
@@ -171,7 +172,7 @@ $(document).ready(function()  {
 <p>When you pasted the above code and adjusted it to reflect your situation, you enabled the <em>possibility</em> of displaying a tree in your table. To make the tree actually display as a tree you have to add <tt>id</tt> and <tt>class</tt> attributes to your table rows (<tt>tr</tt>).</p>
 
 <h4>How to do this?</h4>
-<p>First, you should add a <em>unique</em> <tt>id</tt> to each of the rows in your table, for example '<tt>node-<em>x</em></tt>' where <em>x</em> is a number. Then you add a <tt>class</tt> attribute to each child of a node, give this class a name of '<tt>child-of-<em>node-x</em></tt>'. The <em>node-x</em> part should be the same as the <tt>id</tt> of its parent. Do you still follow me? Let me show you an example of a very simple tree: a single parent with a single child. For more examples you should view the source code of this page, where you find several tables for the examples in the <a href="#examples">Examples</a> chapter.</p>
+<p>First, you should add a <em>unique</em> <tt>id</tt> to each of the rows in your table, for example '<tt>node-<em>x</em></tt>'. Then you add a <tt>class</tt> attribute to each child of a node, give this class a name of '<tt>child-of-<em>node-x</em></tt>'. The <em>node-x</em> part should be the same as the <tt>id</tt> of its parent. Do you still follow me? Let me show you an example of a very simple tree: a single parent with a single child. For more examples you should view the source code of this page, where you find several tables for the examples in the <a href="#examples">Examples</a> chapter.</p>
 
 <pre class="listing">
 &lt;table id="tree"&gt;
@@ -255,6 +256,39 @@ $(document).ready(function()  {
       <td><tt>int</tt></td>
       <td><tt>0</tt></td>
       <td>The number of the column in the table that should be displayed as a tree.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>3.4 <a name="api">Functions (public API)</a></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><tt>appendBranchTo(destination)</tt></td>
+      <td>Add an entire branch to <tt>destination</tt>. Useful for drag-and-drop behavior.</td>
+    </tr>
+    <tr>
+      <td><tt>collapse</tt></td>
+      <td>Recursively hide all node's children in a tree.</td>
+    </tr>
+    <tr>
+      <td><tt>expand</tt></td>
+      <td>Recursively show all node's children in a tree.</td>
+    </tr>
+    <tr>
+      <td><tt>reveal</tt></td>
+      <td>Reveal a node by expanding all ancestors.</td>
+    </tr>
+    <tr>
+      <td><tt>toggleBranch</tt></td>
+      <td>Toggle an entire branch.</td>
     </tr>
   </tbody>
 </table>
