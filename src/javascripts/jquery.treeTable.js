@@ -145,20 +145,8 @@
   $.fn.toggleBranch = function() {
     if($(this).hasClass("collapsed")) {
       $(this).expand();
-      // Replace the image src, alt, and title.
-      $(this).children('td:first-child').children('a:first-child').children('img:first-child').attr({
-        src:   getBackgroundImageSrc($(this).children('td:first-child').children('a:first-child')),
-        title: options.stringCollapse,
-        alt:   options.stringCollapse
-      });
     } else {
       $(this).removeClass("expanded").collapse();
-      // Replace the image src, alt, and title.
-      $(this).children('td:first-child').children('a:first-child').children('img:first-child').attr({
-        src:   getBackgroundImageSrc($(this).children('td:first-child').children('a:first-child')),
-        title: options.stringExpand,
-        alt:   options.stringExpand
-      });
     }
 
     if (options.persist) {
