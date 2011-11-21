@@ -53,7 +53,8 @@
     onNodeHide: null,
     treeColumn: 0,
     persist: false,
-    persistCookiePrefix: 'treeTable_'
+    persistCookiePrefix: 'treeTable_',
+    persistCookieOptions: {}
   };
 
   // Recursively hide all node's children in a tree
@@ -150,7 +151,7 @@
     if (options.persist) {
       // Store cookie if this node is expanded, otherwise delete cookie.
       var cookieName = options.persistCookiePrefix + $(this).attr('id');
-      $.cookie(cookieName, $(this).hasClass('expanded') ? 'true' : null);
+      $.cookie(cookieName, $(this).hasClass('expanded') ? 'true' : null, options.persistCookieOptions);
     }
 
     return this;
