@@ -1,10 +1,16 @@
 == Unreleased
-* Optionally persist expanded node state using $.cookie (requires
-jquery-cookie plugin)
-* Use addClass('ui-helper-hidden') as suggested by whittet (#15)
-* Fixed parentOf() did not use options.childPrefix.
-* Fixed problems with multiple treeTables with identical rows on the same page.
-* Fixed #8, #11, #14
+* [FEATURE] Keyboard accessibility (#27, #30)
+* [FEATURE] Optionally persist expanded node state using $.cookie (requires
+jquery-cookie plugin) (#19)
+* [ENHANCEMENT] Passing options to $.cookie persistence (#31)
+* [ENHANCEMENT] Use addClass('ui-helper-hidden') as suggested by whittet (#15)
+* [BUG] onNodeShow doesn't pass context (#28)
+* [BUG] Fixed problems with multiple treeTables with identical rows on the
+same page (#16)
+* [BUG] Fixed parentOf() not using options.childPrefix (#16)
+* [BUG] Prototype conflict (#14)
+* [BUG] Wrong documentation for "initialState" (#11)
+* [BUG] failed to reveal a node for a pitfall in parentOf (#8)
 
 == 2.3.0 - 16 March 2010
 * Added GPL-LICENSE. The jQuery treeTable plugin is now dual-licensed under both the MIT and GPLv2 license.
