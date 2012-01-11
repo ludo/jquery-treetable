@@ -61,7 +61,7 @@
 
   // Recursively hide all node's children in a tree
   $.fn.collapse = function() {
-    $(this).addClass("collapsed");
+    $(this).removeClass("expanded").addClass("collapsed");
 
     childrenOf($(this)).each(function() {
       if(!$(this).hasClass("collapsed")) {
@@ -147,7 +147,7 @@
     if($(this).hasClass("collapsed")) {
       $(this).expand();
     } else {
-      $(this).removeClass("expanded").collapse();
+      $(this).collapse();
     }
 
     if (options.persist) {
