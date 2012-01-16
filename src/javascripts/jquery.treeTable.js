@@ -11,9 +11,14 @@
   // trees on a page. The options shouldn't be global to all these instances!
   var options;
   var defaultPaddingLeft;
+  var persistStore;
 
   $.fn.treeTable = function(opts) {
     options = $.extend({}, $.fn.treeTable.defaults, opts);
+
+    if(options.persist) {
+      persistStore = new Persist.Store(options.persistStoreName);
+    }
 
     return this.each(function() {
       $(this).addClass("treeTable").find("tbody tr").each(function() {
@@ -53,8 +58,7 @@
     onNodeHide: null,
     treeColumn: 0,
     persist: false,
-    persistCookiePrefix: 'treeTable_',
-    persistCookieOptions: {},
+    persistStoreName: 'treeTable',
     stringExpand: "Expand",
     stringCollapse: "Collapse"
   };
@@ -62,6 +66,10 @@
   // Recursively hide all node's children in a tree
   $.fn.collapse = function() {
     $(this).removeClass("expanded").addClass("collapsed");
+
+    if (options.persist) {
+      persistNodeState($(this));
+    }
 
     childrenOf($(this)).each(function() {
       if(!$(this).hasClass("collapsed")) {
@@ -82,6 +90,10 @@
   // Recursively show all node's children in a tree
   $.fn.expand = function() {
     $(this).removeClass("collapsed").addClass("expanded");
+
+    if (options.persist) {
+      persistNodeState($(this));
+    }
 
     childrenOf($(this)).each(function() {
       initialize($(this));
@@ -150,12 +162,6 @@
       $(this).collapse();
     }
 
-    if (options.persist) {
-      // Store cookie if this node is expanded, otherwise delete cookie.
-      var cookieName = options.persistCookiePrefix + $(this).attr('id');
-      $.cookie(cookieName, $(this).hasClass('expanded') ? 'true' : null, options.persistCookieOptions);
-    }
-
     return this;
   };
 
@@ -220,11 +226,8 @@
             });
           }
 
-          if (options.persist) {
-            var cookieName = options.persistCookiePrefix + node.attr('id');
-            if ($.cookie(cookieName) == 'true') {
-              node.addClass('expanded');
-            }
+          if (options.persist && getPersistedNodeState(node)) {
+            node.addClass('expanded');
           }
 
           // Check for a class set explicitly by the user, otherwise set the default class
@@ -256,4 +259,29 @@
 
     return null;
   };
+
+  //saving state functions, not critical, so will not generate alerts on error
+  function persistNodeState(node) {
+    if(node.hasClass('expanded')) {
+      try {
+         persistStore.set(node.attr('id'), '1');
+      } catch (err) {
+
+      }
+    } else {
+      try {
+        persistStore.remove(node.attr('id'));
+      } catch (err) {
+
+      }
+    }
+  }
+
+  function getPersistedNodeState(node) {
+    try {
+      return persistStore.get(node.attr('id')) == '1';
+    } catch (err) {
+      return false;
+    }
+  }
 })(jQuery);
