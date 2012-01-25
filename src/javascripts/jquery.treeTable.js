@@ -103,7 +103,9 @@
       }
 
       $(this).removeClass('ui-helper-hidden');
-
+      //START CHANGE BY KL: NEED TO REMOVE THE STYLE ATTRIBUTE SET BY THE XSLT IN ORDER TO MAKE THE NODES SHOW UP.
+      $(this).removeAttr("style");
+      //END CHANGE.
       if($.isFunction(options.onNodeShow)) {
         options.onNodeShow.call(this);
       }
@@ -212,10 +214,12 @@
         });
 
         if(options.expandable) {
-          cell.wrapInner('<a href="#" title="' + options.stringExpand + '" style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></a>');
-          $(cell[0].firstChild).click(function() { node.toggleBranch(); return false; });
-          $(cell[0].firstChild).keydown(function(e) { if(e.keyCode == 13) {node.toggleBranch(); return false; }});
-
+            //START CHANGE BY KL: 1)PREPENDED THE ANCHOR TO THE LABEL AS WE SHOULD NOT WRAP AROUND THE LABEL, THERE MIGHT BE SOME LINKS ALREADY IN THE LABEL.
+            //                    2)REMOVED THE RETURN FALSE STATEMENT FROM THE CLICK EVENTS AS WE HAD OTHER EVENTS TRIGGERED BY THE CLICK ON EXPANDER.
+          cell.prepend('<a href="#" title="' + options.stringExpand + '" style="padding-left: ' + options.indent + 'px" class="expander"></a>');
+          $(cell[0].firstChild).click(function() { node.toggleBranch();  });
+          $(cell[0].firstChild).keydown(function(e) { if(e.keyCode == 13) {node.toggleBranch();  }});
+         //END CHANGE
           if(options.clickableNodeNames) {
             cell[0].style.cursor = "pointer";
             $(cell).click(function(e) {
