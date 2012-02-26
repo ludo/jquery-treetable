@@ -213,8 +213,8 @@
 
         if(options.expandable) {
           cell.wrapInner('<a href="#" title="' + options.stringExpand + '" style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></a>');
-          $(cell[0].firstChild).click(function() { node.toggleBranch(); return false; });
-          $(cell[0].firstChild).keydown(function(e) { if(e.keyCode == 13) {node.toggleBranch(); return false; }});
+          $(cell[0].firstChild).click(function() { node.toggleBranch(); return false; }).mousedown(function() { return false; });
+          $(cell[0].firstChild).keydown(function(e) { if(e.keyCode == 13) { node.toggleBranch(); return false; }});
 
           if(options.clickableNodeNames) {
             cell[0].style.cursor = "pointer";
