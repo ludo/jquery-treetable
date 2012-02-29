@@ -212,7 +212,20 @@
         });
 
         if(options.expandable) {
-          cell.wrapInner('<a href="#" title="' + options.stringExpand + '" style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></a>');
+    	  //Begin-Fix clickableNodeNames
+		  //create the expander
+		  var newLink = '<a href="#" title="' + options.stringExpand + '" style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></a>';
+		  if(options.clickableNodeNames)
+		  {
+		    //wrap the entire cell with the expander
+		    cell.wrapInner(newLink);
+		  }else
+		  {
+		    //add the expander into the cell
+		    cell.html(newLink+cell.html());
+		  }
+		  //End-Fix clickableNodeNames
+          
           $(cell[0].firstChild).click(function() { node.toggleBranch(); return false; }).mousedown(function() { return false; });
           $(cell[0].firstChild).keydown(function(e) { if(e.keyCode == 13) { node.toggleBranch(); return false; }});
 
