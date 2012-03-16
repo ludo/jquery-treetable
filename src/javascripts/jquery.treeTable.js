@@ -65,51 +65,51 @@
 
   // Recursively hide all node's children in a tree
   $.fn.collapse = function() {
-    $(this).removeClass("expanded").addClass("collapsed");
+    return this.each(function() {
+      $(this).removeClass("expanded").addClass("collapsed");
 
-    if (options.persist) {
-      persistNodeState($(this));
-    }
-
-    childrenOf($(this)).each(function() {
-      if(!$(this).hasClass("collapsed")) {
-        $(this).collapse();
+      if (options.persist) {
+        persistNodeState($(this));
       }
-
-      $(this).addClass('ui-helper-hidden');
-
-      if($.isFunction(options.onNodeHide)) {
-        options.onNodeHide.call(this);
-      }
-
+  
+      childrenOf($(this)).each(function() {
+        if(!$(this).hasClass("collapsed")) {
+          $(this).collapse();
+        }
+  
+        $(this).addClass('ui-helper-hidden');
+  
+        if($.isFunction(options.onNodeHide)) {
+          options.onNodeHide.call(this);
+        }
+  
+      });
     });
-
-    return this;
   };
 
   // Recursively show all node's children in a tree
   $.fn.expand = function() {
-    $(this).removeClass("collapsed").addClass("expanded");
+    return this.each(function() {
+      $(this).removeClass("collapsed").addClass("expanded");
 
-    if (options.persist) {
-      persistNodeState($(this));
-    }
-
-    childrenOf($(this)).each(function() {
-      initialize($(this));
-
-      if($(this).is(".expanded.parent")) {
-        $(this).expand();
+      if (options.persist) {
+        persistNodeState($(this));
       }
-
-      $(this).removeClass('ui-helper-hidden');
-
-      if($.isFunction(options.onNodeShow)) {
-        options.onNodeShow.call(this);
-      }
+  
+      childrenOf($(this)).each(function() {
+        initialize($(this));
+  
+        if($(this).is(".expanded.parent")) {
+          $(this).expand();
+        }
+  
+        $(this).removeClass('ui-helper-hidden');
+  
+        if($.isFunction(options.onNodeShow)) {
+          options.onNodeShow.call(this);
+        }
+      });
     });
-
-    return this;
   };
 
   // Reveal a node by expanding all ancestors
