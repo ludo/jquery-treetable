@@ -71,18 +71,18 @@
       if (options.persist) {
         persistNodeState($(this));
       }
-  
+
       childrenOf($(this)).each(function() {
         if(!$(this).hasClass("collapsed")) {
           $(this).collapse();
         }
-  
+
         $(this).addClass('ui-helper-hidden');
-  
+
         if($.isFunction(options.onNodeHide)) {
           options.onNodeHide.call(this);
         }
-  
+
       });
     });
   };
@@ -95,16 +95,16 @@
       if (options.persist) {
         persistNodeState($(this));
       }
-  
+
       childrenOf($(this)).each(function() {
         initialize($(this));
-  
+
         if($(this).is(".expanded.parent")) {
           $(this).expand();
         }
-  
+
         $(this).removeClass('ui-helper-hidden');
-  
+
         if($.isFunction(options.onNodeShow)) {
           options.onNodeShow.call(this);
         }
@@ -212,20 +212,14 @@
         });
 
         if(options.expandable) {
-    	  //Begin-Fix clickableNodeNames
-		  //create the expander
-		  var newLink = '<a href="#" title="' + options.stringExpand + '" style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></a>';
-		  if(options.clickableNodeNames)
-		  {
-		    //wrap the entire cell with the expander
-		    cell.wrapInner(newLink);
-		  }else
-		  {
-		    //add the expander into the cell
-		    cell.html(newLink+cell.html());
-		  }
-		  //End-Fix clickableNodeNames
-          
+          var newLink = '<a href="#" title="' + options.stringExpand + '" style="margin-left: -' + options.indent + 'px; padding-left: ' + options.indent + 'px" class="expander"></a>';
+
+          if(options.clickableNodeNames) {
+            cell.wrapInner(newLink);
+          } else {
+            cell.html(newLink+cell.html());
+          }
+
           $(cell[0].firstChild).click(function() { node.toggleBranch(); return false; }).mousedown(function() { return false; });
           $(cell[0].firstChild).keydown(function(e) { if(e.keyCode == 13) { node.toggleBranch(); return false; }});
 
