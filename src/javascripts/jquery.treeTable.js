@@ -63,6 +63,20 @@
     stringCollapse: "Collapse"
   };
 
+  //Expand all nodes
+  $.fn.expandAll = function() {
+    $(this).find("tr").each(function() {
+      $(this).expand();
+    });
+  };
+
+  //Collapse all nodes
+  $.fn.collapseAll = function() {
+    $(this).find("tr").each(function() {
+      $(this).collapse();
+    });
+  };
+
   // Recursively hide all node's children in a tree
   $.fn.collapse = function() {
     return this.each(function() {
