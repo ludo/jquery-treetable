@@ -54,6 +54,7 @@
     expandable: true,
     indent: 19,
     initialState: "collapsed",
+    levelPrefix: "level-",
     onNodeShow: null,
     onNodeHide: null,
     treeColumn: 0,
@@ -75,6 +76,16 @@
     $(this).find("tr").each(function() {
       $(this).collapse();
     });
+  };
+  
+  $.fn.expandToLevel = function(level) {
+    for(var i=0;i<level;i++) {
+      $(this).find('.collapsed.'+options.levelPrefix+i).expand();
+    }
+    
+    $(this).find('.expanded.'+options.levelPrefix+level).collapse();
+
+    return this;
   };
 
   // Recursively hide all node's children in a tree
