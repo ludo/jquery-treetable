@@ -13,6 +13,17 @@
   var defaultPaddingLeft;
   var persistStore;
 
+    var treeTable;
+    var isTreeTable;
+    var rowDataArray;
+    var rowIndex = 0;
+    var idIndex = 1;
+    var levelIndex = 2;
+    var stateIndex = 3;
+    var shownIndex = 4;
+    var altIndex = 5;
+    var highLtIndex = 6;
+
   $.fn.treeTable = function(opts) {
     options = $.extend({}, $.fn.treeTable.defaults, opts);
 
@@ -20,32 +31,60 @@
       persistStore = new Persist.Store(options.persistStoreName);
     }
 
-    return this.each(function() {
-      $(this).addClass("treeTable").find("tbody tr").each(function() {
-        // Skip initialized nodes.
-        if (!$(this).hasClass('initialized')) {
-          var isRootNode = ($(this)[0].className.search(options.childPrefix) == -1);
+    if ($(this).hasClass('treeTableInited')) {
+        isTreeTable = true;
+        treeTable = $(this);
+        //if treeTableInited is set, the table already has the right padding and classes to
+        // be rendered properly
+        //treeTable speed enhancements do not support appending or moving rows.
+      $(treeTable).initializeTree();
+          $(this).on('click', function(e) {
+              var $targetAnchor = null;
+              if ($(e.target).closest('a.expander').length > 0) {
+                  var closestRow = $(e.target).closest("tr");
+                  if (closestRow.length == 1  && closestRow[0].id != '') {
+                      $(closestRow).toggleBranch();
+                      $(closestRow).highlightRow();
+                      return false;
+                  }
+              } else {
+                  var closestRow = $(e.target).closest("tr");
+                  if (closestRow.length == 1  && closestRow[0].id != '') {
+                      $(closestRow).highlightRow();
+                  }
+              }
 
-          // To optimize performance of indentation, I retrieve the padding-left
-          // value of the first root node. This way I only have to call +css+
-          // once.
-          if (isRootNode && isNaN(defaultPaddingLeft)) {
-            defaultPaddingLeft = parseInt($($(this).children("td")[options.treeColumn]).css('padding-left'), 10);
-          }
+          });
 
-          // Set child nodes to initial state if we're in expandable mode.
-          if(!isRootNode && options.expandable && options.initialState == "collapsed") {
-            $(this).addClass('ui-helper-hidden');
-          }
+  	} else {
+	    return this.each(function() {
+	      $(this).addClass("treeTable").find("tbody tr").each(function() {
+	        // Skip initialized nodes.
+	        if (!$(this).hasClass('initialized')) {
+	          var isRootNode = ($(this)[0].className.search(options.childPrefix) == -1);
+	
+	          // To optimize performance of indentation, I retrieve the padding-left
+	          // value of the first root node. This way I only have to call +css+
+	          // once.
+	          if (isRootNode && isNaN(defaultPaddingLeft)) {
+	            defaultPaddingLeft = parseInt($($(this).children("td")[options.treeColumn]).css('padding-left'), 10);
+	          }
+	
+	          // Set child nodes to initial state if we're in expandable mode.
+	          if(!isRootNode && options.expandable && options.initialState == "collapsed") {
+	            $(this).addClass('ui-helper-hidden');
+	          }
+	
+	          // If we're not in expandable mode, initialize all nodes.
+	          // If we're in expandable mode, only initialize root nodes.
+	          if(!options.expandable || isRootNode) {
+	            initialize($(this));
+	          }
+	        }
+	      });
+	    });
+  	}
 
-          // If we're not in expandable mode, initialize all nodes.
-          // If we're in expandable mode, only initialize root nodes.
-          if(!options.expandable || isRootNode) {
-            initialize($(this));
-          }
-        }
-      });
-    });
   };
 
   $.fn.treeTable.defaults = {
@@ -61,6 +100,32 @@
     persistStoreName: 'treeTable',
     stringExpand: "Expand",
     stringCollapse: "Collapse"
+  };
+
+  // Collapse this node and hide all node's children in a tree
+  $.fn.collapseTreeNode = function() {
+
+      var nodePos =  getRowPosition(this[0].id, rowDataArray);
+      $(this).removeClass("expanded").addClass("collapsed");
+      var rowData = rowDataArray[nodePos];
+      rowData[stateIndex] = 0;
+
+	    var children = getRowDescendants(nodePos, rowDataArray);
+	    if (children.length > 0) {
+	        var childNum = children.length;
+	        for (var i=0; i<childNum; i++){
+	            var childData = children[i];
+	            if (childData[stateIndex] == 1) {
+	                childData[stateIndex] = 0;
+	                $(childData[rowIndex]).removeClass("expanded").addClass("collapsed");
+	            }
+	            if (childData[shownIndex] == 1) {
+	                childData[shownIndex] = 0;
+	                $(childData[rowIndex]).addClass("ui-helper-hidden");
+	            }
+	        }
+	    }
+	    return this;
   };
 
   // Recursively hide all node's children in a tree
@@ -84,6 +149,30 @@
 
     });
 
+    return this;
+  };
+
+  // Show the nodes that are 1 level below this one
+  $.fn.expandTreeNode = function() {
+    if (options.persist) {
+      persistNodeState($(this));
+    }
+      var nodePos =  getRowPosition(this[0].id, rowDataArray);
+        $(this).removeClass("collapsed").addClass("expanded");
+        var rowData = rowDataArray[nodePos];
+        rowData[stateIndex] = 1;
+
+      var children = getRowChildrenNextLevel(nodePos, rowDataArray);
+      if (children.length > 0) {
+          var childNum = children.length;
+          for (var i=0; i<childNum; i++){
+              var childData = children[i];
+              if (childData[shownIndex] == 0) {
+                  childData[shownIndex] = 1;
+                  $(childData[rowIndex]).removeClass("ui-helper-hidden");
+              }
+          }
+      }
     return this;
   };
 
@@ -114,12 +203,65 @@
     return this;
   };
 
+  // Recursively show all node's children in a tree
+  $.fn.highlightRow = function() {
+      if (this.length == 1  && this[0].id != '') {
+          for (var i =0; i<rowDataArray.length; i++) {
+              if (rowDataArray[i][highLtIndex] != 0) {
+                  $(rowDataArray[i][rowIndex]).removeClass("selectedRow");
+                  rowDataArray[i][highLtIndex] = 0;
+              }
+          }
+
+          var nodePos =  getRowPosition(this[0].id, rowDataArray);
+          var rowData = rowDataArray[nodePos];
+            $(rowData[rowIndex]).addClass("selectedRow");
+            rowData[highLtIndex] = 1;
+            var children = getRowDescendants(nodePos, rowDataArray);
+            if (children.length > 0) {
+                var childNum = children.length;
+                for (var ci=0; ci<childNum; ci++){
+                    var childData = children[ci];
+                    childData[highLtIndex] = 1;
+                    $(childData[rowIndex]).addClass("selectedRow");
+                }
+            }
+      }
+    return this;
+  };
+
+
   // Reveal a node by expanding all ancestors
   $.fn.reveal = function() {
-    $(ancestorsOf($(this)).reverse()).each(function() {
-      initialize($(this));
-      $(this).expand().show();
-    });
+  	if(isTreeTable) {
+       var nodePos = getRowPosition(this[0].id, rowDataArray);
+       var selRowData = rowDataArray[nodePos];
+        if (selRowData[shownIndex] == 0) {
+            selRowData[shownIndex] = 1;
+            $(selRowData[rowIndex]).removeClass("ui-helper-hidden");
+        }
+          var children = getRowDescendants(nodePos, rowDataArray);
+          if(selRowData[stateIndex]==0 && children.length > 0){
+             $(selRowData[rowIndex]).expandTreeNode();
+          }
+        var parents = getRowParents(nodePos, rowDataArray);
+        for (var i = 0; i<parents.length; i++) {
+             var rowData = rowDataArray[i];
+            if (rowData[shownIndex] == 0) {
+                rowData[shownIndex] = 1;
+                $(rowData[rowIndex]).removeClass("ui-helper-hidden");
+            }
+            $(parents[i][rowIndex]).expandTreeNode();
+        }
+        $(treeTable).setRowColorsNew();
+        $(selRowData[rowIndex]).highlightRow();
+
+  	} else {	
+	    $(ancestorsOf($(this)).reverse()).each(function() {
+	      initialize($(this));
+	      $(this).expand().show();
+	    });
+		}
 
     return this;
   };
@@ -158,16 +300,136 @@
 
   // Toggle an entire branch
   $.fn.toggleBranch = function() {
-    if($(this).hasClass("collapsed")) {
-      $(this).expand();
-    } else {
-      $(this).collapse();
-    }
-
+  	if(isTreeTable) {
+          if (this.length == 1  && this[0].id != '') {
+              var nodePos =  getRowPosition(this[0].id, rowDataArray);
+              if (rowDataArray[nodePos][stateIndex] == 1) {
+                  $(this).collapseTreeNode();
+              } else {
+                  $(this).expandTreeNode();
+              }
+              $(treeTable).setRowColorsNew();
+          }
+  	} else {	
+	    if($(this).hasClass("collapsed")) {
+	      $(this).expand();
+	    } else {
+	      $(this).collapse();
+	    }
+		}
     return this;
   };
 
+  // Get the ids of all the hidden nodes
+  $.fn.getCollapsedNodeIds = function() {
+      var collapsedNodes = new Array();
+      var num = 0;
+      for (var i =0; i<rowDataArray.length; i++) {
+          if (rowDataArray[i][shownIndex] == 0) {
+              collapsedNodes[num] = rowDataArray[i][idIndex];
+              num ++;
+          }
+      }
+      return collapsedNodes;
+  };
+
+	// set row colors of displayed rows to alternate
+  $.fn.setRowColorsNew = function() {
+      var on = 0;
+      if (rowDataArray.length > 0) {
+        on = rowDataArray[0][altIndex];
+      }
+      var changed = 0;
+      for (var i =1; i<rowDataArray.length; i++) {
+          if (rowDataArray[i][shownIndex] != 0) {
+              if (on == 0) {
+                  on = 1;
+              } else {
+                  on = 0;
+              }
+              if (rowDataArray[i][altIndex] != on) {
+                if (on == 1) {
+                    $(rowDataArray[i][rowIndex]).addClass("alternateRow");
+                } else {
+                    $(rowDataArray[i][rowIndex]).removeClass("alternateRow");
+                }
+                changed ++;
+                rowDataArray[i][altIndex] = on;
+              }
+          }
+      }
+  };
+
   // === Private functions
+		// the position of the row in the array based on its id
+    function getRowPosition(id, rowDataArray) {
+        var pos = 0;
+        var len = rowDataArray.length;
+        while (pos < len && rowDataArray[pos][idIndex] != id) {
+            pos ++;
+        }
+        if (pos < len) {
+            return pos;
+        }
+        return -1;
+    }
+
+		// get all the descendants of the parent
+    function getRowDescendants(parentPos, rowDataArray) {
+        var children = new Array();
+        if (parentPos < rowDataArray.length) {
+            var nodeLevel = rowDataArray[parentPos][levelIndex];
+            var childPos = parentPos + 1;
+            var childNum = 0;
+            while (childPos < rowDataArray.length && rowDataArray[childPos][levelIndex] > nodeLevel) {
+                children[childNum] = rowDataArray[childPos];
+                childPos ++;
+                childNum ++;
+            }
+        }
+        return children;
+    }
+
+		// get all the descendants of the parent
+    function getRowParents(childPos, rowDataArray) {
+    	var curLevel= rowDataArray[childPos][levelIndex];
+        var parents = new Array();
+            var pNum = 0;
+            for (var i=childPos -1; i>=0 && curLevel > 1; i--){
+	            var nodeLevel = rowDataArray[i][levelIndex];
+	            if (nodeLevel < curLevel) {
+	            	curLevel = nodeLevel;
+                parents[pNum] = rowDataArray[i];
+                pNum ++;
+              }
+           }
+        return parents;
+    }
+
+		//Get the children at the next level below the parent, but nothing below that
+    function getRowChildrenNextLevel(parentPos, rowDataArray) {
+        var allChildren = getRowDescendants(parentPos, rowDataArray);
+        var children = new Array();
+        if (allChildren.length > 0) {
+            var allChildNum = allChildren.length;
+            var nextChildLevel = "";
+            for (var i=0; i<allChildNum; i++){
+                var level = allChildren[i][levelIndex];
+                if (nextChildLevel == "" || nextChildLevel > level) {
+                    nextChildLevel = level;
+                }
+            }
+            var childNum = 0;
+            for (var i=0; i<allChildNum; i++){
+                var level = allChildren[i][levelIndex];
+                if (nextChildLevel == level) {
+                    children[childNum] = allChildren[i];
+                    childNum ++;
+                }
+            }
+        }
+        return children;
+    }
 
   function ancestorsOf(node) {
     var ancestors = [];
@@ -193,6 +455,56 @@
     childrenOf(node).each(function() {
       indent($(this), value);
     });
+  };
+
+  $.fn.initializeTree = function() {
+
+      var $rowArray =$('#htsTable tr.htsRow');
+      var len = $rowArray.length;
+      rowDataArray = new Array();
+
+      for (var i = 0; i<len; i++) {
+          var name = $($rowArray[i]).attr('name');
+          var classes = $($rowArray[i]).attr('class');
+          var parts = name.split('_');
+          var level = parts[2];
+          var rowArray = new Array();
+          rowDataArray[i] = rowArray;
+          rowArray[rowIndex] = $rowArray[i];
+          rowArray[idIndex] = parts[1];
+          rowArray[levelIndex] = level;
+          if (classes.indexOf("collapsed")>=0){
+          	// state of 0 is collapsed, 1 is expanded
+              rowArray[stateIndex] = 0;
+          } else {
+              rowArray[stateIndex] = 1;
+          }
+          if (classes.indexOf("ui-helper-hidden")>=0){
+          	// state of 0 is hidden, 1 is shown
+              rowArray[shownIndex] = 0;
+          } else {
+              rowArray[shownIndex] = 1;
+          }
+          if (classes.indexOf("alternateRow") >=0){
+ 	          	// state of 0 is not colored, 1 is colored
+              rowArray[altIndex] = 1;
+          } else {
+              rowArray[altIndex] = 0;
+          }
+          if (classes.indexOf("selectedRow") >=0){
+ 	          	// state of 0 is not selected, 1 is selected
+              rowArray[highLtIndex] = 1;
+          } else {
+              rowArray[highLtIndex] = 0;
+          }
+      }
+
+      if(options.persist) {
+         persistStore = new Persist.Store(options.persistStoreName);
+      }
+      $(treeTable).setRowColorsNew();
+    return;
+ 	
   };
 
   function initialize(node) {
