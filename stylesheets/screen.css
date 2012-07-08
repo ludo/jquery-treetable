@@ -1,0 +1,63 @@
+body {
+  background: #fff;
+  color: #000;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: .8em;
+  line-height: 1.5;
+}
+
+pre.listing {
+  background: #eee;
+  border: 1px solid #ccc;
+  margin: .3em auto;
+  padding: .1em .3em;
+  width: 90%;
+}
+
+pre.listing b {
+  color: #f00;
+}
+
+table.treeTable {
+  border: 1px solid #888;
+  border-collapse: collapse;
+  line-height: 1;
+  margin: 1em auto;
+  width: 90%;
+}
+
+table.treeTable caption {
+  font-size: .9em;
+  font-weight: bold;
+}
+
+table.treeTable thead {
+  background: #aaa url(../images/bg-table-thead.png) repeat-x top left;
+  font-size: .9em;
+}
+
+table.treeTable thead tr th {
+  border: 1px solid #888;
+  font-weight: normal;
+  padding: .3em 1em .1em 1em;
+  text-align: left;
+}
+
+table.treeTable tbody tr td {
+  cursor: default;
+  padding: .3em 1em;
+}
+
+table.treeTable span {
+  background-position: center left;
+  background-repeat: no-repeat;
+  padding: .2em 0 .2em 1.5em;
+}
+
+table.treeTable span.file {
+  background-image: url(../images/file.png);
+}
+
+table.treeTable span.folder {
+  background-image: url(../images/folder.png);
+}

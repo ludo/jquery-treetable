@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery treetable</title>
+    <link rel="stylesheet" href="stylesheets/screen.css" media="screen" />
+    <script src="vendor/jquery.js"></script>
+    <script src="vendor/underscore.js"></script>
+
+    <link rel="stylesheet" href="stylesheets/jquery.treetable.css" />
+    <script src="javascripts/src/jquery.treetable.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        $("#simple-static-tree").treeTable();
+      });
+
+      $(document).ready(function () {
+        $("#simple-expandable-tree").treeTable({ expandable: true });
+      });
+
+      $(document).ready(function () {
+        $("#dnd-example").treeTable({
+          expandable: true
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Simple Static Tree</h1>
+    <table id="simple-static-tree">
+      <tr data-tt-id="0">
+        <td>app</td>
+      </tr>
+      <tr data-tt-id="1" data-tt-parent-id="0">
+        <td>controllers</td>
+      </tr>
+      <tr data-tt-id="5" data-tt-parent-id="1">
+        <td>application_controller.rb</td>
+      </tr>
+      <tr data-tt-id="2" data-tt-parent-id="0">
+        <td>helpers</td>
+      </tr>
+      <tr data-tt-id="3" data-tt-parent-id="0">
+        <td>models</td>
+      </tr>
+      <tr data-tt-id="4" data-tt-parent-id="0">
+        <td>views</td>
+      </tr>
+    </table>
+
+    <h1>Simple Expandable Tree</h1>
+    <table id="simple-expandable-tree">
+      <tr data-tt-id="0">
+        <td>app</td>
+      </tr>
+      <tr data-tt-id="1" data-tt-parent-id="0">
+        <td>controllers</td>
+      </tr>
+      <tr data-tt-id="5" data-tt-parent-id="1">
+        <td>application_controller.rb</td>
+      </tr>
+      <tr data-tt-id="2" data-tt-parent-id="0">
+        <td>helpers</td>
+      </tr>
+      <tr data-tt-id="3" data-tt-parent-id="0">
+        <td>models</td>
+      </tr>
+      <tr data-tt-id="4" data-tt-parent-id="0">
+        <td>views</td>
+      </tr>
+    </table>
+
+    <h1>Old DnD example</h1>
+    <table id="dnd-example">
+      <caption>Example 3: Dragging and dropping example.</caption>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Size</th>
+          <th>Kind</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-tt-id="node-20">
+          <td><span class="file">CHANGELOG</span></td>
+          <td>4 KB</td>
+          <td>Plain text</td>
+        </tr>
+
+        <tr data-tt-id="node-1">
+          <td><span class="folder">doc</span></td>
+          <td>--</td>
+          <td>Folder</td>
+        </tr>
+
+        <tr data-tt-id="node-2" data-tt-parent-id="node-1">
+          <td><span class="folder">images</span></td>
+          <td>--</td>
+          <td>Folder</td>
+        </tr>
+
+        <tr data-tt-id="node-8" data-tt-parent-id="node-2">
+          <td><span class="file">bg-table-thead.png</span></td>
+          <td>52 KB</td>
+          <td>Portable Network Graphics image</td>
+        </tr>
+
+        <tr data-tt-id="node-9" data-tt-parent-id="node-2">
+          <td><span class="file">folder.png</span></td>
+          <td>4 KB</td>
+          <td>Portable Network Graphics image</td>
+        </tr>
+
+        <tr data-tt-id="node-10" data-tt-parent-id="node-2">
+          <td><span class="file">page_white_text.png</span></td>
+          <td>4 KB</td>
+          <td>Portable Network Graphics image</td>
+        </tr>
+
+        <tr data-tt-id="node-3" data-tt-parent-id="node-1">
+          <td><span class="file">index.html</span></td>
+          <td>4 KB</td>
+          <td>HTML document</td>
+        </tr>
+
+        <tr data-tt-id="node-4" data-tt-parent-id="node-1">
+          <td><span class="folder">javascripts</span></td>
+          <td>--</td>
+          <td>Folder</td>
+        </tr>
+
+        <tr data-tt-id="node-5" data-tt-parent-id="node-4">
+          <td><span class="file">jquery.js</span></td>
+          <td>56 KB</td>
+          <td>JavaScript source</td>
+        </tr>
+
+        <tr data-tt-id="node-6" data-tt-parent-id="node-1">
+          <td><span class="folder">stylesheets</span></td>
+          <td>--</td>
+          <td>Folder</td>
+        </tr>
+
+        <tr data-tt-id="node-7" data-tt-parent-id="node-6">
+          <td><span class="file">master.css</span></td>
+          <td>4 KB</td>
+          <td>CSS style sheet</td>
+        </tr>
+
+        <tr data-tt-id="node-14">
+          <td><span class="file">MIT-LICENSE</span></td>
+          <td>4 KB</td>
+          <td>Plain text</td>
+        </tr>
+
+        <tr data-tt-id="node-18">
+          <td><span class="file">README.markdown</span></td>
+          <td>4 KB</td>
+          <td>Markdown document</td>
+        </tr>
+
+        <tr data-tt-id="node-11">
+          <td><span class="folder">src</span></td>
+          <td>--</td>
+          <td>Folder</td>
+        </tr>
+
+        <tr data-tt-id="node-12" data-tt-parent-id="node-11">
+          <td><span class="folder">images</span></td>
+          <td>--</td>
+          <td>Folder</td>
+        </tr>
+
+        <tr data-tt-id="node-15" data-tt-parent-id="node-12">
+          <td><span class="file">bullet_toggle_minus.png</span></td>
+          <td>4 KB</td>
+          <td>Portable Network Graphics image</td>
+        </tr>
+
+        <tr data-tt-id="node-16" data-tt-parent-id="node-12">
+          <td><span class="file">bullet_toggle_plus.png</span></td>
+          <td>4 KB</td>
+          <td>Portable Network Graphics image</td>
+        </tr>
+
+        <tr data-tt-id="node-13" data-tt-parent-id="node-11">
+          <td><span class="folder">stylesheets</span></td>
+          <td>--</td>
+          <td>Folder</td>
+        </tr>
+
+        <tr data-tt-id="node-17" data-tt-parent-id="node-13">
+          <td><span class="file">jquery.treeTable.css</span></td>
+          <td>4 KB</td>
+          <td>CSS style sheet</td>
+        </tr>
+
+        <tr data-tt-id="node-19" data-tt-parent-id="node-11">
+          <td><span class="file">jquery.treeTable.js</span></td>
+          <td>8 KB</td>
+          <td>JavaScript source</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </body>
+</html>

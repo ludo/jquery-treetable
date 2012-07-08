@@ -1,0 +1,9 @@
+table.treeTable span.expander {
+  display: inline-block;
+}
+
+table.treeTable span.expander.branch {
+  cursor: pointer;
+  display: inline-block;
+  width: 19px;
+}
