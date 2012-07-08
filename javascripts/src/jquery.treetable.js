@@ -76,11 +76,11 @@
             return $(this).parents("table").treeTable("node", $(this).parents("tr").data("ttId")).toggle();
           });
         }
+        if (this.settings.initialState === "collapsed") {
+          this.collapse();
+        }
       }
-      this.expander[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
-      if (this.settings.initialState === "collapsed") {
-        return this.collapse();
-      }
+      return this.expander[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
     };
 
     Node.prototype.show = function() {

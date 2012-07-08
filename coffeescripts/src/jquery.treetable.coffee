@@ -50,11 +50,15 @@ class Node
   render: ->
     if @settings.expandable is true
       @expander.addClass("branch")
+
       if @children().length > 0
         @expander.html("+").bind "click.treeTable", ->
           $(@).parents("table").treeTable("node", $(@).parents("tr").data("ttId")).toggle()
+
+      if @settings.initialState is "collapsed"
+        @collapse()
+
     @expander[0].style.paddingLeft = "#{@level() * @settings.indent}px"
-    @collapse() if @settings.initialState is "collapsed"
 
   show: ->
     @row.show()

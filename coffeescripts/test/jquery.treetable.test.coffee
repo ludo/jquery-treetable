@@ -30,7 +30,16 @@ describe "treeTable()", ->
       @subject.treeTable("destroy")
       expect(@subject).to.not.have.class("treeTable")
 
-  # describe "with expandable: false"
+  describe "with expandable: false", ->
+    beforeEach ->
+      @subject.treeTable(expandable: false).appendTo("body")
+
+    afterEach ->
+      @subject.remove()
+
+    it "all nodes are visible", ->
+      for row in @subject[0].rows
+        expect($(row)).to.be.visible
 
   describe "with expandable: true", ->
     beforeEach ->
@@ -119,7 +128,7 @@ describe "TreeTable.Node", ->
 
   describe "#expand()", ->
     beforeEach ->
-      @table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treeTable()
+      @table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treeTable(expandable: true)
       @subject = @table.data("treeTable").tree
 
     afterEach ->
@@ -298,7 +307,7 @@ describe "TreeTable.Node", ->
 
   describe "#toggle()", ->
     beforeEach ->
-      @table = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='24' data-tt-parent-id='42'><td>N24</td></tr></table>").appendTo("body").treeTable()
+      @table = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='24' data-tt-parent-id='42'><td>N24</td></tr></table>").appendTo("body").treeTable(expandable: true)
       @subject = @table.data("treeTable").tree
 
     afterEach ->

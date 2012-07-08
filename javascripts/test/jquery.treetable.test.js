@@ -34,6 +34,26 @@
         return expect(this.subject).to.not.have["class"]("treeTable");
       });
     });
+    describe("with expandable: false", function() {
+      beforeEach(function() {
+        return this.subject.treeTable({
+          expandable: false
+        }).appendTo("body");
+      });
+      afterEach(function() {
+        return this.subject.remove();
+      });
+      return it("all nodes are visible", function() {
+        var row, _i, _len, _ref, _results;
+        _ref = this.subject[0].rows;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          row = _ref[_i];
+          _results.push(expect($(row)).to.be.visible);
+        }
+        return _results;
+      });
+    });
     describe("with expandable: true", function() {
       beforeEach(function() {
         return this.subject.treeTable({
@@ -133,7 +153,9 @@
     });
     describe("#expand()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treeTable();
+        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treeTable({
+          expandable: true
+        });
         return this.subject = this.table.data("treeTable").tree;
       });
       afterEach(function() {
@@ -332,7 +354,9 @@
     });
     describe("#toggle()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='24' data-tt-parent-id='42'><td>N24</td></tr></table>").appendTo("body").treeTable();
+        this.table = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='24' data-tt-parent-id='42'><td>N24</td></tr></table>").appendTo("body").treeTable({
+          expandable: true
+        });
         return this.subject = this.table.data("treeTable").tree;
       });
       afterEach(function() {
