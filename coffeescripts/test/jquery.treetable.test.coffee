@@ -17,7 +17,7 @@ describe "treeTable()", ->
     @subject.treeTable()
     expect(@subject).to.have.class("treeTable")
 
-  describe "#destroy()", ->
+  describe "destroy()", ->
     it "removes treeTable object from element", ->
       @subject.treeTable()
       expect(@subject.data("treeTable")).to.be.defined
@@ -53,7 +53,7 @@ describe "treeTable()", ->
       it "does not render a clickable node toggler", ->
         expect(@subject.treeTable("node", 1).row).to.not.have("a")
 
-  describe "#node()", ->
+  describe "node()", ->
     beforeEach ->
       @subject.treeTable()
 
@@ -66,7 +66,7 @@ describe "treeTable()", ->
 
 describe "TreeTable.Node", ->
 
-  describe "#ancestors()", ->
+  describe "ancestors()", ->
     beforeEach ->
       @subject = $("<table id='subject'><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3' data-tt-parent-id='2'></tr><tr data-tt-id='4' data-tt-parent-id='3'></tr></table>").treeTable().data("treeTable").tree
 
@@ -85,7 +85,7 @@ describe "TreeTable.Node", ->
     it "does not include node itself", ->
       expect(@subject[4].ancestors()).to.not.include(@subject[4])
 
-  describe "#children()", ->
+  describe "children()", ->
     beforeEach ->
       @subject = $("<table id='subject'><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3' data-tt-parent-id='2'><tr data-tt-id='5' data-tt-parent-id='2'></tr></tr><tr data-tt-id='4' data-tt-parent-id='3'></tr></table>").treeTable().data("treeTable").tree
 
@@ -103,7 +103,7 @@ describe "TreeTable.Node", ->
     it "does not include node itself", ->
       expect(@subject[2].children()).to.not.include(@subject[2])
 
-  describe "#collapse()", ->
+  describe "collapse()", ->
     beforeEach ->
       @table = $("<table id='subject'><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treeTable(initialState: "expanded")
       @subject = @table.data("treeTable").tree
@@ -126,7 +126,7 @@ describe "TreeTable.Node", ->
     it "maintains chainability", ->
       expect(@subject[0].collapse()).to.equal(@subject[0])
 
-  describe "#expand()", ->
+  describe "expand()", ->
     beforeEach ->
       @table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treeTable(expandable: true)
       @subject = @table.data("treeTable").tree
@@ -156,7 +156,7 @@ describe "TreeTable.Node", ->
     it "maintains chainability", ->
       expect(@subject[0].expand()).to.equal(@subject[0])
 
-  describe "#expanded()", ->
+  describe "expanded()", ->
     beforeEach ->
       @subject = $("<table><tr data-tt-id='0'><td>Node</td></tr></table>").treeTable().data("treeTable").tree[0]
 
@@ -168,7 +168,7 @@ describe "TreeTable.Node", ->
       @subject.collapse()
       expect(@subject.expanded()).to.be.false
 
-  describe "#expander", ->
+  describe "expander", ->
     beforeEach ->
       @subject = $("<table><tr data-tt-id='0'><td>Node</td></tr></table>").treeTable().data("treeTable").tree[0]
 
@@ -202,7 +202,7 @@ describe "TreeTable.Node", ->
         @subject.render()
         expect(@subject.expander).to.have.class("branch")
 
-  describe "#hide()", ->
+  describe "hide()", ->
     beforeEach ->
       @table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treeTable()
       @subject = @table.data("treeTable").tree
@@ -224,12 +224,12 @@ describe "TreeTable.Node", ->
     it "maintains chainability", ->
       expect(@subject[0].hide()).to.equal(@subject[0])
 
-  describe "#id", ->
+  describe "id", ->
     it "is extracted from row attributes", ->
       subject = $("<table><tr data-tt-id='42'></tr></table>").appendTo("body").treeTable().data("treeTable").tree[42]
       expect(subject.id).to.equal(42)
 
-  describe "#level()", ->
+  describe "level()", ->
     beforeEach ->
       @subject = $("<table id='subject'><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3' data-tt-parent-id='2'></tr><tr data-tt-id='4' data-tt-parent-id='3'></tr></table>").treeTable().data("treeTable").tree
 
@@ -239,7 +239,7 @@ describe "TreeTable.Node", ->
       expect(@subject[3].level()).to.equal(2)
       expect(@subject[4].level()).to.equal(3)
 
-  describe "#parentId", ->
+  describe "parentId", ->
     it "is extracted from row attributes", ->
       subject = $("<table><tr data-tt-id='42' data-tt-parent-id='12'></td></tr></table>").treeTable().data("treeTable").tree[42]
       expect(subject.parentId).to.equal(12)
@@ -248,7 +248,7 @@ describe "TreeTable.Node", ->
       subject = $("<table><tr data-tt-id='0'></td></tr></table>").treeTable().data("treeTable").tree[0]
       expect(subject.parentId).to.be.undefined
 
-  describe "#parentNode()", ->
+  describe "parentNode()", ->
     beforeEach ->
       @subject = $("<table id='subject'><tr data-tt-id='0'></tr><tr data-tt-id='1' data-tt-parent-id='0'></tr></table>").treeTable().data("treeTable").tree
 
@@ -269,7 +269,7 @@ describe "TreeTable.Node", ->
       it "is null", ->
         expect(@subject.parentNode()).to.be.null
 
-  describe "#show()", ->
+  describe "show()", ->
     beforeEach ->
       @table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treeTable()
       @subject = @table.data("treeTable").tree
@@ -305,7 +305,7 @@ describe "TreeTable.Node", ->
         expect(@subject[1].row).to.be.hidden
 
 
-  describe "#toggle()", ->
+  describe "toggle()", ->
     beforeEach ->
       @table = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='24' data-tt-parent-id='42'><td>N24</td></tr></table>").appendTo("body").treeTable(expandable: true)
       @subject = @table.data("treeTable").tree
@@ -323,7 +323,7 @@ describe "TreeTable.Node", ->
     it "maintains chainability", ->
       expect(@subject[42].toggle()).to.equal(@subject[42])
 
-  describe "#treeCell", ->
+  describe "treeCell", ->
     describe "with default column setting", ->
       beforeEach ->
         @subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr>").treeTable().data("treeTable").tree[0].treeCell
@@ -348,7 +348,7 @@ describe "TreeTable.Node", ->
         expect(@subject).to.contain("Column 2")
 
 describe "TreeTable.Tree", ->
-  describe "#load()", ->
+  describe "load()", ->
     it "maintains chainability", ->
       subject = new TreeTable.Tree($("<table></table>"))
       expect(subject.load()).to.equal(subject)
@@ -376,12 +376,12 @@ describe "TreeTable.Tree", ->
         expect(_.size subject).to.equal(1)
         expect(_.keys subject).to.include('21')
 
-  describe "#render()", ->
+  describe "render()", ->
     it "maintains chainability", ->
       subject = new TreeTable.Tree($("<table></table>"))
       expect(subject.render()).to.equal(subject)
 
-  describe "#roots()", ->
+  describe "roots()", ->
     describe "when no rows", ->
       it "is empty", ->
         subject = $("<table></table>").treeTable().data("treeTable")
