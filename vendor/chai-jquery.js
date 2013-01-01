@@ -5,21 +5,25 @@
     module.exports = chaiJquery;
   } else if (typeof define === "function" && define.amd) {
     // AMD
-    define(function () {
-      return chaiJquery;
+    define(['jquery'], function ($) {
+      return function (chai, utils) {
+        return chaiJquery(chai, utils, $);
+      };
     });
   } else {
-    // Other environment (usually <script> tag): pass into global chai
-    var global = (false || eval)("this");
-    global.chai.use(chaiJquery);
+    // Other environment (usually <script> tag): plug in to global chai instance directly.
+    chai.use(function (chai, utils) {
+      return chaiJquery(chai, utils, jQuery);
+    });
   }
-}(function (chai, utils) {
+}(function (chai, utils, $) {
   var inspect = utils.inspect,
       flag = utils.flag;
+  $ = $ || jQuery;
 
-  jQuery.fn.inspect = function (depth) {
-    var el = jQuery('<div />').append(this.clone());
-    if (depth) {
+  $.fn.inspect = function (depth) {
+    var el = $('<div />').append(this.clone());
+    if (depth !== undefined) {
       var children = el.children();
       while (depth-- > 0)
         children = children.children();
@@ -28,30 +32,35 @@
     return el.html();
   };
 
-  chai.Assertion.addMethod('attr', function (name, val) {
-    var actual = flag(this, 'object').attr(name);
+  var props = {attr: 'attribute', css: 'CSS property'};
+  for (var prop in props) {
+    (function (prop, description) {
+      chai.Assertion.addMethod(prop, function (name, val) {
+        var actual = flag(this, 'object')[prop](name);
 
-    if (!flag(this, 'negate') || undefined === val) {
-      this.assert(
-          undefined !== actual
-        , 'expected #{this} to have a #{exp} attribute'
-        , 'expected #{this} not to have a #{exp} attribute'
-        , name
-      );
-    }
+        if (!flag(this, 'negate') || undefined === val) {
+          this.assert(
+              undefined !== actual
+            , 'expected #{this} to have a #{exp} ' + description
+            , 'expected #{this} not to have a #{exp} ' + description
+            , name
+          );
+        }
 
-    if (undefined !== val) {
-      this.assert(
-          val === actual
-        , 'expected #{this} to have a ' + inspect(name) + ' attribute with the value #{exp}, but the value was #{act}'
-        , 'expected #{this} not to have a ' + inspect(name) + ' attribute with the value #{act}'
-        , val
-        , actual
-      );
-    }
+        if (undefined !== val) {
+          this.assert(
+              val === actual
+            , 'expected #{this} to have a ' + inspect(name) + ' ' + description + ' with the value #{exp}, but the value was #{act}'
+            , 'expected #{this} not to have a ' + inspect(name) + ' ' + description + ' with the value #{act}'
+            , val
+            , actual
+          );
+        }
 
-    flag(this, 'object', actual);
-  });
+        flag(this, 'object', actual);
+      });
+    })(prop, props[prop]);
+  }
 
   chai.Assertion.addMethod('data', function (name, val) {
     // Work around a chai bug (https://github.com/logicalparadox/chai/issues/16)
@@ -62,7 +71,7 @@
     var assertion = new chai.Assertion(flag(this, 'object').data());
     if (flag(this, 'negate'))
       assertion = assertion.not;
-    assertion.property(name, val);
+    return assertion.property(name, val);
   });
 
   chai.Assertion.addMethod('class', function (className) {
@@ -110,7 +119,7 @@
     );
   });
 
-  jQuery.each(['visible', 'hidden', 'selected', 'checked', 'disabled'], function (i, attr) {
+  $.each(['visible', 'hidden', 'selected', 'checked', 'disabled'], function (i, attr) {
     chai.Assertion.addProperty(attr, function () {
       this.assert(
           flag(this, 'object').is(':' + attr)
@@ -122,7 +131,7 @@
   chai.Assertion.overwriteProperty('exist', function (_super) {
     return function () {
       var obj = flag(this, 'object');
-      if (obj instanceof jQuery) {
+      if (obj instanceof $) {
         this.assert(
             obj.length > 0
           , 'expected ' + inspect(obj.selector) + ' to exist'
@@ -133,11 +142,25 @@
     };
   });
 
+  chai.Assertion.overwriteProperty('empty', function (_super) {
+    return function () {
+      var obj = flag(this, 'object');
+      if (obj instanceof $) {
+        this.assert(
+          obj.is(':empty')
+          , 'expected #{this} to be empty'
+          , 'expected #{this} not to be empty');
+      } else {
+        _super.apply(this, arguments);
+      }
+    };
+  });
+
   chai.Assertion.overwriteProperty('be', function (_super) {
     return function () {
       var be = function (selector) {
         var obj = flag(this, 'object');
-        if (obj instanceof jQuery) {
+        if (obj instanceof $) {
           this.assert(
               obj.is(selector)
             , 'expected #{this} to be #{exp}'
@@ -156,7 +179,7 @@
   chai.Assertion.overwriteMethod('match', function (_super) {
     return function (selector) {
       var obj = flag(this, 'object');
-      if (obj instanceof jQuery) {
+      if (obj instanceof $) {
         this.assert(
             obj.is(selector)
           , 'expected #{this} to match #{exp}'
@@ -174,7 +197,7 @@
       _super.call(this);
       var contain = function (text) {
         var obj = flag(this, 'object');
-        if (obj instanceof jQuery) {
+        if (obj instanceof $) {
           this.assert(
               obj.is(':contains(\'' + text + '\')')
             , 'expected #{this} to contain #{exp}'
@@ -193,7 +216,7 @@
   chai.Assertion.overwriteProperty('have', function (_super) {
     return function () {
       var obj = flag(this, 'object');
-      if (obj instanceof jQuery) {
+      if (obj instanceof $) {
         var have = function (selector) {
           this.assert(
               // Using find() rather than has() to work around a jQuery bug:
