@@ -35,7 +35,7 @@
 
           // Set child nodes to initial state if we're in expandable mode.
           if(!isRootNode && options.expandable && options.initialState == "collapsed") {
-            $(this).addClass('ui-helper-hidden');
+            $(this).hide();
           }
 
           // If we're not in expandable mode, initialize all nodes.
@@ -91,7 +91,7 @@
           $(this).collapse();
         }
 
-        $(this).addClass('ui-helper-hidden');
+        $(this).hide();
 
         if($.isFunction(options.onNodeHide)) {
           options.onNodeHide.call(this);
@@ -117,7 +117,7 @@
           $(this).expand();
         }
 
-        $(this).removeClass('ui-helper-hidden');
+        $(this).show();
 
         if($.isFunction(options.onNodeShow)) {
           options.onNodeShow.call(this);

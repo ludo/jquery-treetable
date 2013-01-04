@@ -50,6 +50,3 @@
   z-index: 1;
 }
 
-/* Layout helper taken from jQuery UI. This way I don't have to require the
- * full jQuery UI CSS to be loaded. */
-.ui-helper-hidden { display: none; }
