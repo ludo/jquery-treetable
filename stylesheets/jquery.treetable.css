@@ -1,14 +1,26 @@
-table.treeTable span.expander {
+table.treeTable span.indenter {
   display: inline-block;
+  text-align: right;
   user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -o-user-select: none;
   -webkit-user-select: none;
+  width: 19px;
 }
 
-table.treeTable span.expander.branch {
-  cursor: pointer;
+table.treeTable span.indenter a {
+  background-position: left center;
+  background-repeat: no-repeat;
   display: inline-block;
+  text-decoration: none;
   width: 19px;
+}
+
+table.treeTable tr.collapsed span.indenter a {
+  background-image: url(../images/expand.png);
+}
+
+table.treeTable tr.expanded span.indenter a {
+  background-image: url(../images/collapse.png);
 }

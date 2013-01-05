@@ -88,7 +88,7 @@
   describe("TreeTable.Node", function() {
     describe("ancestors()", function() {
       beforeEach(function() {
-        return this.subject = $("<table id='subject'><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3' data-tt-parent-id='2'></tr><tr data-tt-id='4' data-tt-parent-id='3'></tr></table>").treeTable().data("treeTable").tree;
+        return this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree;
       });
       it("has correct size", function() {
         return expect(_.size(this.subject[4].ancestors())).to.equal(3);
@@ -108,7 +108,7 @@
     });
     describe("children()", function() {
       beforeEach(function() {
-        return this.subject = $("<table id='subject'><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3' data-tt-parent-id='2'><tr data-tt-id='5' data-tt-parent-id='2'></tr></tr><tr data-tt-id='4' data-tt-parent-id='3'></tr></table>").treeTable().data("treeTable").tree;
+        return this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td><tr data-tt-id='5' data-tt-parent-id='2'><td>N5</td></tr></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree;
       });
       it("includes direct children", function() {
         expect(_.size(this.subject[2].children())).to.equal(2);
@@ -197,43 +197,31 @@
         return expect(this.subject.expanded()).to.be["false"];
       });
     });
-    describe("expander", function() {
+    describe("indenter", function() {
       beforeEach(function() {
-        return this.subject = $("<table><tr data-tt-id='0'><td>Node</td></tr></table>").treeTable().data("treeTable").tree[0];
+        this.table = $("<table><tr data-tt-id='0'><td>Branch Node</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>Leaf Node</td></tr></table>").treeTable().data("treeTable");
+        this.branchNode = this.table.tree[0];
+        return this.leafNode = this.table.tree[1];
       });
-      it("is a span", function() {
-        return expect(this.subject.expander).to.match("span");
-      });
-      it("has the 'expander' class", function() {
-        return expect(this.subject.expander).to.have["class"]("expander");
+      it("has the 'indenter' class", function() {
+        return expect(this.branchNode.indenter).to.have["class"]("indenter");
       });
       describe("when root node", function() {
         beforeEach(function() {
-          return sinon.stub(this.subject, "level").returns(0);
+          return sinon.stub(this.branchNode, "level").returns(0);
         });
         return it("is not indented", function() {
-          this.subject.render();
-          return expect(this.subject.expander.css("padding-left")).to.equal("0px");
+          this.branchNode.render();
+          return expect(this.branchNode.indenter.css("padding-left")).to.equal("0px");
         });
       });
-      describe("when level 1 node", function() {
+      return describe("when level 1 node", function() {
         beforeEach(function() {
-          sinon.stub(this.subject, "level").returns(1);
-          return this.subject.render();
+          return sinon.stub(this.branchNode, "level").returns(1);
         });
         return it("is indented", function() {
-          return expect(this.subject.expander.css("padding-left")).to.equal("19px");
-        });
-      });
-      return describe("and expandable: true", function() {
-        beforeEach(function() {
-          return this.subject.settings = {
-            expandable: true
-          };
-        });
-        return it("has the 'branch' class", function() {
-          this.subject.render();
-          return expect(this.subject.expander).to.have["class"]("branch");
+          this.branchNode.render();
+          return expect(this.branchNode.indenter.css("padding-left")).to.equal("19px");
         });
       });
     });
@@ -263,13 +251,13 @@
     describe("id", function() {
       return it("is extracted from row attributes", function() {
         var subject;
-        subject = $("<table><tr data-tt-id='42'></tr></table>").appendTo("body").treeTable().data("treeTable").tree[42];
+        subject = $("<table><tr data-tt-id='42'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
         return expect(subject.id).to.equal(42);
       });
     });
     describe("level()", function() {
       beforeEach(function() {
-        return this.subject = $("<table id='subject'><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3' data-tt-parent-id='2'></tr><tr data-tt-id='4' data-tt-parent-id='3'></tr></table>").treeTable().data("treeTable").tree;
+        return this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree;
       });
       return it("equals the number of ancestors", function() {
         expect(this.subject[1].level()).to.equal(0);
@@ -281,18 +269,18 @@
     describe("parentId", function() {
       it("is extracted from row attributes", function() {
         var subject;
-        subject = $("<table><tr data-tt-id='42' data-tt-parent-id='12'></td></tr></table>").treeTable().data("treeTable").tree[42];
+        subject = $("<table><tr data-tt-id='42' data-tt-parent-id='12'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
         return expect(subject.parentId).to.equal(12);
       });
       return it("is undefined when not available", function() {
         var subject;
-        subject = $("<table><tr data-tt-id='0'></td></tr></table>").treeTable().data("treeTable").tree[0];
+        subject = $("<table><tr data-tt-id='0'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[0];
         return expect(subject.parentId).to.be.undefined;
       });
     });
     describe("parentNode()", function() {
       beforeEach(function() {
-        return this.subject = $("<table id='subject'><tr data-tt-id='0'></tr><tr data-tt-id='1' data-tt-parent-id='0'></tr></table>").treeTable().data("treeTable").tree;
+        return this.subject = $("<table id='subject'><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree;
       });
       describe("when node has a parent", function() {
         beforeEach(function() {
@@ -387,8 +375,8 @@
         it("maps to the first column by default", function() {
           return expect(this.subject).to.contain("Column 1");
         });
-        return it("contains an expander", function() {
-          return expect(this.subject).to.have("span.expander");
+        return it("contains an indenter", function() {
+          return expect(this.subject).to.have("span.indenter");
         });
       });
       return describe("with custom column setting", function() {
@@ -421,7 +409,7 @@
       describe("a table with tree rows", function() {
         return it("caches all tree nodes", function() {
           var subject;
-          subject = $("<table><tr data-tt-id='0'></tr><tr data-tt-id='1' data-tt-parent-id='0'></tr></table>").treeTable().data("treeTable").tree;
+          subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree;
           expect(_.size(subject)).to.equal(2);
           expect(_.keys(subject)).to.include('0');
           return expect(_.keys(subject)).to.include('1');
@@ -437,7 +425,7 @@
       return describe("a table with both tree rows and non tree rows", function() {
         return it("only caches tree nodes", function() {
           var subject;
-          subject = $("<table><tr></tr><tr data-tt-id='21'></tr></table>").treeTable().data("treeTable").tree;
+          subject = $("<table><tr></tr><tr data-tt-id='21'><td>N21</td></tr></table>").treeTable().data("treeTable").tree;
           expect(_.size(subject)).to.equal(1);
           return expect(_.keys(subject)).to.include('21');
         });
@@ -460,7 +448,7 @@
       });
       describe("when single root node", function() {
         beforeEach(function() {
-          return this.subject = $("<table><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr></table>").treeTable().data("treeTable");
+          return this.subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable().data("treeTable");
         });
         it("includes root node when only one root node exists", function() {
           var roots;
@@ -474,7 +462,7 @@
       });
       return describe("when multiple root nodes", function() {
         beforeEach(function() {
-          return this.subject = $("<table><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3'></tr></table>").treeTable().data("treeTable");
+          return this.subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3'><td>N3</td></tr></table>").treeTable().data("treeTable");
         });
         it("includes all root nodes", function() {
           var roots;

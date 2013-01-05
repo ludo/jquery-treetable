@@ -7,8 +7,9 @@ class Node
     @parentId = @row.data(@settings.parentIdAttr)
     @treeCell = $(@row.children(@settings.columnElType)[@settings.column])
     @expander = $(@settings.expanderTemplate)
+    @indenter = $(@settings.indenterTemplate)
 
-    @treeCell.prepend(@expander)
+    @treeCell.prepend(@indenter)
 
   ancestors: ->
     node = @
@@ -24,13 +25,15 @@ class Node
   collapse: ->
     @_hideChildren()
     @row.removeClass("expanded").addClass("collapsed")
+    @expander.attr("title", "Expand")
     @ # Chainability
 
-  # destroy: remove event handlers, expander, etc.
+  # TODO destroy: remove event handlers, expander, indenter, etc.
 
   expand: ->
     @row.removeClass("collapsed").addClass("expanded")
     @_showChildren()
+    @expander.attr("title", "Collapse")
     @ # Chainability
 
   expanded: ->
@@ -49,16 +52,16 @@ class Node
 
   render: ->
     if @settings.expandable is true
-      @expander.addClass("branch")
-
       if @children().length > 0
-        @expander.html("+").bind "click.treeTable", ->
+        @indenter.html(@expander)
+        @expander.bind "click.treeTable", (event) ->
           $(@).parents("table").treeTable("node", $(@).parents("tr").data("ttId")).toggle()
+          event.preventDefault()
 
       if @settings.initialState is "collapsed"
         @collapse()
 
-    @expander[0].style.paddingLeft = "#{@level() * @settings.indent}px"
+    @indenter[0].style.paddingLeft = "#{@level() * @settings.indent}px"
 
   show: ->
     @row.show()
@@ -107,8 +110,9 @@ methods =
       column: 0
       columnElType: "td" # i.e. 'td', 'th' or 'td,th'
       expandable: false
-      expanderTemplate: "<span class='expander'></span>"
+      expanderTemplate: "<a href='#'>&nbsp;</a>"
       indent: 19
+      indenterTemplate: "<span class='indenter'></span>"
       initialState: "collapsed"
       nodeIdAttr: "ttId" # maps to data-tt-id
       parentIdAttr: "ttParentId" # maps to data-tt-parent-id

@@ -13,7 +13,8 @@
       this.parentId = this.row.data(this.settings.parentIdAttr);
       this.treeCell = $(this.row.children(this.settings.columnElType)[this.settings.column]);
       this.expander = $(this.settings.expanderTemplate);
-      this.treeCell.prepend(this.expander);
+      this.indenter = $(this.settings.indenterTemplate);
+      this.treeCell.prepend(this.indenter);
     }
 
     Node.prototype.ancestors = function() {
@@ -37,12 +38,14 @@
     Node.prototype.collapse = function() {
       this._hideChildren();
       this.row.removeClass("expanded").addClass("collapsed");
+      this.expander.attr("title", "Expand");
       return this;
     };
 
     Node.prototype.expand = function() {
       this.row.removeClass("collapsed").addClass("expanded");
       this._showChildren();
+      this.expander.attr("title", "Collapse");
       return this;
     };
 
@@ -70,17 +73,18 @@
 
     Node.prototype.render = function() {
       if (this.settings.expandable === true) {
-        this.expander.addClass("branch");
         if (this.children().length > 0) {
-          this.expander.html("+").bind("click.treeTable", function() {
-            return $(this).parents("table").treeTable("node", $(this).parents("tr").data("ttId")).toggle();
+          this.indenter.html(this.expander);
+          this.expander.bind("click.treeTable", function(event) {
+            $(this).parents("table").treeTable("node", $(this).parents("tr").data("ttId")).toggle();
+            return event.preventDefault();
           });
         }
         if (this.settings.initialState === "collapsed") {
           this.collapse();
         }
       }
-      return this.expander[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
+      return this.indenter[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
     };
 
     Node.prototype.show = function() {
@@ -177,8 +181,9 @@
         column: 0,
         columnElType: "td",
         expandable: false,
-        expanderTemplate: "<span class='expander'></span>",
+        expanderTemplate: "<a href='#'>&nbsp;</a>",
         indent: 19,
+        indenterTemplate: "<span class='indenter'></span>",
         initialState: "collapsed",
         nodeIdAttr: "ttId",
         parentIdAttr: "ttParentId"

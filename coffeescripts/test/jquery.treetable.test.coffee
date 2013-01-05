@@ -68,7 +68,7 @@ describe "TreeTable.Node", ->
 
   describe "ancestors()", ->
     beforeEach ->
-      @subject = $("<table id='subject'><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3' data-tt-parent-id='2'></tr><tr data-tt-id='4' data-tt-parent-id='3'></tr></table>").treeTable().data("treeTable").tree
+      @subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree
 
     it "has correct size", ->
       expect(_.size @subject[4].ancestors()).to.equal(3)
@@ -87,7 +87,7 @@ describe "TreeTable.Node", ->
 
   describe "children()", ->
     beforeEach ->
-      @subject = $("<table id='subject'><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3' data-tt-parent-id='2'><tr data-tt-id='5' data-tt-parent-id='2'></tr></tr><tr data-tt-id='4' data-tt-parent-id='3'></tr></table>").treeTable().data("treeTable").tree
+      @subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td><tr data-tt-id='5' data-tt-parent-id='2'><td>N5</td></tr></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree
 
     it "includes direct children", ->
       expect(_.size @subject[2].children()).to.equal(2)
@@ -168,39 +168,31 @@ describe "TreeTable.Node", ->
       @subject.collapse()
       expect(@subject.expanded()).to.be.false
 
-  describe "expander", ->
+  describe "indenter", ->
     beforeEach ->
-      @subject = $("<table><tr data-tt-id='0'><td>Node</td></tr></table>").treeTable().data("treeTable").tree[0]
+      @table = $("<table><tr data-tt-id='0'><td>Branch Node</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>Leaf Node</td></tr></table>").treeTable().data("treeTable")
 
-    it "is a span", ->
-      expect(@subject.expander).to.match("span")
+      @branchNode = @table.tree[0]
+      @leafNode = @table.tree[1]
 
-    it "has the 'expander' class", ->
-      expect(@subject.expander).to.have.class("expander")
+    it "has the 'indenter' class", ->
+      expect(@branchNode.indenter).to.have.class("indenter")
 
     describe "when root node", ->
       beforeEach ->
-        sinon.stub(@subject, "level").returns(0)
+        sinon.stub(@branchNode, "level").returns(0)
 
       it "is not indented", ->
-        @subject.render()
-        expect(@subject.expander.css("padding-left")).to.equal("0px")
+        @branchNode.render()
+        expect(@branchNode.indenter.css("padding-left")).to.equal("0px")
 
     describe "when level 1 node", ->
       beforeEach ->
-        sinon.stub(@subject, "level").returns(1)
-        @subject.render()
+        sinon.stub(@branchNode, "level").returns(1)
 
       it "is indented", ->
-        expect(@subject.expander.css("padding-left")).to.equal("19px")
-
-    describe "and expandable: true", ->
-      beforeEach ->
-        @subject.settings = { expandable: true }
-
-      it "has the 'branch' class", ->
-        @subject.render()
-        expect(@subject.expander).to.have.class("branch")
+        @branchNode.render()
+        expect(@branchNode.indenter.css("padding-left")).to.equal("19px")
 
   describe "hide()", ->
     beforeEach ->
@@ -226,12 +218,12 @@ describe "TreeTable.Node", ->
 
   describe "id", ->
     it "is extracted from row attributes", ->
-      subject = $("<table><tr data-tt-id='42'></tr></table>").appendTo("body").treeTable().data("treeTable").tree[42]
+      subject = $("<table><tr data-tt-id='42'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42]
       expect(subject.id).to.equal(42)
 
   describe "level()", ->
     beforeEach ->
-      @subject = $("<table id='subject'><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3' data-tt-parent-id='2'></tr><tr data-tt-id='4' data-tt-parent-id='3'></tr></table>").treeTable().data("treeTable").tree
+      @subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree
 
     it "equals the number of ancestors", ->
       expect(@subject[1].level()).to.equal(0)
@@ -241,16 +233,16 @@ describe "TreeTable.Node", ->
 
   describe "parentId", ->
     it "is extracted from row attributes", ->
-      subject = $("<table><tr data-tt-id='42' data-tt-parent-id='12'></td></tr></table>").treeTable().data("treeTable").tree[42]
+      subject = $("<table><tr data-tt-id='42' data-tt-parent-id='12'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42]
       expect(subject.parentId).to.equal(12)
 
     it "is undefined when not available", ->
-      subject = $("<table><tr data-tt-id='0'></td></tr></table>").treeTable().data("treeTable").tree[0]
+      subject = $("<table><tr data-tt-id='0'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[0]
       expect(subject.parentId).to.be.undefined
 
   describe "parentNode()", ->
     beforeEach ->
-      @subject = $("<table id='subject'><tr data-tt-id='0'></tr><tr data-tt-id='1' data-tt-parent-id='0'></tr></table>").treeTable().data("treeTable").tree
+      @subject = $("<table id='subject'><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree
 
     describe "when node has a parent", ->
       beforeEach ->
@@ -295,6 +287,9 @@ describe "TreeTable.Node", ->
         @subject[0].show()
         expect(@subject[1].row).to.be.visible
 
+      # it "'s row has class 'expanded'", ->
+        # expect(@subject[0].row).to.have.class("expanded")
+
     describe "when collapsed", ->
       beforeEach ->
         @subject[0].collapse().hide()
@@ -337,8 +332,8 @@ describe "TreeTable.Node", ->
       it "maps to the first column by default", ->
         expect(@subject).to.contain("Column 1")
 
-      it "contains an expander", ->
-        expect(@subject).to.have("span.expander")
+      it "contains an indenter", ->
+        expect(@subject).to.have("span.indenter")
 
     describe "with custom column setting", ->
       beforeEach ->
@@ -360,7 +355,7 @@ describe "TreeTable.Tree", ->
 
     describe "a table with tree rows", ->
       it "caches all tree nodes", ->
-        subject = $("<table><tr data-tt-id='0'></tr><tr data-tt-id='1' data-tt-parent-id='0'></tr></table>").treeTable().data("treeTable").tree
+        subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree
         expect(_.size subject).to.equal(2)
         expect(_.keys subject).to.include('0')
         expect(_.keys subject).to.include('1')
@@ -372,7 +367,7 @@ describe "TreeTable.Tree", ->
 
     describe "a table with both tree rows and non tree rows", ->
       it "only caches tree nodes", ->
-        subject = $("<table><tr></tr><tr data-tt-id='21'></tr></table>").treeTable().data("treeTable").tree
+        subject = $("<table><tr></tr><tr data-tt-id='21'><td>N21</td></tr></table>").treeTable().data("treeTable").tree
         expect(_.size subject).to.equal(1)
         expect(_.keys subject).to.include('21')
 
@@ -389,7 +384,7 @@ describe "TreeTable.Tree", ->
 
     describe "when single root node", ->
       beforeEach ->
-        @subject = $("<table><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr></table>").treeTable().data("treeTable")
+        @subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable().data("treeTable")
 
       it "includes root node when only one root node exists", ->
         roots = @subject.roots()
@@ -401,7 +396,7 @@ describe "TreeTable.Tree", ->
 
     describe "when multiple root nodes", ->
       beforeEach ->
-        @subject = $("<table><tr data-tt-id='1'></tr><tr data-tt-id='2' data-tt-parent-id='1'></tr><tr data-tt-id='3'></tr></table>").treeTable().data("treeTable")
+        @subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3'><td>N3</td></tr></table>").treeTable().data("treeTable")
 
       it "includes all root nodes", ->
         roots = @subject.roots()
