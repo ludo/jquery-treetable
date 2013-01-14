@@ -4,5 +4,9 @@ This is an experimental rewrite.
 
 == Todo
 
-* Events
 * Keyboard accessibility
+* Highlight selected row
+* D&D between tables
+* Documentation
+* Persist
+* Optimize performance (lazy loading?)

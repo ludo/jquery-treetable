@@ -26,6 +26,10 @@ class Node
     @_hideChildren()
     @row.removeClass("expanded").addClass("collapsed")
     @expander.attr("title", "Expand")
+
+    if $.isFunction(@settings.onNodeHide)
+      @settings.onNodeHide()
+
     @ # Chainability
 
   # TODO destroy: remove event handlers, expander, indenter, etc.
@@ -34,6 +38,10 @@ class Node
     @row.removeClass("collapsed").addClass("expanded")
     @_showChildren()
     @expander.attr("title", "Collapse")
+
+    if $.isFunction(@settings.onNodeShow)
+      @settings.onNodeShow()
+
     @ # Chainability
 
   expanded: ->
@@ -116,6 +124,10 @@ methods =
       initialState: "collapsed"
       nodeIdAttr: "ttId" # maps to data-tt-id
       parentIdAttr: "ttParentId" # maps to data-tt-parent-id
+
+      # Events
+      onNodeHide: null
+      onNodeShow: null
     }, options)
 
     @.each ->

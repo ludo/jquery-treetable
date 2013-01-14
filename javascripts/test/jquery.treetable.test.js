@@ -478,4 +478,65 @@
     });
   });
 
+  describe("events", function() {
+    describe("onNodeHide", function() {
+      describe("when no callback function given", function() {
+        return it("does not complain", function() {
+          var table;
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+            initialState: "expanded",
+            onNodeHide: null
+          }).data("treeTable");
+          return table.roots()[0].collapse();
+        });
+      });
+      return describe("when callback function given", function() {
+        beforeEach(function() {
+          this.callback = sinon.spy();
+          return this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+            initialState: "expanded",
+            onNodeHide: this.callback
+          }).data("treeTable");
+        });
+        it("is called when node is being hidden", function() {
+          this.table.roots()[0].collapse();
+          return expect(this.callback.called).to.be["true"];
+        });
+        return it("is not called when node is being shown", function() {
+          this.table.roots()[0].expand();
+          return expect(this.callback.called).to.be["false"];
+        });
+      });
+    });
+    return describe("onNodeShow", function() {
+      describe("when no callback given", function() {
+        return it("does not complain", function() {
+          var table;
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+            initialState: "expanded",
+            onNodeShow: null
+          }).data("treeTable");
+          return table.roots()[0].expand();
+        });
+      });
+      return describe("when callback function given", function() {
+        beforeEach(function() {
+          this.callback = sinon.spy();
+          return this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+            initialState: "expanded",
+            onNodeShow: this.callback
+          }).data("treeTable");
+        });
+        it("is called when node is being shown", function() {
+          this.table.roots()[0].expand();
+          return expect(this.callback.called).to.be["true"];
+        });
+        return it("is not called when node is being hidden", function() {
+          this.table.roots()[0].collapse();
+          return expect(this.callback.called).to.be["false"];
+        });
+      });
+    });
+  });
+
 }).call(this);

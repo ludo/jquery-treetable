@@ -406,3 +406,43 @@ describe "TreeTable.Tree", ->
 
       it "does not include non-root nodes", ->
         expect(@subject.roots()).to.not.include(@subject.tree[2])
+
+describe "events", ->
+  describe "onNodeHide", ->
+    describe "when no callback function given", ->
+      it "does not complain", ->
+        table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({ initialState: "expanded", onNodeHide: null }).data("treeTable")
+        table.roots()[0].collapse()
+
+    describe "when callback function given", ->
+      beforeEach ->
+        @callback = sinon.spy()
+        @table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({ initialState: "expanded", onNodeHide: @callback }).data("treeTable")
+
+      it "is called when node is being hidden", ->
+        @table.roots()[0].collapse()
+        expect(@callback.called).to.be.true
+
+      it "is not called when node is being shown", ->
+        @table.roots()[0].expand()
+        expect(@callback.called).to.be.false
+
+  describe "onNodeShow", ->
+    describe "when no callback given", ->
+      it "does not complain", ->
+        table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({ initialState: "expanded", onNodeShow: null }).data("treeTable")
+        table.roots()[0].expand()
+
+    describe "when callback function given", ->
+      beforeEach ->
+        @callback = sinon.spy()
+        @table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({ initialState: "expanded", onNodeShow: @callback }).data("treeTable")
+
+      it "is called when node is being shown", ->
+        @table.roots()[0].expand()
+        expect(@callback.called).to.be.true
+
+      it "is not called when node is being hidden", ->
+        @table.roots()[0].collapse()
+        expect(@callback.called).to.be.false
+

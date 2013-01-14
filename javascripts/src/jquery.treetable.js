@@ -39,6 +39,9 @@
       this._hideChildren();
       this.row.removeClass("expanded").addClass("collapsed");
       this.expander.attr("title", "Expand");
+      if ($.isFunction(this.settings.onNodeHide)) {
+        this.settings.onNodeHide();
+      }
       return this;
     };
 
@@ -46,6 +49,9 @@
       this.row.removeClass("collapsed").addClass("expanded");
       this._showChildren();
       this.expander.attr("title", "Collapse");
+      if ($.isFunction(this.settings.onNodeShow)) {
+        this.settings.onNodeShow();
+      }
       return this;
     };
 
@@ -186,7 +192,9 @@
         indenterTemplate: "<span class='indenter'></span>",
         initialState: "collapsed",
         nodeIdAttr: "ttId",
-        parentIdAttr: "ttParentId"
+        parentIdAttr: "ttParentId",
+        onNodeHide: null,
+        onNodeShow: null
       }, options);
       return this.each(function() {
         var tree;
