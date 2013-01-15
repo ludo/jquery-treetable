@@ -199,29 +199,81 @@
     });
     describe("indenter", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='0'><td>Branch Node</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>Leaf Node</td></tr></table>").treeTable().data("treeTable");
-        this.branchNode = this.table.tree[0];
-        return this.leafNode = this.table.tree[1];
+        this.table = $("<table><tr data-tt-id='0'><td>Root Node</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>Branch Node</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>Leaf Node</td></tr></table>").treeTable({
+          initialState: "expanded"
+        }).data("treeTable");
+        this.rootNode = this.table.tree[0];
+        this.branchNode = this.table.tree[1];
+        return this.leafNode = this.table.tree[2];
       });
       it("has the 'indenter' class", function() {
         return expect(this.branchNode.indenter).to.have["class"]("indenter");
       });
       describe("when root node", function() {
-        beforeEach(function() {
-          return sinon.stub(this.branchNode, "level").returns(0);
-        });
         return it("is not indented", function() {
-          this.branchNode.render();
-          return expect(this.branchNode.indenter.css("padding-left")).to.equal("0px");
+          return expect(this.rootNode.indenter.css("padding-left")).to.equal("0px");
         });
       });
-      return describe("when level 1 node", function() {
-        beforeEach(function() {
-          return sinon.stub(this.branchNode, "level").returns(1);
-        });
-        return it("is indented", function() {
-          this.branchNode.render();
+      describe("when level 1 branch node", function() {
+        return it("is indented 19px", function() {
           return expect(this.branchNode.indenter.css("padding-left")).to.equal("19px");
+        });
+      });
+      return describe("when level 2 leaf node", function() {
+        return it("is indented 38px", function() {
+          return expect(this.leafNode.indenter.css("padding-left")).to.equal("38px");
+        });
+      });
+    });
+    describe("initialized", function() {
+      beforeEach(function() {
+        return this.table = $("<table><tr data-tt-id='0'><td>Root Node</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>Leaf Node</td></tr></table>");
+      });
+      describe("when expandable is false", function() {
+        beforeEach(function() {
+          this.subject = this.table.treeTable({
+            expandable: false
+          }).data("treeTable").tree;
+          this.rootNode = this.subject[0];
+          return this.leafNode = this.subject[1];
+        });
+        it("initializes root nodes immediately", function() {
+          return expect(this.rootNode.initialized).to.be["true"];
+        });
+        return it("initializes non-root nodes immediately", function() {
+          return expect(this.leafNode.initialized).to.be["true"];
+        });
+      });
+      describe("when expandable is true and initialState is 'collapsed'", function() {
+        beforeEach(function() {
+          this.subject = this.table.treeTable({
+            expandable: true,
+            initialState: "collapsed"
+          }).data("treeTable").tree;
+          this.rootNode = this.subject[0];
+          return this.leafNode = this.subject[1];
+        });
+        it("initializes root nodes immediately", function() {
+          return expect(this.rootNode.initialized).to.be["true"];
+        });
+        return it("does not initialize non-root nodes immediately", function() {
+          return expect(this.leafNode.initialized).to.be["false"];
+        });
+      });
+      return describe("when expandable is true and initialState is 'expanded'", function() {
+        beforeEach(function() {
+          this.subject = this.table.treeTable({
+            expandable: true,
+            initialState: "expanded"
+          }).data("treeTable").tree;
+          this.rootNode = this.subject[0];
+          return this.leafNode = this.subject[1];
+        });
+        it("initializes root nodes immediately", function() {
+          return expect(this.rootNode.initialized).to.be["true"];
+        });
+        return it("initializes non-root nodes immediately", function() {
+          return expect(this.leafNode.initialized).to.be["true"];
         });
       });
     });
@@ -396,13 +448,13 @@
     describe("load()", function() {
       it("maintains chainability", function() {
         var subject;
-        subject = new TreeTable.Tree($("<table></table>"));
+        subject = new TreeTable.Tree($("<table></table>"), {});
         return expect(subject.load()).to.equal(subject);
       });
       describe("a table without rows", function() {
         return it("'s tree cache is empty", function() {
           var subject;
-          subject = new TreeTable.Tree($("<table></table>")).load().tree;
+          subject = new TreeTable.Tree($("<table></table>"), {}).load().tree;
           return expect(_.size(subject)).to.equal(0);
         });
       });
@@ -434,7 +486,7 @@
     describe("render()", function() {
       return it("maintains chainability", function() {
         var subject;
-        subject = new TreeTable.Tree($("<table></table>"));
+        subject = new TreeTable.Tree($("<table></table>"), {});
         return expect(subject.render()).to.equal(subject);
       });
     });

@@ -64,8 +64,10 @@ class Node
           $(@).parents("table").treeTable("node", $(@).parents("tr").data("ttId")).toggle()
           event.preventDefault()
 
-      if @settings.initialState is "collapsed"
-        @collapse()
+    if @settings.expandable is true and @settings.initialState is "collapsed"
+      @collapse()
+    else
+      @expand()
 
     @indenter[0].style.paddingLeft = "#{@level() * @settings.indent}px"
 
@@ -84,7 +86,7 @@ class Node
 
   _initialize: ->
     @render()
-    @initialized = true # TODO Test initialized
+    @initialized = true
 
   _showChildren: ->
     child.show() for child in @children

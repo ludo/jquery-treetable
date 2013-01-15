@@ -80,9 +80,11 @@
             return event.preventDefault();
           });
         }
-        if (this.settings.initialState === "collapsed") {
-          this.collapse();
-        }
+      }
+      if (this.settings.expandable === true && this.settings.initialState === "collapsed") {
+        this.collapse();
+      } else {
+        this.expand();
       }
       return this.indenter[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
     };
