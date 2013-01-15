@@ -5,16 +5,7 @@
     <meta charset="utf-8">
     <title>jQuery treetable</title>
     <link rel="stylesheet" href="stylesheets/screen.css" media="screen" />
-    <script src="vendor/jquery.js"></script>
-
     <link rel="stylesheet" href="stylesheets/jquery.treetable.css" />
-    <script src="javascripts/src/jquery.treetable.js"></script>
-
-    <script>
-      $(document).ready(function() {
-        $("#tree").treeTable({ expandable: true });
-      });
-    </script>
   </head>
   <body>
     <h1>jQuery treeTable Performance Test With D&amp;D</h1>
@@ -490,5 +481,16 @@
   </tbody>
 </table>
 
+    <script src="vendor/jquery.js"></script>
+    <script src="javascripts/src/jquery.treetable.js"></script>
+    <script>
+      $("#tree").treeTable({ expandable: true });
+
+      // Highlight selected row
+      $("#tree tbody tr").mousedown(function() {
+        $("tr.selected").removeClass("selected");
+        $(this).addClass("selected");
+      });
+    </script>
   </body>
 </html>

@@ -26,3 +26,16 @@ table.treeTable tr.collapsed span.indenter a {
 table.treeTable tr.expanded span.indenter a {
   background-image: url(../images/collapse.png);
 }
+
+table.treeTable tr.selected {
+  background-color: #3875d7;
+  color: #fff;
+}
+
+table.treeTable tr.collapsed.selected span.indenter a {
+  background-image: url(../images/expand-light.png);
+}
+
+table.treeTable tr.expanded.selected span.indenter a {
+  background-image: url(../images/collapse-light.png);
+}
