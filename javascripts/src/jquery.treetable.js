@@ -33,7 +33,7 @@
       this._hideChildren();
       this.row.removeClass("expanded").addClass("collapsed");
       this.expander.attr("title", "Expand");
-      if ($.isFunction(this.settings.onNodeHide)) {
+      if (this.initialized && $.isFunction(this.settings.onNodeHide)) {
         this.settings.onNodeHide();
       }
       return this;
@@ -43,7 +43,7 @@
       this.row.removeClass("collapsed").addClass("expanded");
       this._showChildren();
       this.expander.attr("title", "Collapse");
-      if ($.isFunction(this.settings.onNodeShow)) {
+      if (this.initialized && $.isFunction(this.settings.onNodeShow)) {
         this.settings.onNodeShow();
       }
       return this;

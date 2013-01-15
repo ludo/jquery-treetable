@@ -464,6 +464,12 @@ describe "events", ->
         @table.roots[0].expand()
         expect(@callback.called).to.be.false
 
+      # NOTE Not sure about this behavior
+      it "is not called when node is not initialized yet", ->
+        @table.roots[0].initialized = false
+        @table.roots[0].collapse()
+        expect(@callback.called).to.be.false
+
   describe "onNodeShow", ->
     describe "when no callback given", ->
       it "does not complain", ->
@@ -483,3 +489,8 @@ describe "events", ->
         @table.roots[0].collapse()
         expect(@callback.called).to.be.false
 
+      # NOTE Not sure about this behavior
+      it "is not called when node is not initialized yet", ->
+        @table.roots[0].initialized = false
+        @table.roots[0].expand()
+        expect(@callback.called).to.be.false

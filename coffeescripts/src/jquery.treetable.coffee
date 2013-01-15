@@ -25,7 +25,7 @@ class Node
     @row.removeClass("expanded").addClass("collapsed")
     @expander.attr("title", "Expand")
 
-    if $.isFunction(@settings.onNodeHide)
+    if @initialized and $.isFunction(@settings.onNodeHide)
       @settings.onNodeHide()
 
     @ # Chainability
@@ -37,7 +37,7 @@ class Node
     @_showChildren()
     @expander.attr("title", "Collapse")
 
-    if $.isFunction(@settings.onNodeShow)
+    if @initialized and $.isFunction(@settings.onNodeShow)
       @settings.onNodeShow()
 
     @ # Chainability
