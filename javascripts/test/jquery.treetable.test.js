@@ -106,23 +106,23 @@
         return expect(this.subject[4].ancestors()).to.not.include(this.subject[4]);
       });
     });
-    describe("children()", function() {
+    describe("children", function() {
       beforeEach(function() {
         return this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td><tr data-tt-id='5' data-tt-parent-id='2'><td>N5</td></tr></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree;
       });
       it("includes direct children", function() {
-        expect(_.size(this.subject[2].children())).to.equal(2);
-        expect(this.subject[2].children()).to.include(this.subject[3]);
-        return expect(this.subject[2].children()).to.include(this.subject[5]);
+        expect(_.size(this.subject[2].children)).to.equal(2);
+        expect(this.subject[2].children).to.include(this.subject[3]);
+        return expect(this.subject[2].children).to.include(this.subject[5]);
       });
       it("does not include grandchildren", function() {
-        return expect(this.subject[2].children()).to.not.include(this.subject[4]);
+        return expect(this.subject[2].children).to.not.include(this.subject[4]);
       });
       it("does not include parent", function() {
-        return expect(this.subject[2].children()).to.not.include(this.subject[2].parentNode());
+        return expect(this.subject[2].children).to.not.include(this.subject[2].parentNode());
       });
       return it("does not include node itself", function() {
-        return expect(this.subject[2].children()).to.not.include(this.subject[2]);
+        return expect(this.subject[2].children).to.not.include(this.subject[2]);
       });
     });
     describe("collapse()", function() {
@@ -269,7 +269,7 @@
     describe("parentId", function() {
       it("is extracted from row attributes", function() {
         var subject;
-        subject = $("<table><tr data-tt-id='42' data-tt-parent-id='12'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
+        subject = $("<table><tr data-tt-id='12'><td>N12</td></tr><tr data-tt-id='42' data-tt-parent-id='12'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
         return expect(subject.parentId).to.equal(12);
       });
       return it("is undefined when not available", function() {
@@ -438,12 +438,12 @@
         return expect(subject.render()).to.equal(subject);
       });
     });
-    return describe("roots()", function() {
+    return describe("roots", function() {
       describe("when no rows", function() {
         return it("is empty", function() {
           var subject;
           subject = $("<table></table>").treeTable().data("treeTable");
-          return expect(_.size(subject.roots())).to.equal(0);
+          return expect(_.size(subject.roots)).to.equal(0);
         });
       });
       describe("when single root node", function() {
@@ -452,12 +452,12 @@
         });
         it("includes root node when only one root node exists", function() {
           var roots;
-          roots = this.subject.roots();
+          roots = this.subject.roots;
           expect(_.size(roots)).to.equal(1);
           return expect(roots).to.include(this.subject.tree[1]);
         });
         return it("does not include non-root nodes", function() {
-          return expect(this.subject.roots()).to.not.include(this.subject.tree[2]);
+          return expect(this.subject.roots).to.not.include(this.subject.tree[2]);
         });
       });
       return describe("when multiple root nodes", function() {
@@ -466,13 +466,13 @@
         });
         it("includes all root nodes", function() {
           var roots;
-          roots = this.subject.roots();
+          roots = this.subject.roots;
           expect(_.size(roots)).to.equal(2);
           expect(roots).to.include(this.subject.tree[1]);
           return expect(roots).to.include(this.subject.tree[3]);
         });
         return it("does not include non-root nodes", function() {
-          return expect(this.subject.roots()).to.not.include(this.subject.tree[2]);
+          return expect(this.subject.roots).to.not.include(this.subject.tree[2]);
         });
       });
     });
@@ -487,7 +487,7 @@
             initialState: "expanded",
             onNodeHide: null
           }).data("treeTable");
-          return table.roots()[0].collapse();
+          return table.roots[0].collapse();
         });
       });
       return describe("when callback function given", function() {
@@ -499,11 +499,11 @@
           }).data("treeTable");
         });
         it("is called when node is being hidden", function() {
-          this.table.roots()[0].collapse();
+          this.table.roots[0].collapse();
           return expect(this.callback.called).to.be["true"];
         });
         return it("is not called when node is being shown", function() {
-          this.table.roots()[0].expand();
+          this.table.roots[0].expand();
           return expect(this.callback.called).to.be["false"];
         });
       });
@@ -516,7 +516,7 @@
             initialState: "expanded",
             onNodeShow: null
           }).data("treeTable");
-          return table.roots()[0].expand();
+          return table.roots[0].expand();
         });
       });
       return describe("when callback function given", function() {
@@ -528,11 +528,11 @@
           }).data("treeTable");
         });
         it("is called when node is being shown", function() {
-          this.table.roots()[0].expand();
+          this.table.roots[0].expand();
           return expect(this.callback.called).to.be["true"];
         });
         return it("is not called when node is being hidden", function() {
-          this.table.roots()[0].collapse();
+          this.table.roots[0].collapse();
           return expect(this.callback.called).to.be["false"];
         });
       });

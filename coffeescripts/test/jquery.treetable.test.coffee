@@ -85,23 +85,23 @@ describe "TreeTable.Node", ->
     it "does not include node itself", ->
       expect(@subject[4].ancestors()).to.not.include(@subject[4])
 
-  describe "children()", ->
+  describe "children", ->
     beforeEach ->
       @subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td><tr data-tt-id='5' data-tt-parent-id='2'><td>N5</td></tr></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree
 
     it "includes direct children", ->
-      expect(_.size @subject[2].children()).to.equal(2)
-      expect(@subject[2].children()).to.include(@subject[3])
-      expect(@subject[2].children()).to.include(@subject[5])
+      expect(_.size @subject[2].children).to.equal(2)
+      expect(@subject[2].children).to.include(@subject[3])
+      expect(@subject[2].children).to.include(@subject[5])
 
     it "does not include grandchildren", ->
-      expect(@subject[2].children()).to.not.include(@subject[4])
+      expect(@subject[2].children).to.not.include(@subject[4])
 
     it "does not include parent", ->
-      expect(@subject[2].children()).to.not.include(@subject[2].parentNode())
+      expect(@subject[2].children).to.not.include(@subject[2].parentNode())
 
     it "does not include node itself", ->
-      expect(@subject[2].children()).to.not.include(@subject[2])
+      expect(@subject[2].children).to.not.include(@subject[2])
 
   describe "collapse()", ->
     beforeEach ->
@@ -233,7 +233,7 @@ describe "TreeTable.Node", ->
 
   describe "parentId", ->
     it "is extracted from row attributes", ->
-      subject = $("<table><tr data-tt-id='42' data-tt-parent-id='12'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42]
+      subject = $("<table><tr data-tt-id='12'><td>N12</td></tr><tr data-tt-id='42' data-tt-parent-id='12'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42]
       expect(subject.parentId).to.equal(12)
 
     it "is undefined when not available", ->
@@ -376,43 +376,43 @@ describe "TreeTable.Tree", ->
       subject = new TreeTable.Tree($("<table></table>"))
       expect(subject.render()).to.equal(subject)
 
-  describe "roots()", ->
+  describe "roots", ->
     describe "when no rows", ->
       it "is empty", ->
         subject = $("<table></table>").treeTable().data("treeTable")
-        expect(_.size subject.roots()).to.equal(0)
+        expect(_.size subject.roots).to.equal(0)
 
     describe "when single root node", ->
       beforeEach ->
         @subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable().data("treeTable")
 
       it "includes root node when only one root node exists", ->
-        roots = @subject.roots()
+        roots = @subject.roots
         expect(_.size roots).to.equal(1)
         expect(roots).to.include(@subject.tree[1])
 
       it "does not include non-root nodes", ->
-        expect(@subject.roots()).to.not.include(@subject.tree[2])
+        expect(@subject.roots).to.not.include(@subject.tree[2])
 
     describe "when multiple root nodes", ->
       beforeEach ->
         @subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3'><td>N3</td></tr></table>").treeTable().data("treeTable")
 
       it "includes all root nodes", ->
-        roots = @subject.roots()
+        roots = @subject.roots
         expect(_.size roots).to.equal(2)
         expect(roots).to.include(@subject.tree[1])
         expect(roots).to.include(@subject.tree[3])
 
       it "does not include non-root nodes", ->
-        expect(@subject.roots()).to.not.include(@subject.tree[2])
+        expect(@subject.roots).to.not.include(@subject.tree[2])
 
 describe "events", ->
   describe "onNodeHide", ->
     describe "when no callback function given", ->
       it "does not complain", ->
         table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({ initialState: "expanded", onNodeHide: null }).data("treeTable")
-        table.roots()[0].collapse()
+        table.roots[0].collapse()
 
     describe "when callback function given", ->
       beforeEach ->
@@ -420,18 +420,18 @@ describe "events", ->
         @table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({ initialState: "expanded", onNodeHide: @callback }).data("treeTable")
 
       it "is called when node is being hidden", ->
-        @table.roots()[0].collapse()
+        @table.roots[0].collapse()
         expect(@callback.called).to.be.true
 
       it "is not called when node is being shown", ->
-        @table.roots()[0].expand()
+        @table.roots[0].expand()
         expect(@callback.called).to.be.false
 
   describe "onNodeShow", ->
     describe "when no callback given", ->
       it "does not complain", ->
         table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({ initialState: "expanded", onNodeShow: null }).data("treeTable")
-        table.roots()[0].expand()
+        table.roots[0].expand()
 
     describe "when callback function given", ->
       beforeEach ->
@@ -439,10 +439,10 @@ describe "events", ->
         @table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({ initialState: "expanded", onNodeShow: @callback }).data("treeTable")
 
       it "is called when node is being shown", ->
-        @table.roots()[0].expand()
+        @table.roots[0].expand()
         expect(@callback.called).to.be.true
 
       it "is not called when node is being hidden", ->
-        @table.roots()[0].collapse()
+        @table.roots[0].collapse()
         expect(@callback.called).to.be.false
 

@@ -9,6 +9,9 @@ class Node
     @expander = $(@settings.expanderTemplate)
     @indenter = $(@settings.indenterTemplate)
 
+    @children = []
+    @initialized = false
+
     @treeCell.prepend(@indenter)
 
   ancestors: ->
@@ -16,11 +19,6 @@ class Node
     ancestors = []
     ancestors.push node while node = node.parentNode()
     return ancestors
-
-  children: ->
-    id = @id # Can't do without this?
-    _.filter _.values(@tree), (node) ->
-      node.parentId is id
 
   collapse: ->
     @_hideChildren()
@@ -60,7 +58,7 @@ class Node
 
   render: ->
     if @settings.expandable is true
-      if @children().length > 0
+      if @children.length > 0
         @indenter.html(@expander)
         @expander.bind "click.treeTable", (event) ->
           $(@).parents("table").treeTable("node", $(@).parents("tr").data("ttId")).toggle()
@@ -72,6 +70,7 @@ class Node
     @indenter[0].style.paddingLeft = "#{@level() * @settings.indent}px"
 
   show: ->
+    @_initialize() if not @initialized
     @row.show()
     @_showChildren() if @expanded()
     @ # Chainability
@@ -81,15 +80,20 @@ class Node
     @ # Chainability
 
   _hideChildren: ->
-    child.hide() for child in @children()
+    child.hide() for child in @children
+
+  _initialize: ->
+    @render()
+    @initialized = true # TODO Test initialized
 
   _showChildren: ->
-    child.show() for child in @children()
+    child.show() for child in @children
 
 
 class Tree
   constructor: (@table, @settings) ->
     @tree = {}
+    @roots = []
 
   load: ->
     if @table.rows?
@@ -98,18 +102,22 @@ class Tree
         if row.data(@settings.nodeIdAttr)?
           node = new Node($(row), @tree, @settings)
           @tree[node.id] = node
+
+          if node.parentId?
+            parent = @tree[node.parentId]
+            parent.children[parent.children.length] = node
+          else
+            @roots[@roots.length] = node
+
     @ # Chainability
 
   render: ->
-    for node in _.values(@tree)
-      node.render()
+    for root in @roots
+      # Naming is confusing (show/render). I do not call render on node from
+      # here.
+      root.show()
 
     @ # Chainability
-
-  roots: ->
-    _.filter _.values(@tree), (node) ->
-      not node.parentId?
-
 
 # jQuery Plugin
 methods =

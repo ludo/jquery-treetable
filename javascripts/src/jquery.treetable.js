@@ -14,6 +14,8 @@
       this.treeCell = $(this.row.children(this.settings.columnElType)[this.settings.column]);
       this.expander = $(this.settings.expanderTemplate);
       this.indenter = $(this.settings.indenterTemplate);
+      this.children = [];
+      this.initialized = false;
       this.treeCell.prepend(this.indenter);
     }
 
@@ -25,14 +27,6 @@
         ancestors.push(node);
       }
       return ancestors;
-    };
-
-    Node.prototype.children = function() {
-      var id;
-      id = this.id;
-      return _.filter(_.values(this.tree), function(node) {
-        return node.parentId === id;
-      });
     };
 
     Node.prototype.collapse = function() {
@@ -79,7 +73,7 @@
 
     Node.prototype.render = function() {
       if (this.settings.expandable === true) {
-        if (this.children().length > 0) {
+        if (this.children.length > 0) {
           this.indenter.html(this.expander);
           this.expander.bind("click.treeTable", function(event) {
             $(this).parents("table").treeTable("node", $(this).parents("tr").data("ttId")).toggle();
@@ -94,6 +88,9 @@
     };
 
     Node.prototype.show = function() {
+      if (!this.initialized) {
+        this._initialize();
+      }
       this.row.show();
       if (this.expanded()) {
         this._showChildren();
@@ -112,7 +109,7 @@
 
     Node.prototype._hideChildren = function() {
       var child, _i, _len, _ref, _results;
-      _ref = this.children();
+      _ref = this.children;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         child = _ref[_i];
@@ -121,9 +118,14 @@
       return _results;
     };
 
+    Node.prototype._initialize = function() {
+      this.render();
+      return this.initialized = true;
+    };
+
     Node.prototype._showChildren = function() {
       var child, _i, _len, _ref, _results;
-      _ref = this.children();
+      _ref = this.children;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         child = _ref[_i];
@@ -142,10 +144,11 @@
       this.table = table;
       this.settings = settings;
       this.tree = {};
+      this.roots = [];
     }
 
     Tree.prototype.load = function() {
-      var node, row, _i, _len, _ref;
+      var node, parent, row, _i, _len, _ref;
       if (this.table.rows != null) {
         _ref = this.table.rows;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -154,6 +157,12 @@
           if (row.data(this.settings.nodeIdAttr) != null) {
             node = new Node($(row), this.tree, this.settings);
             this.tree[node.id] = node;
+            if (node.parentId != null) {
+              parent = this.tree[node.parentId];
+              parent.children[parent.children.length] = node;
+            } else {
+              this.roots[this.roots.length] = node;
+            }
           }
         }
       }
@@ -161,19 +170,13 @@
     };
 
     Tree.prototype.render = function() {
-      var node, _i, _len, _ref;
-      _ref = _.values(this.tree);
+      var root, _i, _len, _ref;
+      _ref = this.roots;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        node = _ref[_i];
-        node.render();
+        root = _ref[_i];
+        root.show();
       }
       return this;
-    };
-
-    Tree.prototype.roots = function() {
-      return _.filter(_.values(this.tree), function(node) {
-        return !(node.parentId != null);
-      });
     };
 
     return Tree;
