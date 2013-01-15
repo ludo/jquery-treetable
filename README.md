@@ -9,4 +9,3 @@ This is an experimental rewrite.
 * D&D between tables
 * Documentation
 * Persist
-* Optimize performance (lazy loading?)
