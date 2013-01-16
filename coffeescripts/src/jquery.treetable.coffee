@@ -57,12 +57,11 @@ class Node
     if @parentId? then @tree[@parentId] else null
 
   render: ->
-    if @settings.expandable is true
-      if @children.length > 0
-        @indenter.html(@expander)
-        @expander.bind "click.treeTable", (event) ->
-          $(@).parents("table").treeTable("node", $(@).parents("tr").data("ttId")).toggle()
-          event.preventDefault()
+    if @settings.expandable is true and @children.length > 0
+      @indenter.html(@expander)
+      @expander.bind "click.treeTable", (event) ->
+        $(@).parents("table").treeTable("node", $(@).parents("tr").data("ttId")).toggle()
+        event.preventDefault()
 
     if @settings.expandable is true and @settings.initialState is "collapsed"
       @collapse()

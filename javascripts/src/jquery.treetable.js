@@ -72,14 +72,12 @@
     };
 
     Node.prototype.render = function() {
-      if (this.settings.expandable === true) {
-        if (this.children.length > 0) {
-          this.indenter.html(this.expander);
-          this.expander.bind("click.treeTable", function(event) {
-            $(this).parents("table").treeTable("node", $(this).parents("tr").data("ttId")).toggle();
-            return event.preventDefault();
-          });
-        }
+      if (this.settings.expandable === true && this.children.length > 0) {
+        this.indenter.html(this.expander);
+        this.expander.bind("click.treeTable", function(event) {
+          $(this).parents("table").treeTable("node", $(this).parents("tr").data("ttId")).toggle();
+          return event.preventDefault();
+        });
       }
       if (this.settings.expandable === true && this.settings.initialState === "collapsed") {
         this.collapse();
