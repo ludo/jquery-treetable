@@ -482,6 +482,7 @@
     </table>
 
     <script src="vendor/jquery.js"></script>
+    <script src="vendor/jquery-ui.js"></script>
     <script src="javascripts/src/jquery.treetable.js"></script>
     <script>
       $("#tree").treeTable({ expandable: true });
@@ -490,6 +491,36 @@
       $("#tree tbody tr").mousedown(function() {
         $("tr.selected").removeClass("selected");
         $(this).addClass("selected");
+      });
+
+      // Drag & Drop Example Code
+      $("#tree .file, #tree .folder").draggable({
+        helper: "clone",
+        opacity: .75,
+        refreshPositions: true, // Performance?
+        revert: "invalid",
+        revertDuration: 300,
+        scroll: true
+      });
+
+      $("#tree .folder").each(function() {
+        $(this).parents("tr").droppable({
+          accept: ".file, .folder",
+          drop: function(e, ui) {
+            var destinationNode = $("#tree").treeTable("node", $(this).data("ttId"))
+            var droppedEl = ui.draggable.parents("tr");
+            var droppedNode = $("#tree").treeTable("node", droppedEl.data("ttId"))
+            $("#tree").treeTable("move", droppedNode, destinationNode);
+          },
+          hoverClass: "accept",
+          over: function(e, ui) {
+            var destinationNode = $("#tree").treeTable("node", $(this).data("ttId"))
+            var droppedEl = ui.draggable.parents("tr");
+            if(this != droppedEl[0] && !$(this).is(".expanded")) {
+              destinationNode.expand();
+            }
+          }
+        });
       });
     </script>
   </body>

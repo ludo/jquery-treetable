@@ -148,6 +148,10 @@ methods =
     @.each ->
       $(@).removeData("treeTable").removeClass("treeTable")
 
+  # TODO collapseAll
+  # TODO expandAll
+  # TODO move: (node, destination)
+
   node: (id) ->
     $(@).data("treeTable").tree[id]
 
