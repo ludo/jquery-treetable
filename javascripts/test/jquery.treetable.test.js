@@ -89,6 +89,28 @@
         return _results;
       });
     });
+    describe("collapseNode()", function() {
+      beforeEach(function() {
+        return this.subject.treeTable({
+          initialState: "expanded"
+        });
+      });
+      it("collapses a root node", function() {
+        var row;
+        row = $(this.subject[0].rows[0]);
+        this.subject.treeTable("collapseNode", row.data("ttId"));
+        return expect(row).to.have["class"]("collapsed");
+      });
+      it("collapses a branch node", function() {
+        var row;
+        row = $(this.subject[0].rows[1]);
+        this.subject.treeTable("collapseNode", row.data("ttId"));
+        return expect(row).to.have["class"]("collapsed");
+      });
+      return it("throws an error for unknown nodes", function() {
+        return this.subject.treeTable("collapseNode", "whatever");
+      });
+    });
     describe("expandAll()", function() {
       beforeEach(function() {
         return this.subject.treeTable({
@@ -105,6 +127,28 @@
           _results.push(expect($(row)).to.have["class"]("expanded"));
         }
         return _results;
+      });
+    });
+    describe("expandNode()", function() {
+      beforeEach(function() {
+        return this.subject.treeTable({
+          initialState: "collapsed"
+        });
+      });
+      it("expands a root node", function() {
+        var row;
+        row = $(this.subject[0].rows[0]);
+        this.subject.treeTable("expandNode", row.data("ttId"));
+        return expect(row).to.have["class"]("expanded");
+      });
+      it("expands a branch node", function() {
+        var row;
+        row = $(this.subject[0].rows[1]);
+        this.subject.treeTable("expandNode", row.data("ttId"));
+        return expect(row).to.have["class"]("expanded");
+      });
+      return it("throws an error for unknown nodes", function() {
+        return this.subject.treeTable("collapseNode", "whatever");
       });
     });
     return describe("node()", function() {

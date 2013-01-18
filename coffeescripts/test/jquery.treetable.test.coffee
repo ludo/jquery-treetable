@@ -58,18 +58,52 @@ describe "treeTable()", ->
       @subject.treeTable(initialState: "expanded")
 
     it "collapses all nodes", ->
-      @subject.treeTable("collapseAll");
+      @subject.treeTable("collapseAll")
       for row in @subject[0].rows
         expect($(row)).to.have.class("collapsed")
+
+  describe "collapseNode()", ->
+    beforeEach ->
+      @subject.treeTable(initialState: "expanded")
+
+    it "collapses a root node", ->
+      row = $(@subject[0].rows[0])
+      @subject.treeTable("collapseNode", row.data("ttId"))
+      expect(row).to.have.class("collapsed")
+
+    it "collapses a branch node", ->
+      row = $(@subject[0].rows[1])
+      @subject.treeTable("collapseNode", row.data("ttId"))
+      expect(row).to.have.class("collapsed")
+
+    it "throws an error for unknown nodes", ->
+      @subject.treeTable("collapseNode", "whatever")
 
   describe "expandAll()", ->
     beforeEach ->
       @subject.treeTable(initialState: "collapsed")
 
     it "expands all nodes", ->
-      @subject.treeTable("expandAll");
+      @subject.treeTable("expandAll")
       for row in @subject[0].rows
         expect($(row)).to.have.class("expanded")
+
+  describe "expandNode()", ->
+    beforeEach ->
+      @subject.treeTable(initialState: "collapsed")
+
+    it "expands a root node", ->
+      row = $(@subject[0].rows[0])
+      @subject.treeTable("expandNode", row.data("ttId"))
+      expect(row).to.have.class("expanded")
+
+    it "expands a branch node", ->
+      row = $(@subject[0].rows[1])
+      @subject.treeTable("expandNode", row.data("ttId"))
+      expect(row).to.have.class("expanded")
+
+    it "throws an error for unknown nodes", ->
+      @subject.treeTable("collapseNode", "whatever")
 
   describe "node()", ->
     beforeEach ->

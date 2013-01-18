@@ -511,17 +511,14 @@
         $(this).parents("tr").droppable({
           accept: ".file, .folder",
           drop: function(e, ui) {
-            var destinationNode = $("#tree").treeTable("node", $(this).data("ttId"))
             var droppedEl = ui.draggable.parents("tr");
-            var droppedNode = $("#tree").treeTable("node", droppedEl.data("ttId"))
-            $("#tree").treeTable("move", droppedNode, destinationNode);
+            $("#tree").treeTable("move", droppedEl.data("ttId"), $(this).data("ttId"));
           },
           hoverClass: "accept",
           over: function(e, ui) {
-            var destinationNode = $("#tree").treeTable("node", $(this).data("ttId"))
             var droppedEl = ui.draggable.parents("tr");
             if(this != droppedEl[0] && !$(this).is(".expanded")) {
-              destinationNode.expand();
+              $("#tree").treeTable("expandNode", $(this).data("ttId"));
             }
           }
         });

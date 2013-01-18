@@ -238,8 +238,17 @@
     collapseAll: function() {
       return this.data("treeTable").collapseAll();
     },
+    collapseNode: function(id) {
+      return this.data("treeTable").tree[id].collapse();
+    },
     expandAll: function() {
       return this.data("treeTable").expandAll();
+    },
+    expandNode: function(id) {
+      return this.data("treeTable").tree[id].expand();
+    },
+    move: function(node, destination) {
+      return this.data("treeTable").move(node, destination);
     },
     node: function(id) {
       return this.data("treeTable").tree[id];

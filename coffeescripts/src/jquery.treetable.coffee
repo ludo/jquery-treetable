@@ -163,10 +163,17 @@ methods =
   collapseAll: ->
     @.data("treeTable").collapseAll()
 
+  collapseNode: (id) ->
+    @.data("treeTable").tree[id].collapse()
+
   expandAll: ->
     @.data("treeTable").expandAll()
 
-  # TODO move: (node, destination)
+  expandNode: (id) ->
+    @.data("treeTable").tree[id].expand()
+
+  move: (node, destination) ->
+    @.data("treeTable").move(node, destination)
 
   node: (id) ->
     @.data("treeTable").tree[id]
