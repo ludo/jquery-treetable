@@ -242,7 +242,7 @@
       return this.data("treeTable").expandAll();
     },
     node: function(id) {
-      return $(this).data("treeTable").tree[id];
+      return this.data("treeTable").tree[id];
     }
   };
 

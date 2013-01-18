@@ -169,7 +169,7 @@ methods =
   # TODO move: (node, destination)
 
   node: (id) ->
-    $(@).data("treeTable").tree[id]
+    @.data("treeTable").tree[id]
 
 $.fn.treeTable = (method) ->
   if methods[method]
