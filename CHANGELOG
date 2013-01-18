@@ -1,9 +1,10 @@
-== Unreleased
+== 2.3.1 - 18 January 2013
 * [FEATURE] Keyboard accessibility (#27, #30)
 * [FEATURE] Optionally persist expanded node state using $.cookie (requires
 jquery-cookie plugin) (#19)
 * [ENHANCEMENT] Passing options to $.cookie persistence (#31)
 * [ENHANCEMENT] Use addClass('ui-helper-hidden') as suggested by whittet (#15)
+* [ENHANCEMENT] Added manifest file for jQuery plugin registry
 * [BUG] onNodeShow doesn't pass context (#28)
 * [BUG] Fixed problems with multiple treeTables with identical rows on the
 same page (#16)
