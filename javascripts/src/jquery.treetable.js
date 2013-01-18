@@ -144,8 +144,31 @@
       this.table = table;
       this.settings = settings;
       this.tree = {};
+      this.nodes = [];
       this.roots = [];
     }
+
+    Tree.prototype.collapseAll = function() {
+      var node, _i, _len, _ref, _results;
+      _ref = this.nodes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        node = _ref[_i];
+        _results.push(node.collapse());
+      }
+      return _results;
+    };
+
+    Tree.prototype.expandAll = function() {
+      var node, _i, _len, _ref, _results;
+      _ref = this.nodes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        node = _ref[_i];
+        _results.push(node.expand());
+      }
+      return _results;
+    };
 
     Tree.prototype.load = function() {
       var node, parent, row, _i, _len, _ref;
@@ -156,6 +179,7 @@
           row = $(row);
           if (row.data(this.settings.nodeIdAttr) != null) {
             node = new Node($(row), this.tree, this.settings);
+            this.nodes[this.nodes.length] = node;
             this.tree[node.id] = node;
             if (node.parentId != null) {
               parent = this.tree[node.parentId];
@@ -210,6 +234,12 @@
       return this.each(function() {
         return $(this).removeData("treeTable").removeClass("treeTable");
       });
+    },
+    collapseAll: function() {
+      return this.data("treeTable").collapseAll();
+    },
+    expandAll: function() {
+      return this.data("treeTable").expandAll();
     },
     node: function(id) {
       return $(this).data("treeTable").tree[id];

@@ -5,7 +5,7 @@
 
   describe("treeTable()", function() {
     beforeEach(function() {
-      return this.subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>");
+      return this.subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>");
     });
     it("maintains chainability", function() {
       return expect(this.subject.treeTable()).to.equal(this.subject);
@@ -69,6 +69,42 @@
         return it("does not render a clickable node toggler", function() {
           return expect(this.subject.treeTable("node", 1).row).to.not.have("a");
         });
+      });
+    });
+    describe("collapseAll()", function() {
+      beforeEach(function() {
+        return this.subject.treeTable({
+          initialState: "expanded"
+        });
+      });
+      return it("collapses all nodes", function() {
+        var row, _i, _len, _ref, _results;
+        this.subject.treeTable("collapseAll");
+        _ref = this.subject[0].rows;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          row = _ref[_i];
+          _results.push(expect($(row)).to.have["class"]("collapsed"));
+        }
+        return _results;
+      });
+    });
+    describe("expandAll()", function() {
+      beforeEach(function() {
+        return this.subject.treeTable({
+          initialState: "collapsed"
+        });
+      });
+      return it("expands all nodes", function() {
+        var row, _i, _len, _ref, _results;
+        this.subject.treeTable("expandAll");
+        _ref = this.subject[0].rows;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          row = _ref[_i];
+          _results.push(expect($(row)).to.have["class"]("expanded"));
+        }
+        return _results;
       });
     });
     return describe("node()", function() {

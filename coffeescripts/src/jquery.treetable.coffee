@@ -94,7 +94,18 @@ class Node
 class Tree
   constructor: (@table, @settings) ->
     @tree = {}
+
+    # Cache the nodes and roots in simple arrays for quick access/iteration
+    @nodes = []
     @roots = []
+
+  collapseAll: ->
+    for node in @nodes
+      node.collapse()
+
+  expandAll: ->
+    for node in @nodes
+      node.expand()
 
   load: ->
     if @table.rows?
@@ -102,6 +113,7 @@ class Tree
         row = $(row)
         if row.data(@settings.nodeIdAttr)?
           node = new Node($(row), @tree, @settings)
+          @nodes[@nodes.length] = node
           @tree[node.id] = node
 
           if node.parentId?
@@ -148,8 +160,12 @@ methods =
     @.each ->
       $(@).removeData("treeTable").removeClass("treeTable")
 
-  # TODO collapseAll
-  # TODO expandAll
+  collapseAll: ->
+    @.data("treeTable").collapseAll()
+
+  expandAll: ->
+    @.data("treeTable").expandAll()
+
   # TODO move: (node, destination)
 
   node: (id) ->

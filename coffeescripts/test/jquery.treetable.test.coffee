@@ -2,7 +2,7 @@ expect = chai.expect
 
 describe "treeTable()", ->
   beforeEach ->
-    @subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>")
+    @subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>")
 
   it "maintains chainability", ->
     expect(@subject.treeTable()).to.equal(@subject)
@@ -52,6 +52,24 @@ describe "treeTable()", ->
     describe "for nodes without children", ->
       it "does not render a clickable node toggler", ->
         expect(@subject.treeTable("node", 1).row).to.not.have("a")
+
+  describe "collapseAll()", ->
+    beforeEach ->
+      @subject.treeTable(initialState: "expanded")
+
+    it "collapses all nodes", ->
+      @subject.treeTable("collapseAll");
+      for row in @subject[0].rows
+        expect($(row)).to.have.class("collapsed")
+
+  describe "expandAll()", ->
+    beforeEach ->
+      @subject.treeTable(initialState: "collapsed")
+
+    it "expands all nodes", ->
+      @subject.treeTable("expandAll");
+      for row in @subject[0].rows
+        expect($(row)).to.have.class("expanded")
 
   describe "node()", ->
     beforeEach ->
