@@ -164,13 +164,21 @@ methods =
     @.data("treeTable").collapseAll()
 
   collapseNode: (id) ->
-    @.data("treeTable").tree[id].collapse()
+    node = @.data("treeTable").tree[id]
+    if node
+      node.collapse()
+    else
+      throw new Error("Unknown node '#{id}'")
 
   expandAll: ->
     @.data("treeTable").expandAll()
 
   expandNode: (id) ->
-    @.data("treeTable").tree[id].expand()
+    node = @.data("treeTable").tree[id]
+    if node
+      node.expand()
+    else
+      throw new Error("Unknown node '#{id}'")
 
   move: (node, destination) ->
     @.data("treeTable").move(node, destination)

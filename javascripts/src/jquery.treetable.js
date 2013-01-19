@@ -239,13 +239,25 @@
       return this.data("treeTable").collapseAll();
     },
     collapseNode: function(id) {
-      return this.data("treeTable").tree[id].collapse();
+      var node;
+      node = this.data("treeTable").tree[id];
+      if (node) {
+        return node.collapse();
+      } else {
+        throw new Error("Unknown node '" + id + "'");
+      }
     },
     expandAll: function() {
       return this.data("treeTable").expandAll();
     },
     expandNode: function(id) {
-      return this.data("treeTable").tree[id].expand();
+      var node;
+      node = this.data("treeTable").tree[id];
+      if (node) {
+        return node.expand();
+      } else {
+        throw new Error("Unknown node '" + id + "'");
+      }
     },
     move: function(node, destination) {
       return this.data("treeTable").move(node, destination);

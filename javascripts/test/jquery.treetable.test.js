@@ -108,7 +108,12 @@
         return expect(row).to.have["class"]("collapsed");
       });
       return it("throws an error for unknown nodes", function() {
-        return this.subject.treeTable("collapseNode", "whatever");
+        var fn, subject;
+        subject = this.subject;
+        fn = function() {
+          return subject.treeTable("collapseNode", "whatever");
+        };
+        return expect(fn).to["throw"](Error, "Unknown node 'whatever'");
       });
     });
     describe("expandAll()", function() {
@@ -148,7 +153,12 @@
         return expect(row).to.have["class"]("expanded");
       });
       return it("throws an error for unknown nodes", function() {
-        return this.subject.treeTable("collapseNode", "whatever");
+        var fn, subject;
+        subject = this.subject;
+        fn = function() {
+          return subject.treeTable("expandNode", "whatever");
+        };
+        return expect(fn).to["throw"](Error, "Unknown node 'whatever'");
       });
     });
     return describe("node()", function() {

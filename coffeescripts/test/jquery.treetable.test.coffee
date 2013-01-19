@@ -77,7 +77,10 @@ describe "treeTable()", ->
       expect(row).to.have.class("collapsed")
 
     it "throws an error for unknown nodes", ->
-      @subject.treeTable("collapseNode", "whatever")
+      # TODO Figure out if there is a cleaner way to write this test
+      subject = @subject
+      fn = -> subject.treeTable("collapseNode", "whatever")
+      expect(fn).to.throw(Error, "Unknown node 'whatever'")
 
   describe "expandAll()", ->
     beforeEach ->
@@ -103,7 +106,10 @@ describe "treeTable()", ->
       expect(row).to.have.class("expanded")
 
     it "throws an error for unknown nodes", ->
-      @subject.treeTable("collapseNode", "whatever")
+      # TODO Figure out if there is a cleaner way to write this test
+      subject = @subject
+      fn = -> subject.treeTable("expandNode", "whatever")
+      expect(fn).to.throw(Error, "Unknown node 'whatever'")
 
   describe "node()", ->
     beforeEach ->
