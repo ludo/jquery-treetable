@@ -6,7 +6,8 @@
     "explorer",
     "file",
     "table",
-    "tree"
+    "tree",
+    "ui"
   ],
   "version": "3.0.0",
   "author": {
