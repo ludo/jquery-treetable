@@ -99,6 +99,13 @@
       return this.indenter[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
     };
 
+    Node.prototype.reveal = function() {
+      if (this.parentId != null) {
+        this.parentNode().reveal();
+      }
+      return this.expand();
+    };
+
     Node.prototype.setParent = function(node) {
       if (this.parentId != null) {
         this.tree[this.parentId].removeChild(this);
@@ -308,6 +315,15 @@
     },
     node: function(id) {
       return this.data("treeTable").tree[id];
+    },
+    reveal: function(id) {
+      var node;
+      node = this.data("treeTable").tree[id];
+      if (node) {
+        return node.reveal();
+      } else {
+        throw new Error("Unknown node '" + id + "'");
+      }
     }
   };
 

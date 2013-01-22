@@ -79,6 +79,11 @@ class Node
 
     @indenter[0].style.paddingLeft = "#{@level() * @settings.indent}px"
 
+  reveal: ->
+    if @parentId?
+      @parentNode().reveal()
+    @expand()
+
   setParent: (node) ->
     if @parentId?
       @tree[@parentId].removeChild(this)
@@ -223,6 +228,13 @@ methods =
 
   node: (id) ->
     @.data("treeTable").tree[id]
+
+  reveal: (id) ->
+    node = @.data("treeTable").tree[id]
+    if node
+      node.reveal()
+    else
+      throw new Error("Unknown node '#{id}'")
 
 $.fn.treeTable = (method) ->
   if methods[method]

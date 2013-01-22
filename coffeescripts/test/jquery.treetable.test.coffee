@@ -559,6 +559,29 @@ describe "TreeTable.Tree", ->
       subject = new TreeTable.Tree($("<table></table>"), {})
       expect(subject.render()).to.equal(subject)
 
+  describe "reveal()", ->
+    beforeEach ->
+      @table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable(expandable: true).appendTo("body")
+      @subject = @table.data("treeTable")
+
+    afterEach ->
+      @table.remove()
+
+    it "reveals a node", ->
+      expect(@subject.tree[2].row).to.not.be.visible
+      @table.treeTable("reveal", 2)
+      expect(@subject.tree[2].row).to.be.visible
+
+    it "expands the ancestors of the node", ->
+      expect(@subject.tree[1].row).to.not.be.visible
+      @table.treeTable("reveal", 2)
+      expect(@subject.tree[1].row).to.be.visible
+
+    it "throws an error for unknown nodes", ->
+      table = @table
+      fn = -> table.treeTable("reveal", "whatever")
+      expect(fn).to.throw(Error, "Unknown node 'whatever'")
+
   describe "roots", ->
     describe "when no rows", ->
       it "is empty", ->

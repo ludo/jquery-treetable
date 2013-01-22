@@ -681,6 +681,35 @@
         return expect(subject.render()).to.equal(subject);
       });
     });
+    describe("reveal()", function() {
+      beforeEach(function() {
+        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+          expandable: true
+        }).appendTo("body");
+        return this.subject = this.table.data("treeTable");
+      });
+      afterEach(function() {
+        return this.table.remove();
+      });
+      it("reveals a node", function() {
+        expect(this.subject.tree[2].row).to.not.be.visible;
+        this.table.treeTable("reveal", 2);
+        return expect(this.subject.tree[2].row).to.be.visible;
+      });
+      it("expands the ancestors of the node", function() {
+        expect(this.subject.tree[1].row).to.not.be.visible;
+        this.table.treeTable("reveal", 2);
+        return expect(this.subject.tree[1].row).to.be.visible;
+      });
+      return it("throws an error for unknown nodes", function() {
+        var fn, table;
+        table = this.table;
+        fn = function() {
+          return table.treeTable("reveal", "whatever");
+        };
+        return expect(fn).to["throw"](Error, "Unknown node 'whatever'");
+      });
+    });
     return describe("roots", function() {
       describe("when no rows", function() {
         return it("is empty", function() {
