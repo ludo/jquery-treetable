@@ -32,7 +32,7 @@ class Node
     if @initialized and $.isFunction(@settings.onNodeHide)
       @settings.onNodeHide()
 
-    @ # Chainability
+    return this # Chainability
 
   # TODO destroy: remove event handlers, expander, indenter, etc.
 
@@ -44,7 +44,7 @@ class Node
     if @initialized and $.isFunction(@settings.onNodeShow)
       @settings.onNodeShow()
 
-    @ # Chainability
+    return this # Chainability
 
   expanded: ->
     @row.hasClass("expanded")
@@ -52,7 +52,7 @@ class Node
   hide: ->
     @_hideChildren()
     @row.hide()
-    @ # Chainability
+    return this # Chainability
 
   level: ->
     @ancestors().length
@@ -86,11 +86,11 @@ class Node
     @_initialize() if not @initialized
     @row.show()
     @_showChildren() if @expanded()
-    @ # Chainability
+    return this # Chainability
 
   toggle: ->
     if @expanded() then @collapse() else @expand()
-    @ # Chainability
+    return this # Chainability
 
   _hideChildren: ->
     child.hide() for child in @children
@@ -133,7 +133,7 @@ class Tree
           else
             @roots.push(node)
 
-    @ # Chainability
+    return this # Chainability
 
   move: (node, destination) ->
     # Conditions:
@@ -153,8 +153,7 @@ class Tree
       destination.addChild(node)
       @_moveRows(node, destination)
 
-    # TODO Write return this i.o. @
-    @ # Chainability
+    return this # Chainability
 
   render: ->
     for root in @roots
@@ -162,7 +161,7 @@ class Tree
       # here.
       root.show()
 
-    @ # Chainability
+    return this # Chainability
 
   _moveRows: (node, destination) ->
     node.row.insertAfter(destination.row)
