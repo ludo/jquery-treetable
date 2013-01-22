@@ -176,7 +176,7 @@
   });
 
   describe("TreeTable.Node", function() {
-    describe("addChild", function() {
+    describe("addChild()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1'><td>N1</td></tr></table>");
         this.table.treeTable();
@@ -457,7 +457,7 @@
         });
       });
     });
-    describe("removeChild", function() {
+    describe("removeChild()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr></table>");
         this.table.treeTable();

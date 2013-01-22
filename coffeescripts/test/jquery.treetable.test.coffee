@@ -125,7 +125,7 @@ describe "treeTable()", ->
       expect(@subject.treeTable("node", "unknown")).to.be.undefined
 
 describe "TreeTable.Node", ->
-  describe "addChild", ->
+  describe "addChild()", ->
     beforeEach ->
       @table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1'><td>N1</td></tr></table>")
       @table.treeTable()
@@ -369,7 +369,7 @@ describe "TreeTable.Node", ->
       it "is null", ->
         expect(@subject.parentNode()).to.be.null
 
-  describe "removeChild", ->
+  describe "removeChild()", ->
     beforeEach ->
       @table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr></table>")
       @table.treeTable()
