@@ -630,9 +630,25 @@
         };
         return expect(fn).to.not["throw"](Error);
       });
-      it("does not allow node to be made an ancestor of itself");
-      it("does not allow node to be made a descendant of itself");
-      it("does nothing when node is moved to current location");
+      it("cannot make node a descendant of itself", function() {
+        var fn, table;
+        table = this.table;
+        fn = function() {
+          return table.treeTable("move", "n1", "n2");
+        };
+        return expect(fn).to.not["throw"](InternalError, "too much recursion");
+      });
+      it("cannot make node a child of itself", function() {
+        var fn, table;
+        table = this.table;
+        fn = function() {
+          return table.treeTable("move", "n1", "n1");
+        };
+        return expect(fn).to.not["throw"](InternalError, "too much recursion");
+      });
+      it("does nothing when node is moved to current location", function() {
+        return this.table.treeTable("move", "n1", "n0");
+      });
       return it("maintains chainability", function() {
         var destination, node, tree;
         tree = this.table.data("treeTable");

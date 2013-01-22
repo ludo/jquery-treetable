@@ -137,25 +137,23 @@ class Tree
 
   move: (node, destination) ->
     # Conditions:
-    # 1: +node+ should not be inserted in a location in a branch if this would
+    # 1: +node+ should not be inserted as a child of +node+ itself.
+    # 2: +destination+ should not be the same as +node+'s current parent (this
+    #    prevents +node+ from being moved to the same location where it already
+    #    is).
+    # 3: +node+ should not be inserted in a location in a branch if this would
     #    result in +node+ being an ancestor of itself.
-    # 2: +node+ should not have a parent OR the destination should not be the
-    #    same as +node+'s current parent (this last condition prevents +node+
-    #    from being moved to the same location where it already is).
-    # 3: +node+ should not be inserted as a child of +node+ itself.
-    # if($.inArray(node[0].id, ancestorNames) == -1 && (!parent || (destination.id != parent[0].id)) && destination.id != node[0].id) {
+    if node isnt destination and destination.id isnt node.parentId and destination.ancestors().indexOf(node) is -1
+      if node.parentId?
+        @tree[node.parentId].removeChild(node)
 
-    if node.parentId?
-      @tree[node.parentId].removeChild(node)
+      # Get parentId dynamically from data anyway?
+      # TODO node.setParent(*Id*)? node.row.data("ttParentId", destinationId)
+      node.parentId = destination.id
+      destination.addChild(node)
+      @_moveRows(node, destination)
 
-    # Get parentId dynamically from data anyway?
-    node.parentId = destination.id
-    # TODO node.setParent(*Id*)? node.row.data("ttParentId", destinationId)
-
-    destination.addChild(node)
-
-    @_moveRows(node, destination)
-
+    # TODO Write return this i.o. @
     @ # Chainability
 
   render: ->

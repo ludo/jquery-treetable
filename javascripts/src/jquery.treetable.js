@@ -205,12 +205,14 @@
     };
 
     Tree.prototype.move = function(node, destination) {
-      if (node.parentId != null) {
-        this.tree[node.parentId].removeChild(node);
+      if (node !== destination && destination.id !== node.parentId && destination.ancestors().indexOf(node) === -1) {
+        if (node.parentId != null) {
+          this.tree[node.parentId].removeChild(node);
+        }
+        node.parentId = destination.id;
+        destination.addChild(node);
+        this._moveRows(node, destination);
       }
-      node.parentId = destination.id;
-      destination.addChild(node);
-      this._moveRows(node, destination);
       return this;
     };
 

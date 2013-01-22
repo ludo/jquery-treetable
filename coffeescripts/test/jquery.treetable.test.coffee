@@ -517,16 +517,25 @@ describe "TreeTable.Tree", ->
       fn = -> table.treeTable("move", "n3", "n1")
       expect(fn).to.not.throw(Error)
 
-    it "does not allow node to be made an ancestor of itself"
-    it "does not allow node to be made a descendant of itself"
-    it "does nothing when node is moved to current location"
+    it "cannot make node a descendant of itself", ->
+      table = @table
+      fn = -> table.treeTable("move", "n1", "n2")
+      expect(fn).to.not.throw(InternalError, "too much recursion")
+
+    it "cannot make node a child of itself", ->
+      table = @table
+      fn = -> table.treeTable("move", "n1", "n1")
+      expect(fn).to.not.throw(InternalError, "too much recursion")
+
+    it "does nothing when node is moved to current location", ->
+      # TODO How to test? Nothing is happening...
+      @table.treeTable("move", "n1", "n0")
 
     it "maintains chainability", ->
       tree = @table.data("treeTable")
       node = @table.data("treeTable").tree["n1"]
       destination = @table.data("treeTable").tree["n3"]
       expect(tree.move(node, destination)).to.equal(tree)
-
 
   describe "render()", ->
     it "maintains chainability", ->
