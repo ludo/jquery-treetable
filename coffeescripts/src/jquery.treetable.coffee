@@ -3,6 +3,7 @@ $ = jQuery
 
 class Node
   constructor: (@row, @tree, @settings) ->
+    # TODO Ensure id/parentId is always a string (not int)
     @id = @row.data(@settings.nodeIdAttr)
     @parentId = @row.data(@settings.parentIdAttr)
     @treeCell = $(@row.children(@settings.columnElType)[@settings.column])
@@ -13,6 +14,9 @@ class Node
     @initialized = false
 
     @treeCell.prepend(@indenter)
+
+  addChild: (child) ->
+    @children.push(child)
 
   ancestors: ->
     node = @
@@ -56,6 +60,11 @@ class Node
   parentNode: ->
     if @parentId? then @tree[@parentId] else null
 
+  removeChild: (child) ->
+    # TODO Figure out if there is an easier way to do this. I am flailing.
+    @children = @children.filter (node) ->
+      return true unless node is child
+
   render: ->
     if @settings.expandable is true and @children.length > 0
       @indenter.html(@expander)
@@ -69,6 +78,9 @@ class Node
       @expand()
 
     @indenter[0].style.paddingLeft = "#{@level() * @settings.indent}px"
+
+  # TODO setParentId: (id) ->
+  # Set data attribute and property parentId
 
   show: ->
     @_initialize() if not @initialized
@@ -117,12 +129,25 @@ class Tree
           @tree[node.id] = node
 
           if node.parentId?
-            parent = @tree[node.parentId]
-            parent.children.push(node)
+            @tree[node.parentId].addChild(node)
           else
             @roots.push(node)
 
     @ # Chainability
+
+  move: (nodeId, destinationId) ->
+    node = @tree[nodeId]
+    destination = @tree[destinationId]
+    origin = @tree[node.parentId]
+
+    # Get parentId dynamically from data anyway?
+    node.parentId = destinationId
+    # TODO node.setParent(*Id*)? node.row.data("ttParentId", destinationId)
+
+    destination.addChild(node)
+    origin.removeChild(node)
+
+    @_moveRows(node, destination)
 
   render: ->
     for root in @roots
@@ -131,6 +156,13 @@ class Tree
       root.show()
 
     @ # Chainability
+
+  _moveRows: (node, destination) ->
+    node.row.insertAfter(destination.row)
+    node.render()
+    for child in node.children
+      @_moveRows(child, node)
+
 
 # jQuery Plugin
 methods =
@@ -180,8 +212,8 @@ methods =
     else
       throw new Error("Unknown node '#{id}'")
 
-  move: (node, destination) ->
-    @.data("treeTable").move(node, destination)
+  move: (nodeId, destinationId) ->
+    @.data("treeTable").move(nodeId, destinationId)
 
   node: (id) ->
     @.data("treeTable").tree[id]

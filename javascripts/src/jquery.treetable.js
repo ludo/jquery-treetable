@@ -19,6 +19,10 @@
       this.treeCell.prepend(this.indenter);
     }
 
+    Node.prototype.addChild = function(child) {
+      return this.children.push(child);
+    };
+
     Node.prototype.ancestors = function() {
       var ancestors, node;
       node = this;
@@ -69,6 +73,14 @@
       } else {
         return null;
       }
+    };
+
+    Node.prototype.removeChild = function(child) {
+      return this.children = this.children.filter(function(node) {
+        if (node !== child) {
+          return true;
+        }
+      });
     };
 
     Node.prototype.render = function() {
@@ -171,7 +183,7 @@
     };
 
     Tree.prototype.load = function() {
-      var node, parent, row, _i, _len, _ref;
+      var node, row, _i, _len, _ref;
       if (this.table.rows != null) {
         _ref = this.table.rows;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -182,8 +194,7 @@
             this.nodes.push(node);
             this.tree[node.id] = node;
             if (node.parentId != null) {
-              parent = this.tree[node.parentId];
-              parent.children.push(node);
+              this.tree[node.parentId].addChild(node);
             } else {
               this.roots.push(node);
             }
@@ -191,6 +202,17 @@
         }
       }
       return this;
+    };
+
+    Tree.prototype.move = function(nodeId, destinationId) {
+      var destination, node, origin;
+      node = this.tree[nodeId];
+      destination = this.tree[destinationId];
+      origin = this.tree[node.parentId];
+      node.parentId = destinationId;
+      destination.addChild(node);
+      origin.removeChild(node);
+      return this._moveRows(node, destination);
     };
 
     Tree.prototype.render = function() {
@@ -201,6 +223,19 @@
         root.show();
       }
       return this;
+    };
+
+    Tree.prototype._moveRows = function(node, destination) {
+      var child, _i, _len, _ref, _results;
+      node.row.insertAfter(destination.row);
+      node.render();
+      _ref = node.children;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        child = _ref[_i];
+        _results.push(this._moveRows(child, node));
+      }
+      return _results;
     };
 
     return Tree;
@@ -259,8 +294,8 @@
         throw new Error("Unknown node '" + id + "'");
       }
     },
-    move: function(node, destination) {
-      return this.data("treeTable").move(node, destination);
+    move: function(nodeId, destinationId) {
+      return this.data("treeTable").move(nodeId, destinationId);
     },
     node: function(id) {
       return this.data("treeTable").tree[id];

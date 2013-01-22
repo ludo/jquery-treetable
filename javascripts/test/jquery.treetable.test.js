@@ -176,6 +176,19 @@
   });
 
   describe("TreeTable.Node", function() {
+    describe("addChild", function() {
+      beforeEach(function() {
+        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1'><td>N1</td></tr></table>");
+        this.table.treeTable();
+        this.parent = this.table.data("treeTable").tree["n0"];
+        return this.child = this.table.data("treeTable").tree["n1"];
+      });
+      return it("adds child to collection of children", function() {
+        expect(this.parent.children).to.be.empty;
+        this.parent.addChild(this.child);
+        return expect(this.parent.children).to.include(this.child);
+      });
+    });
     describe("ancestors()", function() {
       beforeEach(function() {
         return this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree;
@@ -444,6 +457,19 @@
         });
       });
     });
+    describe("removeChild", function() {
+      beforeEach(function() {
+        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr></table>");
+        this.table.treeTable();
+        this.parent = this.table.data("treeTable").tree["n0"];
+        return this.child = this.table.data("treeTable").tree["n1"];
+      });
+      return it("removes child from collection of children", function() {
+        expect(this.parent.children).to.include(this.child);
+        this.parent.removeChild(this.child);
+        return expect(this.parent.children).to.be.empty;
+      });
+    });
     describe("show()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treeTable();
@@ -523,7 +549,7 @@
       });
       return describe("with custom column setting", function() {
         beforeEach(function() {
-          return this.subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr>").treeTable({
+          return this.subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr></table>").treeTable({
             column: 1
           }).data("treeTable").tree[0].treeCell;
         });
@@ -571,6 +597,30 @@
           expect(_.size(subject)).to.equal(1);
           return expect(_.keys(subject)).to.include('21');
         });
+      });
+    });
+    describe("move()", function() {
+      beforeEach(function() {
+        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr></table>");
+        this.table.treeTable();
+        return this.subject = this.table.data("treeTable").tree["n2"];
+      });
+      it("updates the node's parent id", function() {
+        expect(this.subject.parentId).to.equal("n1");
+        this.table.data("treeTable").move("n2", "n0");
+        return expect(this.subject.parentId).to.equal("n0");
+      });
+      it("adds node to new parent's children", function() {
+        var newParent;
+        this.table.data("treeTable").move("n2", "n0");
+        newParent = this.table.data("treeTable").tree["n0"];
+        return expect(newParent.children).to.include(this.subject);
+      });
+      return it("removes node from old parent's children", function() {
+        var oldParent;
+        this.table.data("treeTable").move("n2", "n0");
+        oldParent = this.table.data("treeTable").tree["n1"];
+        return expect(oldParent.children).to.not.include(this.subject);
       });
     });
     describe("render()", function() {

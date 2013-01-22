@@ -1,3 +1,5 @@
+# TODO Make unit tests more unit tests. These are more integration tests.
+
 expect = chai.expect
 
 describe "treeTable()", ->
@@ -123,6 +125,17 @@ describe "treeTable()", ->
       expect(@subject.treeTable("node", "unknown")).to.be.undefined
 
 describe "TreeTable.Node", ->
+  describe "addChild", ->
+    beforeEach ->
+      @table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1'><td>N1</td></tr></table>")
+      @table.treeTable()
+      @parent = @table.data("treeTable").tree["n0"]
+      @child = @table.data("treeTable").tree["n1"]
+
+    it "adds child to collection of children", ->
+      expect(@parent.children).to.be.empty
+      @parent.addChild(@child)
+      expect(@parent.children).to.include(@child)
 
   describe "ancestors()", ->
     beforeEach ->
@@ -356,6 +369,18 @@ describe "TreeTable.Node", ->
       it "is null", ->
         expect(@subject.parentNode()).to.be.null
 
+  describe "removeChild", ->
+    beforeEach ->
+      @table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr></table>")
+      @table.treeTable()
+      @parent = @table.data("treeTable").tree["n0"]
+      @child = @table.data("treeTable").tree["n1"]
+
+    it "removes child from collection of children", ->
+      expect(@parent.children).to.include(@child)
+      @parent.removeChild(@child)
+      expect(@parent.children).to.be.empty
+
   describe "show()", ->
     beforeEach ->
       @table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treeTable()
@@ -432,7 +457,7 @@ describe "TreeTable.Node", ->
 
     describe "with custom column setting", ->
       beforeEach ->
-        @subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr>").treeTable(column: 1).data("treeTable").tree[0].treeCell
+        @subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr></table>").treeTable(column: 1).data("treeTable").tree[0].treeCell
 
       it "is configurable", ->
         expect(@subject).to.contain("Column 2")
@@ -465,6 +490,27 @@ describe "TreeTable.Tree", ->
         subject = $("<table><tr></tr><tr data-tt-id='21'><td>N21</td></tr></table>").treeTable().data("treeTable").tree
         expect(_.size subject).to.equal(1)
         expect(_.keys subject).to.include('21')
+
+  describe "move()", ->
+    beforeEach ->
+      @table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr></table>")
+      @table.treeTable()
+      @subject = @table.data("treeTable").tree["n2"]
+
+    it "updates the node's parent id", ->
+      expect(@subject.parentId).to.equal("n1")
+      @table.data("treeTable").move("n2", "n0")
+      expect(@subject.parentId).to.equal("n0")
+
+    it "adds node to new parent's children", ->
+      @table.data("treeTable").move("n2", "n0")
+      newParent = @table.data("treeTable").tree["n0"]
+      expect(newParent.children).to.include(@subject)
+
+    it "removes node from old parent's children", ->
+      @table.data("treeTable").move("n2", "n0")
+      oldParent = @table.data("treeTable").tree["n1"]
+      expect(oldParent.children).to.not.include(@subject)
 
   describe "render()", ->
     it "maintains chainability", ->
