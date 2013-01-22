@@ -113,14 +113,14 @@ class Tree
         row = $(row)
         if row.data(@settings.nodeIdAttr)?
           node = new Node($(row), @tree, @settings)
-          @nodes[@nodes.length] = node
+          @nodes.push(node)
           @tree[node.id] = node
 
           if node.parentId?
             parent = @tree[node.parentId]
-            parent.children[parent.children.length] = node
+            parent.children.push(node)
           else
-            @roots[@roots.length] = node
+            @roots.push(node)
 
     @ # Chainability
 

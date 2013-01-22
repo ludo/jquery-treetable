@@ -179,13 +179,13 @@
           row = $(row);
           if (row.data(this.settings.nodeIdAttr) != null) {
             node = new Node($(row), this.tree, this.settings);
-            this.nodes[this.nodes.length] = node;
+            this.nodes.push(node);
             this.tree[node.id] = node;
             if (node.parentId != null) {
               parent = this.tree[node.parentId];
-              parent.children[parent.children.length] = node;
+              parent.children.push(node);
             } else {
-              this.roots[this.roots.length] = node;
+              this.roots.push(node);
             }
           }
         }
