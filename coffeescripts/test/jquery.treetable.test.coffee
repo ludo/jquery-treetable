@@ -493,24 +493,40 @@ describe "TreeTable.Tree", ->
 
   describe "move()", ->
     beforeEach ->
-      @table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr></table>")
+      @table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr></table>")
       @table.treeTable()
       @subject = @table.data("treeTable").tree["n2"]
 
     it "updates the node's parent id", ->
       expect(@subject.parentId).to.equal("n1")
-      @table.data("treeTable").move("n2", "n0")
+      @table.treeTable("move", "n2", "n0")
       expect(@subject.parentId).to.equal("n0")
 
     it "adds node to new parent's children", ->
-      @table.data("treeTable").move("n2", "n0")
+      @table.treeTable("move", "n2", "n0")
       newParent = @table.data("treeTable").tree["n0"]
       expect(newParent.children).to.include(@subject)
 
     it "removes node from old parent's children", ->
-      @table.data("treeTable").move("n2", "n0")
+      @table.treeTable("move", "n2", "n0")
       oldParent = @table.data("treeTable").tree["n1"]
       expect(oldParent.children).to.not.include(@subject)
+
+    it "does not try to remove children from parent when node is a root node", ->
+      table = @table
+      fn = -> table.treeTable("move", "n3", "n1")
+      expect(fn).to.not.throw(Error)
+
+    it "does not allow node to be made an ancestor of itself"
+    it "does not allow node to be made a descendant of itself"
+    it "does nothing when node is moved to current location"
+
+    it "maintains chainability", ->
+      tree = @table.data("treeTable")
+      node = @table.data("treeTable").tree["n1"]
+      destination = @table.data("treeTable").tree["n3"]
+      expect(tree.move(node, destination)).to.equal(tree)
+
 
   describe "render()", ->
     it "maintains chainability", ->

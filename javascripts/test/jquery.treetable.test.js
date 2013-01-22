@@ -601,26 +601,44 @@
     });
     describe("move()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr></table>");
+        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr></table>");
         this.table.treeTable();
         return this.subject = this.table.data("treeTable").tree["n2"];
       });
       it("updates the node's parent id", function() {
         expect(this.subject.parentId).to.equal("n1");
-        this.table.data("treeTable").move("n2", "n0");
+        this.table.treeTable("move", "n2", "n0");
         return expect(this.subject.parentId).to.equal("n0");
       });
       it("adds node to new parent's children", function() {
         var newParent;
-        this.table.data("treeTable").move("n2", "n0");
+        this.table.treeTable("move", "n2", "n0");
         newParent = this.table.data("treeTable").tree["n0"];
         return expect(newParent.children).to.include(this.subject);
       });
-      return it("removes node from old parent's children", function() {
+      it("removes node from old parent's children", function() {
         var oldParent;
-        this.table.data("treeTable").move("n2", "n0");
+        this.table.treeTable("move", "n2", "n0");
         oldParent = this.table.data("treeTable").tree["n1"];
         return expect(oldParent.children).to.not.include(this.subject);
+      });
+      it("does not try to remove children from parent when node is a root node", function() {
+        var fn, table;
+        table = this.table;
+        fn = function() {
+          return table.treeTable("move", "n3", "n1");
+        };
+        return expect(fn).to.not["throw"](Error);
+      });
+      it("does not allow node to be made an ancestor of itself");
+      it("does not allow node to be made a descendant of itself");
+      it("does nothing when node is moved to current location");
+      return it("maintains chainability", function() {
+        var destination, node, tree;
+        tree = this.table.data("treeTable");
+        node = this.table.data("treeTable").tree["n1"];
+        destination = this.table.data("treeTable").tree["n3"];
+        return expect(tree.move(node, destination)).to.equal(tree);
       });
     });
     describe("render()", function() {

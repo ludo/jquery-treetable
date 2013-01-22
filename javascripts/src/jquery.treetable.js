@@ -204,15 +204,14 @@
       return this;
     };
 
-    Tree.prototype.move = function(nodeId, destinationId) {
-      var destination, node, origin;
-      node = this.tree[nodeId];
-      destination = this.tree[destinationId];
-      origin = this.tree[node.parentId];
-      node.parentId = destinationId;
+    Tree.prototype.move = function(node, destination) {
+      if (node.parentId != null) {
+        this.tree[node.parentId].removeChild(node);
+      }
+      node.parentId = destination.id;
       destination.addChild(node);
-      origin.removeChild(node);
-      return this._moveRows(node, destination);
+      this._moveRows(node, destination);
+      return this;
     };
 
     Tree.prototype.render = function() {
@@ -295,7 +294,10 @@
       }
     },
     move: function(nodeId, destinationId) {
-      return this.data("treeTable").move(nodeId, destinationId);
+      var destination, node;
+      node = this.data("treeTable").tree[nodeId];
+      destination = this.data("treeTable").tree[destinationId];
+      return this.data("treeTable").move(node, destination);
     },
     node: function(id) {
       return this.data("treeTable").tree[id];
