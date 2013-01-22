@@ -79,8 +79,12 @@ class Node
 
     @indenter[0].style.paddingLeft = "#{@level() * @settings.indent}px"
 
-  # TODO setParentId: (id) ->
-  # Set data attribute and property parentId
+  setParent: (node) ->
+    if @parentId?
+      @tree[@parentId].removeChild(this)
+    @parentId = node.id
+    @row.data(@settings.parentIdAttr, node.id)
+    node.addChild(this)
 
   show: ->
     @_initialize() if not @initialized
@@ -144,13 +148,7 @@ class Tree
     # 3: +node+ should not be inserted in a location in a branch if this would
     #    result in +node+ being an ancestor of itself.
     if node isnt destination and destination.id isnt node.parentId and destination.ancestors().indexOf(node) is -1
-      if node.parentId?
-        @tree[node.parentId].removeChild(node)
-
-      # Get parentId dynamically from data anyway?
-      # TODO node.setParent(*Id*)? node.row.data("ttParentId", destinationId)
-      node.parentId = destination.id
-      destination.addChild(node)
+      node.setParent(destination)
       @_moveRows(node, destination)
 
     return this # Chainability

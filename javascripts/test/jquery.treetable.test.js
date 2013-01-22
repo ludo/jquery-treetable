@@ -470,6 +470,42 @@
         return expect(this.parent.children).to.be.empty;
       });
     });
+    describe("setParent()", function() {
+      beforeEach(function() {
+        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2'><td>N2</td></tr></table>");
+        this.table.treeTable();
+        this.oldParent = this.table.data("treeTable").tree["n0"];
+        this.subject = this.table.data("treeTable").tree["n1"];
+        return this.newParent = this.table.data("treeTable").tree["n2"];
+      });
+      it("updates node's parent id", function() {
+        expect(this.subject.parentId).to.equal("n0");
+        this.subject.setParent(this.newParent);
+        return expect(this.subject.parentId).to.equal("n2");
+      });
+      it("updates node's parent id data attribute", function() {
+        expect(this.subject.row.data("ttParentId")).to.equal("n0");
+        this.subject.setParent(this.newParent);
+        return expect(this.subject.row.data("ttParentId")).to.equal("n2");
+      });
+      it("adds node to new parent's children", function() {
+        this.subject.setParent(this.newParent);
+        return expect(this.newParent.children).to.include(this.subject);
+      });
+      it("removes node from old parent's children", function() {
+        this.subject.setParent(this.newParent);
+        return expect(this.oldParent.children).to.not.include(this.subject);
+      });
+      return it("does not try to remove children from parent when node is a root node", function() {
+        var fn, newParent, subject;
+        subject = this.subject;
+        newParent = this.newParent;
+        fn = function() {
+          return subject.setParent(newParent);
+        };
+        return expect(fn).to.not["throw"](Error);
+      });
+    });
     describe("show()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treeTable();
@@ -602,33 +638,14 @@
     describe("move()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr></table>");
-        this.table.treeTable();
-        return this.subject = this.table.data("treeTable").tree["n2"];
+        return this.table.treeTable();
       });
-      it("updates the node's parent id", function() {
-        expect(this.subject.parentId).to.equal("n1");
-        this.table.treeTable("move", "n2", "n0");
-        return expect(this.subject.parentId).to.equal("n0");
-      });
-      it("adds node to new parent's children", function() {
-        var newParent;
-        this.table.treeTable("move", "n2", "n0");
-        newParent = this.table.data("treeTable").tree["n0"];
-        return expect(newParent.children).to.include(this.subject);
-      });
-      it("removes node from old parent's children", function() {
-        var oldParent;
-        this.table.treeTable("move", "n2", "n0");
-        oldParent = this.table.data("treeTable").tree["n1"];
-        return expect(oldParent.children).to.not.include(this.subject);
-      });
-      it("does not try to remove children from parent when node is a root node", function() {
-        var fn, table;
-        table = this.table;
-        fn = function() {
-          return table.treeTable("move", "n3", "n1");
-        };
-        return expect(fn).to.not["throw"](Error);
+      it("moves node to new destination", function() {
+        var subject;
+        subject = this.table.data("treeTable").tree["n2"];
+        expect(subject.parentId).to.equal("n1");
+        this.table.treeTable("move", "n2", "n3");
+        return expect(subject.parentId).to.equal("n3");
       });
       it("cannot make node a descendant of itself", function() {
         var fn, table;

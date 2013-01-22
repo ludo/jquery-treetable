@@ -381,6 +381,38 @@ describe "TreeTable.Node", ->
       @parent.removeChild(@child)
       expect(@parent.children).to.be.empty
 
+  describe "setParent()", ->
+    beforeEach ->
+      @table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2'><td>N2</td></tr></table>")
+      @table.treeTable()
+      @oldParent = @table.data("treeTable").tree["n0"]
+      @subject = @table.data("treeTable").tree["n1"]
+      @newParent = @table.data("treeTable").tree["n2"]
+
+    it "updates node's parent id", ->
+      expect(@subject.parentId).to.equal("n0")
+      @subject.setParent(@newParent)
+      expect(@subject.parentId).to.equal("n2")
+
+    it "updates node's parent id data attribute", ->
+      expect(@subject.row.data("ttParentId")).to.equal("n0")
+      @subject.setParent(@newParent)
+      expect(@subject.row.data("ttParentId")).to.equal("n2")
+
+    it "adds node to new parent's children", ->
+      @subject.setParent(@newParent)
+      expect(@newParent.children).to.include(@subject)
+
+    it "removes node from old parent's children", ->
+      @subject.setParent(@newParent)
+      expect(@oldParent.children).to.not.include(@subject)
+
+    it "does not try to remove children from parent when node is a root node", ->
+      subject = @subject
+      newParent = @newParent
+      fn = -> subject.setParent(newParent)
+      expect(fn).to.not.throw(Error)
+
   describe "show()", ->
     beforeEach ->
       @table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treeTable()
@@ -495,27 +527,12 @@ describe "TreeTable.Tree", ->
     beforeEach ->
       @table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr></table>")
       @table.treeTable()
-      @subject = @table.data("treeTable").tree["n2"]
 
-    it "updates the node's parent id", ->
-      expect(@subject.parentId).to.equal("n1")
-      @table.treeTable("move", "n2", "n0")
-      expect(@subject.parentId).to.equal("n0")
-
-    it "adds node to new parent's children", ->
-      @table.treeTable("move", "n2", "n0")
-      newParent = @table.data("treeTable").tree["n0"]
-      expect(newParent.children).to.include(@subject)
-
-    it "removes node from old parent's children", ->
-      @table.treeTable("move", "n2", "n0")
-      oldParent = @table.data("treeTable").tree["n1"]
-      expect(oldParent.children).to.not.include(@subject)
-
-    it "does not try to remove children from parent when node is a root node", ->
-      table = @table
-      fn = -> table.treeTable("move", "n3", "n1")
-      expect(fn).to.not.throw(Error)
+    it "moves node to new destination", ->
+      subject = @table.data("treeTable").tree["n2"]
+      expect(subject.parentId).to.equal("n1")
+      @table.treeTable("move", "n2", "n3")
+      expect(subject.parentId).to.equal("n3")
 
     it "cannot make node a descendant of itself", ->
       table = @table

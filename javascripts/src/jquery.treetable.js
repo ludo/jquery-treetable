@@ -99,6 +99,15 @@
       return this.indenter[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
     };
 
+    Node.prototype.setParent = function(node) {
+      if (this.parentId != null) {
+        this.tree[this.parentId].removeChild(this);
+      }
+      this.parentId = node.id;
+      this.row.data(this.settings.parentIdAttr, node.id);
+      return node.addChild(this);
+    };
+
     Node.prototype.show = function() {
       if (!this.initialized) {
         this._initialize();
@@ -206,11 +215,7 @@
 
     Tree.prototype.move = function(node, destination) {
       if (node !== destination && destination.id !== node.parentId && destination.ancestors().indexOf(node) === -1) {
-        if (node.parentId != null) {
-          this.tree[node.parentId].removeChild(node);
-        }
-        node.parentId = destination.id;
-        destination.addChild(node);
+        node.setParent(destination);
         this._moveRows(node, destination);
       }
       return this;
