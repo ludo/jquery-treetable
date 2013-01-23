@@ -66,9 +66,16 @@ class Node
       return true unless node is child
 
   render: ->
+    # TODO Re-render parent when node is moved, as it might have children now and should be expandable/collapsible
     if @settings.expandable is true and @children.length > 0
       @indenter.html(@expander)
-      @expander.bind "click.treeTable", (event) ->
+
+      target = if @settings.clickableNodeNames is true
+        @treeCell
+      else
+        @expander
+
+      target.unbind("click.treeTable").bind "click.treeTable", (event) ->
         $(@).parents("table").treeTable("node", $(@).parents("tr").data("ttId")).toggle()
         event.preventDefault()
 
@@ -177,6 +184,7 @@ class Tree
 methods =
   init: (options) ->
     settings = $.extend({
+      clickableNodeNames: false
       column: 0
       columnElType: "td" # i.e. 'td', 'th' or 'td,th'
       expandable: false

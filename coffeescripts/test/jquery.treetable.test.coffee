@@ -43,9 +43,22 @@ describe "treeTable()", ->
       for row in @subject[0].rows
         expect($(row)).to.be.visible
 
-  describe "with expandable: true", ->
+  describe "with expandable: true and clickableNodeNames: false", ->
     beforeEach ->
-      @subject.treeTable(expandable: true)
+      @subject.treeTable(expandable: true).appendTo("body")
+
+    afterEach ->
+      @subject.remove()
+
+    it "expands branch when node toggler clicked", ->
+      expect(@subject.treeTable("node", 1).row).to.not.be.visible
+      @subject.treeTable("node", 0).row.find(".indenter a").click()
+      expect(@subject.treeTable("node", 1).row).to.be.visible
+
+    it "does not expand branch when cell clicked", ->
+      expect(@subject.treeTable("node", 1).row).to.not.be.visible
+      @subject.treeTable("node", 0).row.find("td").first().click()
+      expect(@subject.treeTable("node", 1).row).to.not.be.visible
 
     describe "for nodes with children", ->
       it "renders a clickable node toggler", ->
@@ -54,6 +67,23 @@ describe "treeTable()", ->
     describe "for nodes without children", ->
       it "does not render a clickable node toggler", ->
         expect(@subject.treeTable("node", 1).row).to.not.have("a")
+
+  describe "with expandable: true and clickableNodeNames: true", ->
+    beforeEach ->
+      @subject.treeTable(expandable: true, clickableNodeNames: true).appendTo("body")
+
+    afterEach ->
+      @subject.remove()
+
+    it "expands branch when node toggler clicked", ->
+      expect(@subject.treeTable("node", 1).row).to.not.be.visible
+      @subject.treeTable("node", 0).row.find(".indenter a").click()
+      expect(@subject.treeTable("node", 1).row).to.be.visible
+
+    it "expands branch when cell clicked", ->
+      expect(@subject.treeTable("node", 1).row).to.not.be.visible
+      @subject.treeTable("node", 0).row.find("td").first().click()
+      expect(@subject.treeTable("node", 1).row).to.be.visible
 
   describe "collapseAll()", ->
     beforeEach ->

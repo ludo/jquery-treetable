@@ -54,11 +54,24 @@
         return _results;
       });
     });
-    describe("with expandable: true", function() {
+    describe("with expandable: true and clickableNodeNames: false", function() {
       beforeEach(function() {
         return this.subject.treeTable({
           expandable: true
-        });
+        }).appendTo("body");
+      });
+      afterEach(function() {
+        return this.subject.remove();
+      });
+      it("expands branch when node toggler clicked", function() {
+        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
+        this.subject.treeTable("node", 0).row.find(".indenter a").click();
+        return expect(this.subject.treeTable("node", 1).row).to.be.visible;
+      });
+      it("does not expand branch when cell clicked", function() {
+        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
+        this.subject.treeTable("node", 0).row.find("td").first().click();
+        return expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
       });
       describe("for nodes with children", function() {
         return it("renders a clickable node toggler", function() {
@@ -69,6 +82,27 @@
         return it("does not render a clickable node toggler", function() {
           return expect(this.subject.treeTable("node", 1).row).to.not.have("a");
         });
+      });
+    });
+    describe("with expandable: true and clickableNodeNames: true", function() {
+      beforeEach(function() {
+        return this.subject.treeTable({
+          expandable: true,
+          clickableNodeNames: true
+        }).appendTo("body");
+      });
+      afterEach(function() {
+        return this.subject.remove();
+      });
+      it("expands branch when node toggler clicked", function() {
+        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
+        this.subject.treeTable("node", 0).row.find(".indenter a").click();
+        return expect(this.subject.treeTable("node", 1).row).to.be.visible;
+      });
+      return it("expands branch when cell clicked", function() {
+        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
+        this.subject.treeTable("node", 0).row.find("td").first().click();
+        return expect(this.subject.treeTable("node", 1).row).to.be.visible;
       });
     });
     describe("collapseAll()", function() {

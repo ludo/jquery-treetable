@@ -84,9 +84,11 @@
     };
 
     Node.prototype.render = function() {
+      var target;
       if (this.settings.expandable === true && this.children.length > 0) {
         this.indenter.html(this.expander);
-        this.expander.bind("click.treeTable", function(event) {
+        target = this.settings.clickableNodeNames === true ? this.treeCell : this.expander;
+        target.unbind("click.treeTable").bind("click.treeTable", function(event) {
           $(this).parents("table").treeTable("node", $(this).parents("tr").data("ttId")).toggle();
           return event.preventDefault();
         });
@@ -259,6 +261,7 @@
     init: function(options) {
       var settings;
       settings = $.extend({
+        clickableNodeNames: false,
         column: 0,
         columnElType: "td",
         expandable: false,
