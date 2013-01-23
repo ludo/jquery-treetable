@@ -36,7 +36,7 @@
     Node.prototype.collapse = function() {
       this._hideChildren();
       this.row.removeClass("expanded").addClass("collapsed");
-      this.expander.attr("title", "Expand");
+      this.expander.attr("title", this.settings.stringExpand);
       if (this.initialized && $.isFunction(this.settings.onNodeHide)) {
         this.settings.onNodeHide();
       }
@@ -46,7 +46,7 @@
     Node.prototype.expand = function() {
       this.row.removeClass("collapsed").addClass("expanded");
       this._showChildren();
-      this.expander.attr("title", "Collapse");
+      this.expander.attr("title", this.settings.stringCollapse);
       if (this.initialized && $.isFunction(this.settings.onNodeShow)) {
         this.settings.onNodeShow();
       }
@@ -275,6 +275,8 @@
         initialState: "collapsed",
         nodeIdAttr: "ttId",
         parentIdAttr: "ttParentId",
+        stringExpand: "Expand",
+        stringCollapse: "Collapse",
         onNodeHide: null,
         onNodeShow: null
       }, options);

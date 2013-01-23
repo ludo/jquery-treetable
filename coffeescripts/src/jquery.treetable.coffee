@@ -27,7 +27,7 @@ class Node
   collapse: ->
     @_hideChildren()
     @row.removeClass("expanded").addClass("collapsed")
-    @expander.attr("title", "Expand")
+    @expander.attr("title", @settings.stringExpand)
 
     if @initialized and $.isFunction(@settings.onNodeHide)
       @settings.onNodeHide()
@@ -39,7 +39,7 @@ class Node
   expand: ->
     @row.removeClass("collapsed").addClass("expanded")
     @_showChildren()
-    @expander.attr("title", "Collapse")
+    @expander.attr("title", @settings.stringCollapse)
 
     if @initialized and $.isFunction(@settings.onNodeShow)
       @settings.onNodeShow()
@@ -199,6 +199,8 @@ methods =
       initialState: "collapsed"
       nodeIdAttr: "ttId" # maps to data-tt-id
       parentIdAttr: "ttParentId" # maps to data-tt-parent-id
+      stringExpand: "Expand"
+      stringCollapse: "Collapse"
 
       # Events
       onNodeHide: null
