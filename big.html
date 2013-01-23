@@ -10,6 +10,12 @@
   <body>
     <h1>jQuery treeTable Performance Test With D&amp;D</h1>
 
+    <form id="reveal">
+      <input type="text" name="nodeId" placeholder="nodeId" id="revealNodeId"/>
+      <input type="submit" value="Reveal"/><br/>
+      <small>Examples: <tt>2-1-1</tt>, <tt>3-1-1-2-2</tt> and <tt>3-2-1-2-3-1-2-2-1-1-1-1-2-5</tt></small>
+    </form>
+
     <table id="tree">
       <caption>
         <a href="#" onclick="jQuery('#tree').treeTable('expandAll');">Expand all</a>
@@ -522,6 +528,19 @@
             }
           }
         });
+      });
+
+      $("form#reveal").submit(function() {
+        var nodeId = $("#revealNodeId").val()
+
+        try {
+          $("#tree").treeTable("reveal", nodeId);
+        }
+        catch(error) {
+          alert(error.message);
+        }
+
+        return false;
       });
     </script>
   </body>
