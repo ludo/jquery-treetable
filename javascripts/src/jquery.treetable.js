@@ -98,7 +98,8 @@
       } else {
         this.expand();
       }
-      return this.indenter[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
+      this.indenter[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
+      return this;
     };
 
     Node.prototype.reveal = function() {
@@ -226,6 +227,9 @@
       if (node !== destination && destination.id !== node.parentId && destination.ancestors().indexOf(node) === -1) {
         node.setParent(destination);
         this._moveRows(node, destination);
+        if (node.parentNode().children.length === 1) {
+          node.parentNode().render();
+        }
       }
       return this;
     };

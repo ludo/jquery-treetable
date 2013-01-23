@@ -66,7 +66,6 @@ class Node
       return true unless node is child
 
   render: ->
-    # TODO Re-render parent when node is moved, as it might have children now and should be expandable/collapsible
     if @settings.expandable is true and @children.length > 0
       @indenter.html(@expander)
 
@@ -85,6 +84,8 @@ class Node
       @expand()
 
     @indenter[0].style.paddingLeft = "#{@level() * @settings.indent}px"
+
+    return this # Chainability
 
   reveal: ->
     if @parentId?
@@ -162,6 +163,10 @@ class Tree
     if node isnt destination and destination.id isnt node.parentId and destination.ancestors().indexOf(node) is -1
       node.setParent(destination)
       @_moveRows(node, destination)
+      # Re-render parentNode if this is its first child node, and therefore
+      # doesn't have the expander yet.
+      if node.parentNode().children.length == 1
+        node.parentNode().render()
 
     return this # Chainability
 

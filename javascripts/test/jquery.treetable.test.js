@@ -504,6 +504,13 @@
         return expect(this.parent.children).to.be.empty;
       });
     });
+    describe("render()", function() {
+      return it("maintains chainability", function() {
+        var subject;
+        subject = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree["n0"];
+        return expect(subject.render()).to.equal(subject);
+      });
+    });
     describe("setParent()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2'><td>N2</td></tr></table>");
