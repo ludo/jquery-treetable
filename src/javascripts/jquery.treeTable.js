@@ -231,7 +231,7 @@
           if(options.clickableNodeNames) {
             cell.wrapInner(newLink);
           } else {
-            cell.html(newLink+cell.html());
+            cell.prepend(newLink);
           }
 
           $(cell[0].firstChild).click(function() { node.toggleBranch(); return false; }).mousedown(function() { return false; });
