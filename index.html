@@ -46,6 +46,7 @@
         <li><a href="#overview">Overview</a></li>
         <li><a href="#usage">Usage</a></li>
         <li><a href="#configuration">Configuration</a></li>
+        <li><a href="#api">Public API</a></li>
         <li><a href="#examples">Examples</a></li>
         <li><a href="#contributing">Contributing</a></li>
         <li><a href="CHANGELOG.txt">CHANGELOG.txt</a></li>
@@ -178,13 +179,13 @@ $(document).ready(function()  {
             <td><tt>nodeIdAttr</tt></td>
             <td><tt>string</tt></td>
             <td><tt>&quot;ttId&quot;</tt></td>
-            <td>Name of the data attribute used to identify node.</td>
+            <td>Name of the data attribute used to identify node. Translates to <tt>data-tt-id</tt> in your HTML.</td>
           </tr>
           <tr>
             <td><tt>parentIdAttr</tt></td>
             <td><tt>string</tt></td>
             <td><tt>&quot;ttParentId&quot;</tt></td>
-            <td>Name of the data attribute used to set parent node.</td>
+            <td>Name of the data attribute used to set parent node. Translates to <tt>data-tt-parent-id</tt> in your HTML.</td>
           </tr>
           <tr>
             <td><tt>stringCollapse</tt></td>
@@ -228,8 +229,28 @@ $(document).ready(function()  {
         </tbody>
       </table>
 
+      <h2><a name="api">4. Public API</a></h2>
 
-      <h2><a name="examples">4. Examples</a></h2>
+      <p>Use the following functions to manipulate the tree programmatically. Calling a function should be done through the <tt>treeTable()</tt> function. For example, to collapse node '42' use <tt>$("#tree").treeTable("collapseNode", "42")</tt>.</p>
+
+      <dl>
+        <dt><tt>collapseAll()</tt></dt>
+        <dd>Collapse all nodes at once.</dd>
+        <dt><tt>collapseNode(id)</tt></dt>
+        <dd>Collapse a single node, identified by <tt>id</tt>.</dd>
+        <dt><tt>expandAll()</tt></dt>
+        <dd>Expand all nodes at once.</dd>
+        <dt><tt>expandNode(id)</tt></dt>
+        <dd>Expand a single node, identified by <tt>id</tt>.</dd>
+        <dt><tt>move(nodeId, destinationId)</tt></dt>
+        <dd>Move node <tt>nodeId</tt> to new parent with <tt>destinationId</tt>.</dd>
+        <dt><tt>node(id)</tt></dt>
+        <dd>Select a node from the tree. Returns a <tt>TreeTable.Node</tt> object.</dd>
+        <dt><tt>reveal(id)</tt></dt>
+        <dd>Reveal a node in the tree.</dd>
+      </dl>
+
+      <h2><a name="examples">5. Examples</a></h2>
 
       <h3>Basic Static Tree</h3>
 
@@ -284,6 +305,8 @@ $("#example-basic-static").treeTable();</pre>
 $("#example-basic-expandable").treeTable({ expandable: true });</pre>
 
       <h3>Large Tree With Drag and Drop</h3>
+
+      <p>This example uses <a href="http://jqueryui.com">jQuery UI</a>'s Draggable and Droppable components.</p>
 
       <form id="reveal">
         <input type="text" name="nodeId" placeholder="nodeId" id="revealNodeId"/>
@@ -801,6 +824,8 @@ $("#example-advanced .folder").each(function() {
     }
   });
 });</pre>
+
+      <h2><a name="contributing">6. Contributing</a></h2>
     </div>
 
     <script src="vendor/jquery.js"></script>

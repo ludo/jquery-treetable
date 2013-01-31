@@ -27,47 +27,48 @@ pre.listing b {
   color: #f00;
 }
 
-table.treeTable {
+table {
   border: 1px solid #888;
   border-collapse: collapse;
   font-size: .8em;
   line-height: 1;
-  margin: 1em auto;
-  width: 90%;
+  margin: .6em 0 1.8em 0;
+  width: 100%;
 }
 
-table.treeTable caption {
+table caption {
   font-size: .9em;
   font-weight: bold;
+  margin-bottom: .2em;
 }
 
-table.treeTable thead {
+table thead {
   background: #aaa url(../images/bg-table-thead.png) repeat-x top left;
   font-size: .9em;
 }
 
-table.treeTable thead tr th {
+table thead tr th {
   border: 1px solid #888;
   font-weight: normal;
   padding: .3em 1em .1em 1em;
   text-align: left;
 }
 
-table.treeTable tbody tr td {
+table tbody tr td {
   cursor: default;
   padding: .3em 1em;
 }
 
-table.treeTable span {
+table span {
   background-position: center left;
   background-repeat: no-repeat;
   padding: .2em 0 .2em 1.5em;
 }
 
-table.treeTable span.file {
+table span.file {
   background-image: url(../images/file.png);
 }
 
-table.treeTable span.folder {
+table span.folder {
   background-image: url(../images/folder.png);
 }
