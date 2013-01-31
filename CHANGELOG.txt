@@ -13,6 +13,7 @@ options that are supported.
 * [ENHANCEMENT] Optimized performance of large trees (#41)
 * [BUG] Do not pollute the jQuery namespace (#45)
 * [REMOVED] Built-in persistence feature has been removed
+* [REMOVED] IE6 support
 
 == 2.3.1 - 18 January 2013
 * [FEATURE] Keyboard accessibility (#27, #30)

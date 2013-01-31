@@ -1,17 +1,26 @@
 body {
-  background: #fff;
+  background: #ddd;
   color: #000;
   font-family: Helvetica, Arial, sans-serif;
-  font-size: .8em;
   line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+#main {
+  background: #fff;
+  border-left: 20px solid #eee;
+  border-right: 20px solid #eee;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 20px;
 }
 
 pre.listing {
   background: #eee;
   border: 1px solid #ccc;
-  margin: .3em auto;
+  margin: .6em 0 .3em 0;
   padding: .1em .3em;
-  width: 90%;
 }
 
 pre.listing b {
@@ -21,6 +30,7 @@ pre.listing b {
 table.treeTable {
   border: 1px solid #888;
   border-collapse: collapse;
+  font-size: .8em;
   line-height: 1;
   margin: 1em auto;
   width: 90%;

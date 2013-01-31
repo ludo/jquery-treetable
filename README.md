@@ -4,7 +4,6 @@ This is an experimental rewrite.
 
 == Todo
 
-* Keyboard accessibility
-* D&D (between tables)
 * Documentation
-* Persist
+* Test in IE7+
+* Remove Coffeescript
