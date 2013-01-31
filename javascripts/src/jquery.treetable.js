@@ -9,6 +9,8 @@
       this.row = row;
       this.tree = tree;
       this.settings = settings;
+
+      // TODO Ensure id/parentId is always a string (not int)
       this.id = this.row.data(this.settings.nodeIdAttr);
       this.parentId = this.row.data(this.settings.parentIdAttr);
       this.treeCell = $(this.row.children(this.settings.columnElType)[this.settings.column]);
@@ -42,6 +44,8 @@
       }
       return this;
     };
+
+    // TODO destroy: remove event handlers, expander, indenter, etc.
 
     Node.prototype.expand = function() {
       this.row.removeClass("collapsed").addClass("expanded");
@@ -175,6 +179,8 @@
       this.table = table;
       this.settings = settings;
       this.tree = {};
+
+      // Cache the nodes and roots in simple arrays for quick access/iteration
       this.nodes = [];
       this.roots = [];
     }
@@ -224,9 +230,18 @@
     };
 
     Tree.prototype.move = function(node, destination) {
+      // Conditions:
+      // 1: +node+ should not be inserted as a child of +node+ itself.
+      // 2: +destination+ should not be the same as +node+'s current parent (this
+      //    prevents +node+ from being moved to the same location where it already
+      //    is).
+      // 3: +node+ should not be inserted in a location in a branch if this would
+      //    result in +node+ being an ancestor of itself.
       if (node !== destination && destination.id !== node.parentId && destination.ancestors().indexOf(node) === -1) {
         node.setParent(destination);
         this._moveRows(node, destination);
+        // Re-render parentNode if this is its first child node, and therefore
+        // doesn't have the expander yet.
         if (node.parentNode().children.length === 1) {
           node.parentNode().render();
         }
@@ -239,6 +254,9 @@
       _ref = this.roots;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         root = _ref[_i];
+
+        // Naming is confusing (show/render). I do not call render on node from
+        // here.
         root.show();
       }
       return this;
@@ -261,22 +279,25 @@
 
   })();
 
+  // jQuery Plugin
   methods = {
     init: function(options) {
       var settings;
       settings = $.extend({
         clickableNodeNames: false,
         column: 0,
-        columnElType: "td",
+        columnElType: "td", // i.e. 'td', 'th' or 'td,th'
         expandable: false,
         expanderTemplate: "<a href='#'>&nbsp;</a>",
         indent: 19,
         indenterTemplate: "<span class='indenter'></span>",
         initialState: "collapsed",
-        nodeIdAttr: "ttId",
-        parentIdAttr: "ttParentId",
+        nodeIdAttr: "ttId", // maps to data-tt-id
+        parentIdAttr: "ttParentId", // maps to data-tt-parent-id
         stringExpand: "Expand",
         stringCollapse: "Collapse",
+
+        // Events
         onNodeHide: null,
         onNodeShow: null
       }, options);
@@ -346,10 +367,8 @@
     }
   };
 
+  // Expose classes to world
   this.TreeTable || (this.TreeTable = {});
-
   this.TreeTable.Node = Node;
-
   this.TreeTable.Tree = Tree;
-
 }).call(this);

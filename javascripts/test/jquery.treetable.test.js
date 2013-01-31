@@ -1,3 +1,4 @@
+// TODO Make unit tests more unit tests. These are more integration tests.
 (function() {
   var expect;
 
@@ -705,6 +706,7 @@
         return expect(fn).to.not["throw"](InternalError, "too much recursion");
       });
       it("does nothing when node is moved to current location", function() {
+        // TODO How to test? Nothing is happening...
         return this.table.treeTable("move", "n1", "n0");
       });
       return it("maintains chainability", function() {
