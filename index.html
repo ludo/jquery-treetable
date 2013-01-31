@@ -11,7 +11,7 @@
     <div id="main">
       <h1>jQuery treeTable</h1>
 
-      <p><b><a href="http://plugins.jquery.com/treetable">Download</a> the latest release from the jQuery Plugin Registry or grab the <a href="https://github.com/ludo/jquery-treetable">source code</a> from Github.</b> This plugin is released under both the MIT and the GPLv2 license by <a href="http://ludo.is">Ludo van den Boom</a>.</p>
+      <p><b><a href="http://plugins.jquery.com/treetable">Download</a> the latest release from the jQuery Plugin Registry or grab the <a href="https://github.com/ludo/jquery-treetable">source code</a> from Github.</b> Please <a href="https://github.com/ludo/jquery-treetable/issues">report issues</a> through Github issues. This plugin is released under both the MIT and the GPLv2 license by <a href="http://ludo.is">Ludo van den Boom</a>.</p>
 
       <table id="example-basic">
         <caption>Basic jQuery treeTable Example</caption>
@@ -48,7 +48,7 @@
         <li><a href="#configuration">Configuration</a></li>
         <li><a href="#api">Public API</a></li>
         <li><a href="#examples">Examples</a></li>
-        <li><a href="#contributing">Contributing</a></li>
+        <li><a href="test.html">Test Suite</a> (Any tests failing for you? Please <a href="mailto:me@ludo.is">report</a> the failures and include the browser/OS that you used)</li>
         <li><a href="CHANGELOG.txt">CHANGELOG.txt</a></li>
       </ol>
 
@@ -77,17 +77,13 @@
 
       <h3><a name="head">Include the plugin in your document</a></h3>
 
-      <p>Copy the files <tt>javascripts/jquery.treetable.js</tt> and <tt>stylesheets/jquery.treetable.css</tt> to your project. Paste the following code between the <tt>head</tt> tags in your HTML document, <b>underneath</b> the line where you include jQuery. Change the <b style="color: #f00;">red</b> parts to reflect your situation.</p>
+      <p>Copy the files <tt>javascripts/jquery.treetable.js</tt> and <tt>stylesheets/jquery.treetable.css</tt> to your project. Paste the following code right before the closing <tt>body</tt> tag in your HTML document. Make sure these lines are <b>below</b> the line where you include jQuery. Change the <b style="color: #f00;">red</b> parts to reflect your situation.</p>
 
       <pre class="listing">
 &lt;link href="<b>path/to/</b>jquery.treetable.css" rel="stylesheet" type="text/css" /&gt;
 &lt;script src="<b>path/to/</b>jquery.treetable.js"&gt;&lt;/script&gt;
 &lt;script&gt;
-
-$(document).ready(function()  {
-  $("<b>#your_table_id</b>").treeTable();
-});
-
+$("<b>#your_table_id</b>").treeTable();
 &lt;/script&gt;</pre>
 
       <h3><a name="tree">Representing your tree in a table</a></h3>
@@ -113,7 +109,7 @@ $(document).ready(function()  {
 
       <h2><a name="configuration">3. Configuration</a></h2>
 
-      <p>There are several settings that let you adjust the behavior of the plugin. Each of these settings is described in this section. Pass these options to the treeTable function.</p>
+      <p>There are several settings that let you adjust the behavior of the plugin. Each of these settings is described in this section. Pass these options and callback functions to the <tt>treeTable()</tt> function. See the <a href="#examples">examples</a>.</p>
 
       <h3>Settings</h3>
 
@@ -304,9 +300,9 @@ $("#example-basic-static").treeTable();</pre>
       <pre class="listing">
 $("#example-basic-expandable").treeTable({ expandable: true });</pre>
 
-      <h3>Large Tree With Drag and Drop</h3>
+      <h3>Complex Tree With Drag and Drop</h3>
 
-      <p>This example uses <a href="http://jqueryui.com">jQuery UI</a>'s Draggable and Droppable components.</p>
+      <p>This example uses <a href="http://jqueryui.com">jQuery UI</a>'s Draggable and Droppable components. The tree has 459 nodes.</p>
 
       <form id="reveal">
         <input type="text" name="nodeId" placeholder="nodeId" id="revealNodeId"/>
@@ -824,8 +820,6 @@ $("#example-advanced .folder").each(function() {
     }
   });
 });</pre>
-
-      <h2><a name="contributing">6. Contributing</a></h2>
     </div>
 
     <script src="vendor/jquery.js"></script>
