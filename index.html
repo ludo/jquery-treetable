@@ -48,7 +48,7 @@
         <li><a href="#configuration">Configuration</a></li>
         <li><a href="#api">Public API</a></li>
         <li><a href="#examples">Examples</a></li>
-        <li><a href="test.html">Test Suite</a> (Any tests failing for you? Please <a href="mailto:me@ludo.is">report</a> the failures and include the browser/OS that you used)</li>
+        <li><a href="test.html">Test Suite</a> (Any tests failing for you? Please <a href="https://github.com/ludo/jquery-treetable/issues">report</a> the failures and include the exact versions of the browser and OS you used, thanks!)</li>
         <li><a href="CHANGELOG.txt">CHANGELOG.txt</a></li>
       </ol>
 
@@ -90,17 +90,14 @@ $("<b>#your_table_id</b>").treeTable();
       <p>When you pasted the above code and adjusted it to reflect your situation, you enabled the <em>possibility</em> of displaying a tree in your table. To make the tree actually display as a tree you have to add <tt>data-tt-id</tt> and <tt>data-tt-parent-id</tt> attributes to your table rows (<tt>tr</tt>).</p>
 
       <h4>How to do this?</h4>
-      <p>First, you should add a <em>unique</em> <tt>data-tt-id</tt> attribute to each of the rows in your table, for example '<tt>node-<em>x</em></tt>'. Then you add a <tt>data-tt-parent-id</tt> attribute to each child of a node, give this class a value of '<tt><em>node-x</em></tt>'. The <em>node-x</em> part should be the same as the <tt>data-tt-id</tt> of its parent. Do you still follow me? Let me show you an example of a very simple tree: a single parent with a single child. For more examples you should view the source code of this page, where you find several tables for the examples in the <a href="#examples">Examples</a> chapter.</p>
+      <p>First, you should add a <em>unique</em> <tt>data-tt-id</tt> attribute to each of the rows in your table, for example '<tt>node-<em>x</em></tt>'. Then you add a <tt>data-tt-parent-id</tt> attribute to each child of a node, give this class a value of '<tt><em>node-x</em></tt>'. The <em>node-x</em> part should be the same as the <tt>data-tt-id</tt> of its parent. Do you still follow me? Let me show you an example of a very simple tree: a single parent with a single child. For more examples you should view the source code of this page, where you find several tables for the examples in the <a href="#examples">examples</a> chapter.</p>
 
       <pre class="listing">
-&lt;table id="tree"&gt;
+&lt;table&gt;
   &lt;tr data-tt-id="1"&gt;
     &lt;td&gt;Parent&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr data-tt-id="2" data-tt-parent-id="1"&gt;
-    &lt;td&gt;Child&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr data-tt-id="3" data-tt-parent-id="2"&gt;
     &lt;td&gt;Child&lt;/td&gt;
   &lt;/tr&gt;
 &lt;/table&gt;</pre>
@@ -145,7 +142,7 @@ $("<b>#your_table_id</b>").treeTable();
             <td><tt>expandable</tt></td>
             <td><tt>bool</tt></td>
             <td><tt>false</tt></td>
-            <td>Should the tree be expandable? An expandable tree contains buttons to make each branch with children collapsable/expandable.</td>
+            <td>Should the tree be expandable? An expandable tree contains buttons to make each branch with children collapsible/expandable.</td>
           </tr>
           <tr>
             <td><tt>expanderTemplate</tt></td>
