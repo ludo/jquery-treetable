@@ -80,12 +80,8 @@
     };
 
     Node.prototype.removeChild = function(child) {
-      // TODO IE < 9 does not support filter
-      return this.children = this.children.filter(function(node) {
-        if (node !== child) {
-          return true;
-        }
-      });
+      var i = $.inArray(child, this.children);
+      return this.children.splice(i, 1)
     };
 
     Node.prototype.render = function() {
