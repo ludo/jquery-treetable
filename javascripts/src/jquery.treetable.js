@@ -80,6 +80,7 @@
     };
 
     Node.prototype.removeChild = function(child) {
+      // TODO IE < 9 does not support filter
       return this.children = this.children.filter(function(node) {
         if (node !== child) {
           return true;
@@ -237,7 +238,7 @@
       //    is).
       // 3: +node+ should not be inserted in a location in a branch if this would
       //    result in +node+ being an ancestor of itself.
-      if (node !== destination && destination.id !== node.parentId && destination.ancestors().indexOf(node) === -1) {
+      if (node !== destination && destination.id !== node.parentId && $.inArray(node, destination.ancestors()) === -1) {
         node.setParent(destination);
         this._moveRows(node, destination);
         // Re-render parentNode if this is its first child node, and therefore

@@ -17,9 +17,9 @@
       return expect(this.subject.data("treeTable")).to.be.defined;
     });
     it("adds .treeTable css class to element", function() {
-      expect(this.subject).to.not.have["class"]("treeTable");
+      expect(this.subject.hasClass("treeTable")).to.be.false;
       this.subject.treeTable();
-      return expect(this.subject).to.have["class"]("treeTable");
+      return expect(this.subject.hasClass("treeTable")).to.be.true;
     });
     describe("destroy()", function() {
       it("removes treeTable object from element", function() {
@@ -30,9 +30,9 @@
       });
       return it("removes .treeTable css class from element", function() {
         this.subject.treeTable();
-        expect(this.subject).to.have["class"]("treeTable");
+        expect(this.subject.hasClass("treeTable")).to.be.true;
         this.subject.treeTable("destroy");
-        return expect(this.subject).to.not.have["class"]("treeTable");
+        return expect(this.subject.hasClass("treeTable")).to.be.false;
       });
     });
     describe("with expandable: false", function() {
@@ -119,7 +119,7 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           row = _ref[_i];
-          _results.push(expect($(row)).to.have["class"]("collapsed"));
+          _results.push(expect($(row).hasClass("collapsed")).to.be.true);
         }
         return _results;
       });
@@ -134,13 +134,13 @@
         var row;
         row = $(this.subject[0].rows[0]);
         this.subject.treeTable("collapseNode", row.data("ttId"));
-        return expect(row).to.have["class"]("collapsed");
+        return expect(row.hasClass("collapsed")).to.be.true;
       });
       it("collapses a branch node", function() {
         var row;
         row = $(this.subject[0].rows[1]);
         this.subject.treeTable("collapseNode", row.data("ttId"));
-        return expect(row).to.have["class"]("collapsed");
+        return expect(row.hasClass("collapsed")).to.be.true;
       });
       return it("throws an error for unknown nodes", function() {
         var fn, subject;
@@ -164,7 +164,7 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           row = _ref[_i];
-          _results.push(expect($(row)).to.have["class"]("expanded"));
+          _results.push(expect($(row).hasClass("expanded")).to.be.true);
         }
         return _results;
       });
@@ -179,13 +179,13 @@
         var row;
         row = $(this.subject[0].rows[0]);
         this.subject.treeTable("expandNode", row.data("ttId"));
-        return expect(row).to.have["class"]("expanded");
+        return expect(row.hasClass("expanded")).to.be.true;
       });
       it("expands a branch node", function() {
         var row;
         row = $(this.subject[0].rows[1]);
         this.subject.treeTable("expandNode", row.data("ttId"));
-        return expect(row).to.have["class"]("expanded");
+        return expect(row.hasClass("expanded")).to.be.true;
       });
       return it("throws an error for unknown nodes", function() {
         var fn, subject;
@@ -345,7 +345,7 @@
         return this.leafNode = this.table.tree[2];
       });
       it("has the 'indenter' class", function() {
-        return expect(this.branchNode.indenter).to.have["class"]("indenter");
+        return expect(this.branchNode.indenter.hasClass("indenter")).to.be.true;
       });
       describe("when root node", function() {
         return it("is not indented", function() {
@@ -477,7 +477,8 @@
           return this.subject = this.subject[1];
         });
         it("is a node object", function() {
-          return expect(this.subject.parentNode()).to.be.an["instanceof"](TreeTable.Node);
+          // to.be.an.instanceof fails in IE9, is this a chai bug?
+          return expect(this.subject.parentNode()).that.is.an.instanceof(TreeTable.Node);
         });
         return it("'s id equals this node's parentId", function() {
           return expect(this.subject.parentNode().id).to.equal(this.subject.parentId);
@@ -488,7 +489,7 @@
           return this.subject = this.subject[0];
         });
         return it("is null", function() {
-          return expect(this.subject.parentNode()).to.be["null"];
+          return expect(this.subject.parentNode()).to.be.null;
         });
       });
     });
@@ -613,7 +614,8 @@
           return this.subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr>").treeTable().data("treeTable").tree[0].treeCell;
         });
         it("is an object", function() {
-          return expect(this.subject).to.be.an("object");
+          // to.be.an("object") fails in IE9, is this a chai bug?
+          return expect(this.subject).that.is.an("object");
         });
         it("maps to a td", function() {
           return expect(this.subject).to.be("td");
@@ -695,7 +697,7 @@
         fn = function() {
           return table.treeTable("move", "n1", "n2");
         };
-        return expect(fn).to.not["throw"](InternalError, "too much recursion");
+        return expect(fn).to.not.throw();
       });
       it("cannot make node a child of itself", function() {
         var fn, table;
@@ -703,7 +705,7 @@
         fn = function() {
           return table.treeTable("move", "n1", "n1");
         };
-        return expect(fn).to.not["throw"](InternalError, "too much recursion");
+        return expect(fn).to.not.throw();
       });
       it("does nothing when node is moved to current location", function() {
         // TODO How to test? Nothing is happening...
