@@ -32,7 +32,7 @@
   ],
   "bugs": "https://github.com/ludo/jquery-treetable/issues",
   "homepage": "https://github.com/ludo/jquery-treetable",
-  "docs": "http://ludo.cubicphuse.nl/jquery-plugins/treeTable/doc/",
+  "docs": "http://ludo.cubicphuse.nl/jquery-treetable/",
   "dependencies": {
     "jquery": ">=1.6"
   }
