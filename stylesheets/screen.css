@@ -1,42 +1,47 @@
 body {
-  background: #fff;
+  background: #ddd;
   color: #000;
   font-family: Helvetica, Arial, sans-serif;
-  font-size: .8em;
   line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+#main {
+  background: #fff;
+  border-left: 20px solid #eee;
+  border-right: 20px solid #eee;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 20px;
 }
 
 pre.listing {
   background: #eee;
   border: 1px solid #ccc;
-  margin: .3em auto;
+  margin: .6em 0 .3em 0;
   padding: .1em .3em;
-  width: 90%;
 }
 
 pre.listing b {
   color: #f00;
 }
 
-/* TABLE
- * ========================================================================= */
 table {
   border: 1px solid #888;
   border-collapse: collapse;
+  font-size: .8em;
   line-height: 1;
-  margin: 1em auto;
-  width: 90%;
+  margin: .6em 0 1.8em 0;
+  width: 100%;
 }
 
-/* Caption
- * ------------------------------------------------------------------------- */
 table caption {
   font-size: .9em;
   font-weight: bold;
+  margin-bottom: .2em;
 }
 
-/* Header
- * ------------------------------------------------------------------------- */
 table thead {
   background: #aaa url(../images/bg-table-thead.png) repeat-x top left;
   font-size: .9em;
@@ -45,23 +50,13 @@ table thead {
 table thead tr th {
   border: 1px solid #888;
   font-weight: normal;
-  padding: .3em 1.67em .1em 1.67em;
+  padding: .3em 1em .1em 1em;
   text-align: left;
 }
 
-/* Body
- * ------------------------------------------------------------------------- */
 table tbody tr td {
   cursor: default;
-  padding: .3em 1.5em;
-}
-
-table tbody tr.even {
-  background: #f3f3f3;
-}
-
-table tbody tr.odd {
-  background: #fff;
+  padding: .3em 1em;
 }
 
 table span {
@@ -71,7 +66,7 @@ table span {
 }
 
 table span.file {
-  background-image: url(../images/page_white_text.png);
+  background-image: url(../images/file.png);
 }
 
 table span.folder {

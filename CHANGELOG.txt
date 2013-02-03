@@ -1,3 +1,20 @@
+== 3.0.0 RC1 - NOT RELEASED YET
+
+NOTE: This is a release candidate. Please test this version and report any
+issues found.
+
+The treeTable plugin has been completely rewritten for this release. Please
+review the documentation for changes in the way the plugin is used and the
+options that are supported.
+
+* [FEATURE] Added test suite to verify plugin behavior
+* [ENHANCEMENT] Better adhere to jQuery plugin standards
+* [ENHANCEMENT] Use 'data-' attributes for tree metadata (#48, #7)
+* [ENHANCEMENT] Optimized performance of large trees (#41)
+* [BUG] Do not pollute the jQuery namespace (#45)
+* [REMOVED] Built-in persistence feature has been removed
+* [REMOVED] IE6 support
+
 == 2.3.1 - 18 January 2013
 * [FEATURE] Keyboard accessibility (#27, #30)
 * [FEATURE] Optionally persist expanded node state using $.cookie (requires
