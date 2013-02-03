@@ -1,4 +1,4 @@
-== 3.0.0 RC1 - NOT RELEASED YET
+== 3.0.0-rc.1 - February 3, 2013
 
 NOTE: This is a release candidate. Please test this version and report any
 issues found.
