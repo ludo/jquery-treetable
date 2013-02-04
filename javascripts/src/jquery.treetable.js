@@ -152,6 +152,9 @@
 
     Node.prototype._initialize = function() {
       this.render();
+      if ($.isFunction(this.settings.onNodeInitialize)) {
+        this.settings.onNodeInitialize();
+      }
       return this.initialized = true;
     };
 
@@ -296,6 +299,7 @@
 
         // Events
         onNodeHide: null,
+        onNodeInitialize: null,
         onNodeShow: null
       }, options);
       return this.each(function() {

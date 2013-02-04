@@ -975,6 +975,41 @@
       });
     });
 
+    describe("onNodeInitialize", function() {
+      describe("when no callback function given", function() {
+        it("does not complain", function() {
+          var table;
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
+            onNodeInitialize: null
+          }).data("treeTable");
+          table.roots[0].initialized = false;
+          table.roots[0].show();
+        });
+      });
+
+      describe("when callback function given", function() {
+        beforeEach(function() {
+          this.callback = sinon.spy();
+          this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
+            onNodeInitialize: this.callback
+          }).data("treeTable");
+        });
+
+        it("is called when node is not initialized yet", function() {
+          this.table.roots[0].initialized = false;
+          this.table.roots[0].show();
+          expect(this.callback.called).to.be.true;
+        });
+
+        it("is not called again when node is already initialized", function() {
+          this.table.roots[0].show();
+          // Node was initialized before, callback has already been called. I
+          // check that the callback is not called more than once.
+          expect(this.callback.calledOnce).to.be.true;
+        });
+      });
+    });
+
     describe("onNodeShow", function() {
       describe("when no callback given", function() {
         it("does not complain", function() {
