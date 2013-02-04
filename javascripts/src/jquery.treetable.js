@@ -39,7 +39,7 @@
       this._hideChildren();
       this.row.removeClass("expanded").addClass("collapsed");
       this.expander.attr("title", this.settings.stringExpand);
-      if (this.initialized && $.isFunction(this.settings.onNodeHide)) {
+      if (this.initialized && this.settings.onNodeHide !== null) {
         this.settings.onNodeHide();
       }
       return this;
@@ -51,7 +51,7 @@
       this.row.removeClass("collapsed").addClass("expanded");
       this._showChildren();
       this.expander.attr("title", this.settings.stringCollapse);
-      if (this.initialized && $.isFunction(this.settings.onNodeShow)) {
+      if (this.initialized && this.settings.onNodeShow !== null) {
         this.settings.onNodeShow();
       }
       return this;
@@ -152,7 +152,7 @@
 
     Node.prototype._initialize = function() {
       this.render();
-      if ($.isFunction(this.settings.onNodeInitialize)) {
+      if (this.settings.onNodeInitialize !== null) {
         this.settings.onNodeInitialize();
       }
       return this.initialized = true;
