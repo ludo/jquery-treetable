@@ -38,7 +38,7 @@
       this._hideChildren();
       this.row.removeClass("expanded").addClass("collapsed");
       this.expander.attr("title", this.settings.stringExpand);
-      if (this.initialized && this.settings.onNodeHide !== null) {
+      if (this.initialized && this.settings.onNodeHide != null) {
         this.settings.onNodeHide();
       }
       return this;
@@ -50,7 +50,7 @@
       this.row.removeClass("collapsed").addClass("expanded");
       this._showChildren();
       this.expander.attr("title", this.settings.stringCollapse);
-      if (this.initialized && this.settings.onNodeShow !== null) {
+      if (this.initialized && this.settings.onNodeShow != null) {
         this.settings.onNodeShow();
       }
       return this;
@@ -151,7 +151,7 @@
 
     Node.prototype._initialize = function() {
       this.render();
-      if (this.settings.onNodeInitialized !== null) {
+      if (this.settings.onNodeInitialized != null) {
         this.settings.onNodeInitialized();
       }
       return this.initialized = true;
@@ -310,7 +310,7 @@
 
         el = $(this).addClass("treeTable").data("treeTable", tree);
 
-        if (settings.onInitialized !== null) {
+        if (settings.onInitialized != null) {
           settings.onInitialized();
         }
 
