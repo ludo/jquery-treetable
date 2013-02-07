@@ -47,7 +47,7 @@
       this.row.removeClass("expanded").addClass("collapsed");
       this.expander.attr("title", this.settings.stringExpand);
       if (this.initialized && this.settings.onNodeCollapse != null) {
-        this.settings.onNodeCollapse();
+        this.settings.onNodeCollapse.apply(this);
       }
       return this;
     };
@@ -59,7 +59,7 @@
       this._showChildren();
       this.expander.attr("title", this.settings.stringCollapse);
       if (this.initialized && this.settings.onNodeExpand != null) {
-        this.settings.onNodeExpand();
+        this.settings.onNodeExpand.apply(this);
       }
       return this;
     };
@@ -164,7 +164,7 @@
     Node.prototype._initialize = function() {
       this.render();
       if (this.settings.onNodeInitialized != null) {
-        this.settings.onNodeInitialized();
+        this.settings.onNodeInitialized.apply(this);
       }
       return this.initialized = true;
     };
@@ -323,7 +323,7 @@
         el = $(this).addClass("treeTable").data("treeTable", tree);
 
         if (settings.onInitialized != null) {
-          settings.onInitialized();
+          settings.onInitialized.apply(tree);
         }
 
         return el;
