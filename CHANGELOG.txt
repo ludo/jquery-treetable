@@ -1,6 +1,6 @@
 == 3.0.0-rc.2 - NOT RELEASED YET
 
-* [FEATURE] Added onNodeInitialize event (#21)
+* [FEATURE] Added onNodeInitialized event (#21)
 
 == 3.0.0-rc.1 - February 3, 2013
 

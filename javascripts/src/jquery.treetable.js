@@ -151,8 +151,8 @@
 
     Node.prototype._initialize = function() {
       this.render();
-      if (this.settings.onNodeInitialize !== null) {
-        this.settings.onNodeInitialize();
+      if (this.settings.onNodeInitialized !== null) {
+        this.settings.onNodeInitialized();
       }
       return this.initialized = true;
     };
@@ -297,7 +297,7 @@
 
         // Events
         onNodeHide: null,
-        onNodeInitialize: null,
+        onNodeInitialized: null,
         onNodeShow: null
       }, options);
 

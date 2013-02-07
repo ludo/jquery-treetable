@@ -975,12 +975,12 @@
       });
     });
 
-    describe("onNodeInitialize", function() {
+    describe("onNodeInitialized", function() {
       describe("when no callback function given", function() {
         it("does not complain", function() {
           var table;
           table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
-            onNodeInitialize: null
+            onNodeInitialized: null
           }).data("treeTable");
           table.roots[0].initialized = false;
           table.roots[0].show();
@@ -991,7 +991,7 @@
         beforeEach(function() {
           this.callback = sinon.spy();
           this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
-            onNodeInitialize: this.callback
+            onNodeInitialized: this.callback
           }).data("treeTable");
         });
 
