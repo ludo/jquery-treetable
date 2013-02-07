@@ -46,21 +46,25 @@
       this._hideChildren();
       this.row.removeClass("expanded").addClass("collapsed");
       this.expander.attr("title", this.settings.stringExpand);
+
       if (this.initialized && this.settings.onNodeCollapse != null) {
         this.settings.onNodeCollapse.apply(this);
       }
+
       return this;
     };
 
     // TODO destroy: remove event handlers, expander, indenter, etc.
 
     Node.prototype.expand = function() {
-      this.row.removeClass("collapsed").addClass("expanded");
-      this._showChildren();
-      this.expander.attr("title", this.settings.stringCollapse);
       if (this.initialized && this.settings.onNodeExpand != null) {
         this.settings.onNodeExpand.apply(this);
       }
+
+      this.row.removeClass("collapsed").addClass("expanded");
+      this._showChildren();
+      this.expander.attr("title", this.settings.stringCollapse);
+
       return this;
     };
 
