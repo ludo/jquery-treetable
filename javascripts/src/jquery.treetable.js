@@ -5,13 +5,21 @@
 
   Node = (function() {
     function Node(row, tree, settings) {
+      var parentId;
+
       this.row = row;
       this.tree = tree;
       this.settings = settings;
 
       // TODO Ensure id/parentId is always a string (not int)
       this.id = this.row.data(this.settings.nodeIdAttr);
-      this.parentId = this.row.data(this.settings.parentIdAttr);
+
+      // TODO Move this to a setParentId function?
+      parentId = this.row.data(this.settings.parentIdAttr);
+      if (parentId != null && parentId !== "") {
+        this.parentId = parentId;
+      }
+
       this.treeCell = $(this.row.children(this.settings.columnElType)[this.settings.column]);
       this.expander = $(this.settings.expanderTemplate);
       this.indenter = $(this.settings.indenterTemplate);

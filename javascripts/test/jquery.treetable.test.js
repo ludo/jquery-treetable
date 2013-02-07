@@ -550,6 +550,12 @@
         subject = $("<table><tr data-tt-id='0'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[0];
         expect(subject.parentId).to.be.undefined;
       });
+
+      it("is undefined when empty", function() {
+        var subject;
+        subject = $("<table><tr data-tt-id='0' data-tt-parent-id=''><td>N42</td></tr></table>").treeTable().data("treeTable").tree[0];
+        expect(subject.parentId).to.be.undefined;
+      });
     });
 
     describe("parentNode()", function() {
