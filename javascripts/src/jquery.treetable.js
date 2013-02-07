@@ -46,8 +46,8 @@
       this._hideChildren();
       this.row.removeClass("expanded").addClass("collapsed");
       this.expander.attr("title", this.settings.stringExpand);
-      if (this.initialized && this.settings.onNodeHide != null) {
-        this.settings.onNodeHide();
+      if (this.initialized && this.settings.onNodeCollapse != null) {
+        this.settings.onNodeCollapse();
       }
       return this;
     };
@@ -58,8 +58,8 @@
       this.row.removeClass("collapsed").addClass("expanded");
       this._showChildren();
       this.expander.attr("title", this.settings.stringCollapse);
-      if (this.initialized && this.settings.onNodeShow != null) {
-        this.settings.onNodeShow();
+      if (this.initialized && this.settings.onNodeExpand != null) {
+        this.settings.onNodeExpand();
       }
       return this;
     };
@@ -309,9 +309,9 @@
 
         // Events
         onInitialized: null,
-        onNodeHide: null,
-        onNodeInitialized: null,
-        onNodeShow: null
+        onNodeCollapse: null,
+        onNodeExpand: null,
+        onNodeInitialized: null
       }, options);
 
       return this.each(function() {

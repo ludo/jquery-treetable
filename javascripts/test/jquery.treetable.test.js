@@ -966,13 +966,13 @@
       });
     });
 
-    describe("onNodeHide", function() {
+    describe("onNodeCollapse", function() {
       describe("when no callback function given", function() {
         it("does not complain", function() {
           var table;
           table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
             initialState: "expanded",
-            onNodeHide: null
+            onNodeCollapse: null
           }).data("treeTable");
           table.roots[0].collapse();
         });
@@ -983,7 +983,7 @@
           this.callback = sinon.spy();
           this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
             initialState: "expanded",
-            onNodeHide: this.callback
+            onNodeCollapse: this.callback
           }).data("treeTable");
         });
 
@@ -1040,13 +1040,13 @@
       });
     });
 
-    describe("onNodeShow", function() {
+    describe("onNodeExpand", function() {
       describe("when no callback given", function() {
         it("does not complain", function() {
           var table;
           table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
             initialState: "expanded",
-            onNodeShow: null
+            onNodeExpand: null
           }).data("treeTable");
           table.roots[0].expand();
         });
@@ -1057,7 +1057,7 @@
           this.callback = sinon.spy();
           this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
             initialState: "expanded",
-            onNodeShow: this.callback
+            onNodeExpand: this.callback
           }).data("treeTable");
         });
 
