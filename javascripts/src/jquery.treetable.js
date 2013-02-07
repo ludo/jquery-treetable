@@ -4,7 +4,6 @@
   $ = jQuery;
 
   Node = (function() {
-
     function Node(row, tree, settings) {
       this.row = row;
       this.tree = tree;
@@ -170,11 +169,9 @@
     };
 
     return Node;
-
   })();
 
   Tree = (function() {
-
     function Tree(table, settings) {
       this.table = table;
       this.settings = settings;
@@ -240,6 +237,7 @@
       if (node !== destination && destination.id !== node.parentId && $.inArray(node, destination.ancestors()) === -1) {
         node.setParent(destination);
         this._moveRows(node, destination);
+
         // Re-render parentNode if this is its first child node, and therefore
         // doesn't have the expander yet.
         if (node.parentNode().children.length === 1) {
@@ -276,13 +274,13 @@
     };
 
     return Tree;
-
   })();
 
   // jQuery Plugin
   methods = {
     init: function(options) {
       var settings;
+
       settings = $.extend({
         clickableNodeNames: false,
         column: 0,
@@ -302,54 +300,65 @@
         onNodeInitialize: null,
         onNodeShow: null
       }, options);
+
       return this.each(function() {
         var tree;
+
         tree = new Tree(this, settings);
         tree.load().render();
+
         return $(this).addClass("treeTable").data("treeTable", tree);
       });
     },
+
     destroy: function() {
       return this.each(function() {
         return $(this).removeData("treeTable").removeClass("treeTable");
       });
     },
+
     collapseAll: function() {
       return this.data("treeTable").collapseAll();
     },
+
     collapseNode: function(id) {
-      var node;
-      node = this.data("treeTable").tree[id];
+      var node = this.data("treeTable").tree[id];
+
       if (node) {
         return node.collapse();
       } else {
         throw new Error("Unknown node '" + id + "'");
       }
     },
+
     expandAll: function() {
       return this.data("treeTable").expandAll();
     },
+
     expandNode: function(id) {
-      var node;
-      node = this.data("treeTable").tree[id];
+      var node = this.data("treeTable").tree[id];
+
       if (node) {
         return node.expand();
       } else {
         throw new Error("Unknown node '" + id + "'");
       }
     },
+
     move: function(nodeId, destinationId) {
       var destination, node;
       node = this.data("treeTable").tree[nodeId];
       destination = this.data("treeTable").tree[destinationId];
       return this.data("treeTable").move(node, destination);
     },
+
     node: function(id) {
       return this.data("treeTable").tree[id];
     },
+
     reveal: function(id) {
-      var node;
-      node = this.data("treeTable").tree[id];
+      var node = this.data("treeTable").tree[id];
+
       if (node) {
         return node.reveal();
       } else {
