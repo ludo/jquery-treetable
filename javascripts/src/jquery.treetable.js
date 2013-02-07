@@ -296,18 +296,25 @@
         stringCollapse: "Collapse",
 
         // Events
+        onInitialized: null,
         onNodeHide: null,
         onNodeInitialized: null,
         onNodeShow: null
       }, options);
 
       return this.each(function() {
-        var tree;
+        var el, tree;
 
         tree = new Tree(this, settings);
         tree.load().render();
 
-        return $(this).addClass("treeTable").data("treeTable", tree);
+        el = $(this).addClass("treeTable").data("treeTable", tree);
+
+        if (settings.onInitialized !== null) {
+          settings.onInitialized();
+        }
+
+        return el;
       });
     },
 

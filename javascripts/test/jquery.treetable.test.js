@@ -936,6 +936,30 @@
   });
 
   describe("events", function() {
+    describe("onInitialized", function() {
+      describe("when no callback function given", function() {
+        it("does not complain", function() {
+          var table;
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
+            onInitialized: null
+          });
+        });
+      });
+
+      describe("when callback function given", function() {
+        it("is called when tree has been initialized", function() {
+          var callback, table;
+
+          callback = sinon.spy();
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
+            onInitialized: callback
+          });
+
+          expect(callback.called).to.be.true;
+        });
+      });
+    });
+
     describe("onNodeHide", function() {
       describe("when no callback function given", function() {
         it("does not complain", function() {
