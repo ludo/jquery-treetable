@@ -92,21 +92,25 @@
     };
 
     Node.prototype.render = function() {
-      var target;
-      if (this.settings.expandable === true && this.children.length > 0) {
+      var settings = this.settings, target;
+
+      if (settings.expandable === true && this.children.length > 0) {
         this.indenter.html(this.expander);
-        target = this.settings.clickableNodeNames === true ? this.treeCell : this.expander;
+        target = settings.clickableNodeNames === true ? this.treeCell : this.expander;
         target.unbind("click.treeTable").bind("click.treeTable", function(event) {
-          $(this).parents("table").treeTable("node", $(this).parents("tr").data("ttId")).toggle();
+          $(this).parents("table").treeTable("node", $(this).parents("tr").data(settings.nodeIdAttr)).toggle();
           return event.preventDefault();
         });
       }
-      if (this.settings.expandable === true && this.settings.initialState === "collapsed") {
+
+      if (settings.expandable === true && settings.initialState === "collapsed") {
         this.collapse();
       } else {
         this.expand();
       }
-      this.indenter[0].style.paddingLeft = "" + (this.level() * this.settings.indent) + "px";
+
+      this.indenter[0].style.paddingLeft = "" + (this.level() * settings.indent) + "px";
+
       return this;
     };
 

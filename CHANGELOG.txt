@@ -3,6 +3,7 @@
 * [FEATURE] Added onInitialized event
 * [FEATURE] Added onNodeInitialized event (#21)
 * [BUG] Having an empty data-tt-parent-id attribute would result in an error
+* [BUG] A hardcoded reference to 'ttId' prevented proper use of nodeIdAttr setting
 
 == 3.0.0-rc.1 - February 3, 2013
 
