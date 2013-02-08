@@ -228,17 +228,18 @@
       return _results;
     };
 
-    Tree.prototype.load = function() {
-      var node, row, _i, _len, _ref;
-      if (this.table.rows != null) {
-        _ref = this.table.rows;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          row = _ref[_i];
-          row = $(row);
+    Tree.prototype.loadRows = function(rows) {
+      var node, row, i;
+
+      if (rows != null) {
+        for (i = 0; i < rows.length; i++) {
+          row = $(rows[i]);
+
           if (row.data(this.settings.nodeIdAttr) != null) {
             node = new Node(row, this.tree, this.settings);
             this.nodes.push(node);
             this.tree[node.id] = node;
+
             if (node.parentId != null) {
               this.tree[node.parentId].addChild(node);
             } else {
@@ -247,6 +248,7 @@
           }
         }
       }
+
       return this;
     };
 
@@ -331,7 +333,7 @@
         var el, tree;
 
         tree = new Tree(this, settings);
-        tree.load().render();
+        tree.loadRows(this.rows).render();
 
         el = $(this).addClass("treeTable").data("treeTable", tree);
 
@@ -379,6 +381,14 @@
       } else {
         throw new Error("Unknown node '" + id + "'");
       }
+
+      return this;
+    },
+
+    loadBranch: function(node, rows) {
+      rows = $(rows);
+      rows.insertAfter(node.row);
+      this.data("treeTable").loadRows(rows);
 
       return this;
     },

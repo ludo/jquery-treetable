@@ -247,6 +247,31 @@
       });
     });
 
+    describe("loadBranch()", function() {
+      beforeEach(function() {
+        this.newRows = "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>"
+
+        this.subject.treeTable();
+        this.parentNode = this.subject.treeTable("node", 2);
+      });
+
+      it("inserts rows into DOM", function() {
+        expect(this.subject[0].rows.length).to.equal(3);
+        this.subject.treeTable("loadBranch", this.parentNode, this.newRows);
+        expect(this.subject[0].rows.length).to.equal(5);
+      });
+
+      it("inserts rows into tree", function() {
+        expect(this.subject.data("treeTable").nodes.length).to.equal(3);
+        this.subject.treeTable("loadBranch", this.parentNode, this.newRows);
+        expect(this.subject.data("treeTable").nodes.length).to.equal(5);
+      });
+
+      it("maintains chainability", function() {
+        expect(this.subject.treeTable("loadBranch", 1, 2)).to.equal(this.subject);
+      });
+    });
+
     describe("move()", function() {
       beforeEach(function() {
         this.subject.treeTable();
@@ -834,25 +859,22 @@
   });
 
   describe("TreeTable.Tree", function() {
-    describe("load()", function() {
+    describe("loadRows()", function() {
       it("maintains chainability", function() {
-        var subject;
-        subject = new TreeTable.Tree($("<table></table>"), {});
-        expect(subject.load()).to.equal(subject);
+        var subject = new TreeTable.Tree($("<table></table>"), {});
+        expect(subject.loadRows()).to.equal(subject);
       });
 
       describe("a table without rows", function() {
         it("'s tree cache is empty", function() {
-          var subject;
-          subject = new TreeTable.Tree($("<table></table>"), {}).load().tree;
+          var subject = new TreeTable.Tree($("<table></table>"), {}).loadRows().tree;
           expect(_.size(subject)).to.equal(0);
         });
       });
 
       describe("a table with tree rows", function() {
         it("caches all tree nodes", function() {
-          var subject;
-          subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree;
+          var subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree;
           expect(_.size(subject)).to.equal(2);
           expect(_.keys(subject)).to.include('0');
           expect(_.keys(subject)).to.include('1');
