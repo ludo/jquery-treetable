@@ -5,7 +5,7 @@
 
   describe("treeTable()", function() {
     beforeEach(function() {
-      this.subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>");
+      this.subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0' data-tt-branch='true'><td>N2</td></tr></table>");
     });
 
     it("maintains chainability", function() {
@@ -66,7 +66,8 @@
     describe("with expandable: true and clickableNodeNames: false", function() {
       beforeEach(function() {
         this.subject.treeTable({
-          expandable: true
+          expandable: true,
+          initialState: "expanded"
         }).appendTo("body");
       });
 
@@ -74,16 +75,16 @@
         this.subject.remove();
       });
 
-      it("expands branch when node toggler clicked", function() {
-        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
-        this.subject.treeTable("node", 0).row.find(".indenter a").click();
+      it("collapses branch when node toggler clicked", function() {
         expect(this.subject.treeTable("node", 1).row).to.be.visible;
+        this.subject.treeTable("node", 0).row.find(".indenter a").click();
+        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
       });
 
-      it("does not expand branch when cell clicked", function() {
-        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
+      it("does not collapse branch when cell clicked", function() {
+        expect(this.subject.treeTable("node", 1).row).to.be.visible;
         this.subject.treeTable("node", 0).row.find("td").first().click();
-        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
+        expect(this.subject.treeTable("node", 1).row).to.be.visible;
       });
 
       describe("for nodes with children", function() {
@@ -95,6 +96,12 @@
       describe("for nodes without children", function() {
         it("does not render a clickable node toggler", function() {
           expect(this.subject.treeTable("node", 1).row).to.not.have("a");
+        });
+      });
+
+      describe("for nodes without children but with branch node data attribute", function() {
+        it("renders a clickable node toggler", function() {
+          expect(this.subject.treeTable("node", 2).row).to.have("a");
         });
       });
     });
@@ -522,6 +529,35 @@
         var subject;
         subject = $("<table><tr data-tt-id='42'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
         expect(subject.id).to.equal(42);
+      });
+    });
+
+    describe("isBranchNode()", function() {
+      it("is true when node has children", function() {
+        var subject = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='21' data-tt-parent-id='42'><td>N21</td></tr></table>").treeTable().data("treeTable").tree[42];
+        expect(subject.isBranchNode()).to.be.true;
+      });
+
+      it("is true when node has data attribute tt-branch with value 'true'", function() {
+        var subject = $("<table><tr data-tt-id='42' data-tt-branch='true'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
+        expect(subject.isBranchNode()).to.be.true;
+      });
+
+      // This would be an error in the tree, but I consider having children
+      // more important than the ttBranch attribute.
+      it("is true when node has children but also a tt-branch attribute with value 'false'", function() {
+        var subject = $("<table><tr data-tt-id='42' data-tt-branch='false'><td>N42</td></tr><tr data-tt-id='21' data-tt-parent-id='42'><td>N21</td></tr></table>").treeTable().data("treeTable").tree[42];
+        expect(subject.isBranchNode()).to.be.true;
+      });
+
+      it("is false when node has data attribute tt-branch with value 'false'", function() {
+        var subject = $("<table><tr data-tt-id='42' data-tt-branch='false'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
+        expect(subject.isBranchNode()).to.be.false;
+      });
+
+      it("is false when node has no children and no tt-branch attribute", function() {
+        var subject = $("<table><tr data-tt-id='42'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
+        expect(subject.isBranchNode()).to.be.false;
       });
     });
 

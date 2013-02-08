@@ -78,6 +78,14 @@
       return this;
     };
 
+    Node.prototype.isBranchNode = function() {
+      if(this.children.length > 0 || this.row.data(this.settings.branchAttr) === true) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     Node.prototype.level = function() {
       return this.ancestors().length;
     };
@@ -98,7 +106,7 @@
     Node.prototype.render = function() {
       var settings = this.settings, target;
 
-      if (settings.expandable === true && this.children.length > 0) {
+      if (settings.expandable === true && this.isBranchNode()) {
         this.indenter.html(this.expander);
         target = settings.clickableNodeNames === true ? this.treeCell : this.expander;
         target.unbind("click.treeTable").bind("click.treeTable", function(event) {
@@ -298,6 +306,7 @@
       var settings;
 
       settings = $.extend({
+        branchAttr: "ttBranch",
         clickableNodeNames: false,
         column: 0,
         columnElType: "td", // i.e. 'td', 'th' or 'td,th'
