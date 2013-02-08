@@ -262,9 +262,11 @@
       });
 
       it("inserts rows into tree", function() {
-        expect(this.subject.data("treeTable").nodes.length).to.equal(3);
+        expect(this.subject.data("treeTable").tree[3]).to.be.undefined;
+        expect(this.subject.data("treeTable").tree[4]).to.be.undefined;
         this.subject.treeTable("loadBranch", this.parentNode, this.newRows);
-        expect(this.subject.data("treeTable").nodes.length).to.equal(5);
+        expect(this.subject.data("treeTable").tree[3]).to.be.defined;
+        expect(this.subject.data("treeTable").tree[4]).to.be.defined;
       });
 
       it("maintains chainability", function() {
@@ -306,6 +308,47 @@
         expect(this.subject.treeTable("reveal", 2)).to.equal(this.subject);
       });
     });
+
+    describe("unloadBranch()", function() {
+      beforeEach(function() {
+        this.newRows = "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>"
+
+        this.subject.treeTable();
+        this.parentNode = this.subject.treeTable("node", 2);
+        this.subject.treeTable("loadBranch", this.parentNode, this.newRows);
+      });
+
+      it("removes rows from DOM", function() {
+        expect(this.subject[0].rows.length).to.equal(5);
+        this.subject.treeTable("unloadBranch", this.parentNode);
+        expect(this.subject[0].rows.length).to.equal(3);
+      });
+
+      it("removes rows from tree", function() {
+        expect(this.subject.data("treeTable").tree[3]).to.be.defined;
+        expect(this.subject.data("treeTable").tree[4]).to.be.defined;
+        this.subject.treeTable("unloadBranch", this.parentNode);
+        expect(this.subject.data("treeTable").tree[3]).to.be.undefined;
+        expect(this.subject.data("treeTable").tree[4]).to.be.undefined;
+      });
+
+      it("removes nodes from node cache", function() {
+        expect(this.subject.data("treeTable").nodes.length).to.equal(5);
+        this.subject.treeTable("unloadBranch", this.parentNode);
+        expect(this.subject.data("treeTable").nodes.length).to.equal(3);
+      });
+
+      it("removes nodes from parent's list of children", function() {
+        expect(this.parentNode.children.length).to.equal(2);
+        this.subject.treeTable("unloadBranch", this.parentNode);
+        expect(this.parentNode.children.length).to.equal(0);
+      });
+
+      it("maintains chainability", function() {
+        expect(this.subject.treeTable("unloadBranch", this.parentNode)).to.equal(this.subject);
+      });
+    });
+
   });
 
   describe("TreeTable.Node", function() {

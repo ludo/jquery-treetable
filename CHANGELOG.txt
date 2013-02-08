@@ -1,7 +1,7 @@
 == 3.0.0-rc.2 - NOT RELEASED YET
 
 * [FEATURE] Added (optional) tt-branch data attribute for AJAX use case
-* [FEATURE] Added loadBranch() function for adding nodes to the tree
+* [FEATURE] Added loadBranch()/unloadBranch() functions for adding/removing nodes to the tree (AJAX)
 * [FEATURE] Added onInitialized event
 * [FEATURE] Added onNodeInitialized event (#21)
 * [ENHANCEMENT] Made appropriate plugin methods chainable

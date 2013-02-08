@@ -252,13 +252,17 @@ $("<b>#your_table_id</b>").treeTable();
         <dt><tt>expandAll()</tt></dt>
         <dd>Expand all nodes at once.</dd>
         <dt><tt>expandNode(id)</tt></dt>
-        <dd>Expand a single node, identified by <tt>id</tt>.</dd>
+        <dd>Expand all nodes at once.</dd>
+        <dt><tt>loadBranch(node, rows)</tt></dt>
+        <dd>Load additional rows (HTML <tt>&lt;tr&gt;</tt>s) into the tree, with parent <tt>node</tt>.</dd>
         <dt><tt>move(nodeId, destinationId)</tt></dt>
         <dd>Move node <tt>nodeId</tt> to new parent with <tt>destinationId</tt>.</dd>
         <dt><tt>node(id)</tt></dt>
         <dd>Select a node from the tree. Returns a <tt>TreeTable.Node</tt> object.</dd>
         <dt><tt>reveal(id)</tt></dt>
         <dd>Reveal a node in the tree.</dd>
+        <dt><tt>unloadBranch(node)</tt></dt>
+        <dd>Remove nodes/rows (HTML <tt>&lt;tr&gt;</tt>s) from the tree, with parent <tt>node</tt>. Note that the parent (<tt>node</tt>) will not be removed.</dd>
       </dl>
 
       <h2><a name="examples">5. Examples</a></h2>

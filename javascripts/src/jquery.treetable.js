@@ -299,6 +299,30 @@
       return _results;
     };
 
+    Tree.prototype.unloadBranch = function(node) {
+      var child, children, i;
+
+      for (i = 0; i < node.children.length; i++) {
+        child = node.children[i];
+
+        // Recursively remove all descendants of +node+
+        this.unloadBranch(child);
+
+        // Remove child from DOM (<tr>)
+        child.row.remove();
+
+        // Clean up Tree object (so Node objects are GC-ed)
+        delete this.tree[child.id];
+        this.nodes.splice($.inArray(child, this.nodes), 1)
+      }
+
+      // Reset node's collection of children
+      node.children = [];
+
+      return this;
+    };
+
+
     return Tree;
   })();
 
@@ -416,6 +440,11 @@
         throw new Error("Unknown node '" + id + "'");
       }
 
+      return this;
+    },
+
+    unloadBranch: function(node) {
+      this.data("treeTable").unloadBranch(node);
       return this;
     }
   };
