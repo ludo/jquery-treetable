@@ -350,38 +350,47 @@
     },
 
     collapseAll: function() {
-      return this.data("treeTable").collapseAll();
+      this.data("treeTable").collapseAll();
+      return this;
     },
 
     collapseNode: function(id) {
       var node = this.data("treeTable").tree[id];
 
       if (node) {
-        return node.collapse();
+        node.collapse();
       } else {
         throw new Error("Unknown node '" + id + "'");
       }
+
+      return this;
     },
 
     expandAll: function() {
-      return this.data("treeTable").expandAll();
+      this.data("treeTable").expandAll();
+      return this;
     },
 
     expandNode: function(id) {
       var node = this.data("treeTable").tree[id];
 
       if (node) {
-        return node.expand();
+        node.expand();
       } else {
         throw new Error("Unknown node '" + id + "'");
       }
+
+      return this;
     },
 
     move: function(nodeId, destinationId) {
       var destination, node;
+
       node = this.data("treeTable").tree[nodeId];
       destination = this.data("treeTable").tree[destinationId];
-      return this.data("treeTable").move(node, destination);
+      this.data("treeTable").move(node, destination);
+
+      return this;
     },
 
     node: function(id) {
@@ -392,10 +401,12 @@
       var node = this.data("treeTable").tree[id];
 
       if (node) {
-        return node.reveal();
+        node.reveal();
       } else {
         throw new Error("Unknown node '" + id + "'");
       }
+
+      return this;
     }
   };
 

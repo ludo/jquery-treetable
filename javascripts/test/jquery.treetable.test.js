@@ -149,6 +149,10 @@
         }
         return _results;
       });
+
+      it("maintains chainability", function() {
+        expect(this.subject.treeTable("collapseAll")).to.equal(this.subject);
+      });
     });
 
     describe("collapseNode()", function() {
@@ -159,15 +163,13 @@
       });
 
       it("collapses a root node", function() {
-        var row;
-        row = $(this.subject[0].rows[0]);
+        var row = $(this.subject[0].rows[0]);
         this.subject.treeTable("collapseNode", row.data("ttId"));
         expect(row.hasClass("collapsed")).to.be.true;
       });
 
       it("collapses a branch node", function() {
-        var row;
-        row = $(this.subject[0].rows[1]);
+        var row = $(this.subject[0].rows[1]);
         this.subject.treeTable("collapseNode", row.data("ttId"));
         expect(row.hasClass("collapsed")).to.be.true;
       });
@@ -179,6 +181,11 @@
           subject.treeTable("collapseNode", "whatever");
         };
         expect(fn).to["throw"](Error, "Unknown node 'whatever'");
+      });
+
+      it("maintains chainability", function() {
+        var row = $(this.subject[0].rows[0]);
+        expect(this.subject.treeTable("collapseNode", row.data("ttId"))).to.equal(this.subject);
       });
     });
 
@@ -200,6 +207,10 @@
         }
         return _results;
       });
+
+      it("maintains chainability", function() {
+        expect(this.subject.treeTable("expandAll")).to.equal(this.subject);
+      });
     });
 
     describe("expandNode()", function() {
@@ -210,15 +221,13 @@
       });
 
       it("expands a root node", function() {
-        var row;
-        row = $(this.subject[0].rows[0]);
+        var row = $(this.subject[0].rows[0]);
         this.subject.treeTable("expandNode", row.data("ttId"));
         expect(row.hasClass("expanded")).to.be.true;
       });
 
       it("expands a branch node", function() {
-        var row;
-        row = $(this.subject[0].rows[1]);
+        var row = $(this.subject[0].rows[1]);
         this.subject.treeTable("expandNode", row.data("ttId"));
         expect(row.hasClass("expanded")).to.be.true;
       });
@@ -230,6 +239,21 @@
           subject.treeTable("expandNode", "whatever");
         };
         expect(fn).to["throw"](Error, "Unknown node 'whatever'");
+      });
+
+      it("maintains chainability", function() {
+        var row = $(this.subject[0].rows[0]);
+        expect(this.subject.treeTable("expandNode", row.data("ttId"))).to.equal(this.subject);
+      });
+    });
+
+    describe("move()", function() {
+      beforeEach(function() {
+        this.subject.treeTable();
+      });
+
+      it("maintains chainability", function() {
+        expect(this.subject.treeTable("move", 1, 2)).to.equal(this.subject);
       });
     });
 
@@ -245,6 +269,16 @@
 
       it("returns undefined for unknown node", function() {
         expect(this.subject.treeTable("node", "unknown")).to.be.undefined;
+      });
+    });
+
+    describe("reveal()", function() {
+      beforeEach(function() {
+        this.subject.treeTable();
+      });
+
+      it("maintains chainability", function() {
+        expect(this.subject.treeTable("reveal", 2)).to.equal(this.subject);
       });
     });
   });
