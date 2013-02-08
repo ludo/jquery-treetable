@@ -236,7 +236,7 @@
           row = _ref[_i];
           row = $(row);
           if (row.data(this.settings.nodeIdAttr) != null) {
-            node = new Node($(row), this.tree, this.settings);
+            node = new Node(row, this.tree, this.settings);
             this.nodes.push(node);
             this.tree[node.id] = node;
             if (node.parentId != null) {
