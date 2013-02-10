@@ -1,4 +1,7 @@
-== 3.0.0-rc.2 - NOT RELEASED YET
+== 3.0.0-rc.2 - February 10, 2013
+
+NOTE: This is a release candidate. Please test this version and report any
+issues found.
 
 * [FEATURE] Added (optional) tt-branch data attribute for AJAX use case
 * [FEATURE] Added loadBranch()/unloadBranch() functions for adding/removing nodes to the tree (AJAX)
