@@ -4,6 +4,7 @@
 * [FEATURE] Added loadBranch()/unloadBranch() functions for adding/removing nodes to the tree (AJAX)
 * [FEATURE] Added onInitialized event
 * [FEATURE] Added onNodeInitialized event (#21)
+* [ENHANCEMENT] Split CSS file into two files, one with basic styling required in most cases (jquery.treetable.css) and a 'theme' CSS (jquery.treetable.theme.default.css) that styles the trees like the ones in the documentation (#51)
 * [ENHANCEMENT] Made appropriate plugin methods chainable
 * [BUG] Having an empty data-tt-parent-id attribute would result in an error
 * [BUG] A hardcoded reference to 'ttId' prevented proper use of nodeIdAttr setting

@@ -18,37 +18,3 @@ table.treeTable span.indenter a {
   text-decoration: none;
   width: 19px;
 }
-
-table.treeTable tr.collapsed span.indenter a {
-  background-image: url(../images/expand.png);
-}
-
-table.treeTable tr.expanded span.indenter a {
-  background-image: url(../images/collapse.png);
-}
-
-table.treeTable tr.selected {
-  background-color: #3875d7;
-  color: #fff;
-}
-
-table.treeTable tr.collapsed.selected span.indenter a {
-  background-image: url(../images/expand-light.png);
-}
-
-table.treeTable tr.expanded.selected span.indenter a {
-  background-image: url(../images/collapse-light.png);
-}
-
-table.treeTable tr.accept {
-  background-color: #a3bce4;
-  color: #fff
-}
-
-table.treeTable tr.collapsed.accept td span.indenter a {
-  background-image: url(../images/expand-light.png);
-}
-
-table.treeTable tr.expanded.accept td span.indenter a {
-  background-image: url(../images/collapse-light.png);
-}
