@@ -6,4 +6,4 @@ Download the latest release from the jQuery Plugin Registry or grab the source c
 
 ## Documentation and Examples
 
-See index.html for technical documentation and examples.
+See index.html for technical documentation and examples. An AJAX enabled example built with Ruby on Rails can be found at https://github.com/ludo/jquery-treetable-ajax-example.
