@@ -10,12 +10,12 @@
   </head>
   <body>
     <div id="main">
-      <h1>jQuery treeTable</h1>
+      <h1>jQuery treetable</h1>
 
       <p><b><a href="http://plugins.jquery.com/treetable">Download</a> the latest release from the jQuery Plugin Registry or grab the <a href="https://github.com/ludo/jquery-treetable">source code</a> from Github.</b> Please <a href="https://github.com/ludo/jquery-treetable/issues">report issues</a> through Github issues. This plugin is released under both the MIT and the GPLv2 license by <a href="http://ludo.is">Ludo van den Boom</a>.</p>
 
       <table id="example-basic">
-        <caption>Basic jQuery treeTable Example</caption>
+        <caption>Basic jQuery treetable Example</caption>
         <thead>
           <tr>
             <th>Tree column</th>
@@ -55,13 +55,13 @@
 
       <h2><a name="overview">1. Overview</a></h2>
 
-      <p>jQuery treeTable is a plugin for <a href="http://jquery.com">jQuery</a>, the 'Write Less, Do More, JavaScript Library'. With this plugin you can display a tree in an HTML table, i.e. a directory structure or a nested list. Why not use a list, you say? Because lists are great for displaying a tree, and tables are not. Oh wait, but this plugin uses tables, doesn't it? Yes. Why do I use a table to display a list? Because I need multiple columns to display additional data besides the tree.</p>
+      <p>jQuery treetable is a plugin for <a href="http://jquery.com">jQuery</a>, the 'Write Less, Do More, JavaScript Library'. With this plugin you can display a tree in an HTML table, i.e. a directory structure or a nested list. Why not use a list, you say? Because lists are great for displaying a tree, and tables are not. Oh wait, but this plugin uses tables, doesn't it? Yes. Why do I use a table to display a list? Because I need multiple columns to display additional data besides the tree.</p>
 
       <h3>Unobtrusiveness</h3>
 
-      <p>One of the goals of jQuery treeTable is to be as unobtrusive as possible. Being 'unobtrusive' is very cool nowadays, so that was an important requirement. But it is cool for a reason: it keeps your HTML documents clean and it allows the code to degrade nicely when Javascript is not available.</p>
+      <p>One of the goals of jQuery treetable is to be as unobtrusive as possible. Being 'unobtrusive' is very cool nowadays, so that was an important requirement. But it is cool for a reason: it keeps your HTML documents clean and it allows the code to degrade nicely when Javascript is not available.</p>
 
-      <p>The treeTable plugin only requires that you add specific <tt>data</tt> attributes to every row that is part of your tree. The plugin uses these attributes to determine what your tree looks like. Otherwise, it would have to guess the structure of the tree and it wouldn't be very successful in doing that. See the <a href="#usage">Usage</a> chapter for more information on how to prepare your tree.</p>
+      <p>The treetable plugin only requires that you add specific <tt>data</tt> attributes to every row that is part of your tree. The plugin uses these attributes to determine what your tree looks like. Otherwise, it would have to guess the structure of the tree and it wouldn't be very successful in doing that. See the <a href="#usage">Usage</a> chapter for more information on how to prepare your tree.</p>
 
       <h3>Features</h3>
       <ul>
@@ -84,7 +84,7 @@
 &lt;link href="<b>path/to/</b>jquery.treetable.css" rel="stylesheet" type="text/css" /&gt;
 &lt;script src="<b>path/to/</b>jquery.treetable.js"&gt;&lt;/script&gt;
 &lt;script&gt;
-$("<b>#your_table_id</b>").treeTable();
+$("<b>#your_table_id</b>").treetable();
 &lt;/script&gt;</pre>
 
       <h3><a name="theme">Styling the tree</a></h3>
@@ -111,11 +111,11 @@ $("<b>#your_table_id</b>").treeTable();
 
       <h2><a name="configuration">3. Configuration</a></h2>
 
-      <p>There are several settings that let you adjust the behavior of the plugin. Each of these settings is described in this section. Pass these options and callback functions to the <tt>treeTable()</tt> function. See the <a href="#examples">examples</a>.</p>
+      <p>There are several settings that let you adjust the behavior of the plugin. Each of these settings is described in this section. Pass these options and callback functions to the <tt>treetable()</tt> function. See the <a href="#examples">examples</a>.</p>
 
       <h3>Settings</h3>
 
-      <table class="treeTable">
+      <table class="treetable">
         <thead>
           <tr>
             <th>Setting</th>
@@ -208,7 +208,7 @@ $("<b>#your_table_id</b>").treeTable();
 
       <h3>Events</h3>
 
-      <table class="treeTable">
+      <table class="treetable">
         <thead>
           <tr>
             <th>Setting</th>
@@ -247,7 +247,7 @@ $("<b>#your_table_id</b>").treeTable();
 
       <h2><a name="api">4. Public API</a></h2>
 
-      <p>Use the following functions to manipulate the tree programmatically. Calling a function should be done through the <tt>treeTable()</tt> function. For example, to collapse node '42' use <tt>$("#tree").treeTable("collapseNode", "42")</tt>.</p>
+      <p>Use the following functions to manipulate the tree programmatically. Calling a function should be done through the <tt>treetable()</tt> function. For example, to collapse node '42' use <tt>$("#tree").treetable("collapseNode", "42")</tt>.</p>
 
       <dl>
         <dt><tt>collapseAll()</tt></dt>
@@ -296,7 +296,7 @@ $("<b>#your_table_id</b>").treeTable();
       </table>
 
       <pre class="listing">
-$("#example-basic-static").treeTable();</pre>
+$("#example-basic-static").treetable();</pre>
 
       <h3>Basic Expandable Tree</h3>
 
@@ -322,7 +322,7 @@ $("#example-basic-static").treeTable();</pre>
       </table>
 
       <pre class="listing">
-$("#example-basic-expandable").treeTable({ expandable: true });</pre>
+$("#example-basic-expandable").treetable({ expandable: true });</pre>
 
       <h3>Complex Tree With Drag and Drop</h3>
 
@@ -336,8 +336,8 @@ $("#example-basic-expandable").treeTable({ expandable: true });</pre>
 
       <table id="example-advanced">
         <caption>
-          <a href="#" onclick="jQuery('#example-advanced').treeTable('expandAll'); return false;">Expand all</a>
-          <a href="#" onclick="jQuery('#example-advanced').treeTable('collapseAll'); return false;">Collapse all</a>
+          <a href="#" onclick="jQuery('#example-advanced').treetable('expandAll'); return false;">Expand all</a>
+          <a href="#" onclick="jQuery('#example-advanced').treetable('collapseAll'); return false;">Collapse all</a>
         </caption>
         <thead>
           <tr>
@@ -810,7 +810,7 @@ $("#example-basic-expandable").treeTable({ expandable: true });</pre>
       </table>
 
       <pre class="listing">
-$("#example-advanced").treeTable({ expandable: true });
+$("#example-advanced").treetable({ expandable: true });
 
 // Highlight selected row
 $("#example-advanced tbody tr").mousedown(function() {
@@ -833,13 +833,13 @@ $("#example-advanced .folder").each(function() {
     accept: ".file, .folder",
     drop: function(e, ui) {
       var droppedEl = ui.draggable.parents("tr");
-      $("#example-advanced").treeTable("move", droppedEl.data("ttId"), $(this).data("ttId"));
+      $("#example-advanced").treetable("move", droppedEl.data("ttId"), $(this).data("ttId"));
     },
     hoverClass: "accept",
     over: function(e, ui) {
       var droppedEl = ui.draggable.parents("tr");
       if(this != droppedEl[0] && !$(this).is(".expanded")) {
-        $("#example-advanced").treeTable("expandNode", $(this).data("ttId"));
+        $("#example-advanced").treetable("expandNode", $(this).data("ttId"));
       }
     }
   });
@@ -854,13 +854,13 @@ $("#example-advanced .folder").each(function() {
     <script src="vendor/jquery-ui.js"></script>
     <script src="javascripts/src/jquery.treetable.js"></script>
     <script>
-      $("#example-basic").treeTable({ expandable: true });
+      $("#example-basic").treetable({ expandable: true });
 
-      $("#example-basic-static").treeTable();
+      $("#example-basic-static").treetable();
 
-      $("#example-basic-expandable").treeTable({ expandable: true });
+      $("#example-basic-expandable").treetable({ expandable: true });
 
-      $("#example-advanced").treeTable({ expandable: true });
+      $("#example-advanced").treetable({ expandable: true });
 
       // Highlight selected row
       $("#example-advanced tbody tr").mousedown(function() {
@@ -883,13 +883,13 @@ $("#example-advanced .folder").each(function() {
           accept: ".file, .folder",
           drop: function(e, ui) {
             var droppedEl = ui.draggable.parents("tr");
-            $("#example-advanced").treeTable("move", droppedEl.data("ttId"), $(this).data("ttId"));
+            $("#example-advanced").treetable("move", droppedEl.data("ttId"), $(this).data("ttId"));
           },
           hoverClass: "accept",
           over: function(e, ui) {
             var droppedEl = ui.draggable.parents("tr");
             if(this != droppedEl[0] && !$(this).is(".expanded")) {
-              $("#example-advanced").treeTable("expandNode", $(this).data("ttId"));
+              $("#example-advanced").treetable("expandNode", $(this).data("ttId"));
             }
           }
         });
@@ -899,7 +899,7 @@ $("#example-advanced .folder").each(function() {
         var nodeId = $("#revealNodeId").val()
 
         try {
-          $("#example-advanced").treeTable("reveal", nodeId);
+          $("#example-advanced").treetable("reveal", nodeId);
         }
         catch(error) {
           alert(error.message);

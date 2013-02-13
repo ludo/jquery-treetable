@@ -1,4 +1,4 @@
-table.treeTable span.indenter {
+table.treetable span.indenter {
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -11,7 +11,7 @@ table.treeTable span.indenter {
   width: 19px;
 }
 
-table.treeTable span.indenter a {
+table.treetable span.indenter a {
   background-position: left center;
   background-repeat: no-repeat;
   display: inline-block;

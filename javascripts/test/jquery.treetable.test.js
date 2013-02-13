@@ -3,46 +3,46 @@
 
   expect = chai.expect;
 
-  describe("treeTable()", function() {
+  describe("treetable()", function() {
     beforeEach(function() {
       this.subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0' data-tt-branch='true'><td>N2</td></tr></table>");
     });
 
     it("maintains chainability", function() {
-      expect(this.subject.treeTable()).to.equal(this.subject);
+      expect(this.subject.treetable()).to.equal(this.subject);
     });
 
-    it("adds treeTable object to element", function() {
-      expect(this.subject.data("treeTable")).to.be.undefined;
-      this.subject.treeTable();
-      expect(this.subject.data("treeTable")).to.be.defined;
+    it("adds treetable object to element", function() {
+      expect(this.subject.data("treetable")).to.be.undefined;
+      this.subject.treetable();
+      expect(this.subject.data("treetable")).to.be.defined;
     });
 
-    it("adds .treeTable css class to element", function() {
-      expect(this.subject.hasClass("treeTable")).to.be.false;
-      this.subject.treeTable();
-      expect(this.subject.hasClass("treeTable")).to.be.true;
+    it("adds .treetable css class to element", function() {
+      expect(this.subject.hasClass("treetable")).to.be.false;
+      this.subject.treetable();
+      expect(this.subject.hasClass("treetable")).to.be.true;
     });
 
     describe("destroy()", function() {
-      it("removes treeTable object from element", function() {
-        this.subject.treeTable();
-        expect(this.subject.data("treeTable")).to.be.defined;
-        this.subject.treeTable("destroy");
-        expect(this.subject.data("treeTable")).to.be.undefined;
+      it("removes treetable object from element", function() {
+        this.subject.treetable();
+        expect(this.subject.data("treetable")).to.be.defined;
+        this.subject.treetable("destroy");
+        expect(this.subject.data("treetable")).to.be.undefined;
       });
 
-      it("removes .treeTable css class from element", function() {
-        this.subject.treeTable();
-        expect(this.subject.hasClass("treeTable")).to.be.true;
-        this.subject.treeTable("destroy");
-        expect(this.subject.hasClass("treeTable")).to.be.false;
+      it("removes .treetable css class from element", function() {
+        this.subject.treetable();
+        expect(this.subject.hasClass("treetable")).to.be.true;
+        this.subject.treetable("destroy");
+        expect(this.subject.hasClass("treetable")).to.be.false;
       });
     });
 
     describe("with expandable: false", function() {
       beforeEach(function() {
-        this.subject.treeTable({
+        this.subject.treetable({
           expandable: false
         }).appendTo("body");
       });
@@ -65,7 +65,7 @@
 
     describe("with expandable: true and clickableNodeNames: false", function() {
       beforeEach(function() {
-        this.subject.treeTable({
+        this.subject.treetable({
           expandable: true,
           initialState: "expanded"
         }).appendTo("body");
@@ -76,39 +76,39 @@
       });
 
       it("collapses branch when node toggler clicked", function() {
-        expect(this.subject.treeTable("node", 1).row).to.be.visible;
-        this.subject.treeTable("node", 0).row.find(".indenter a").click();
-        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
+        expect(this.subject.treetable("node", 1).row).to.be.visible;
+        this.subject.treetable("node", 0).row.find(".indenter a").click();
+        expect(this.subject.treetable("node", 1).row).to.not.be.visible;
       });
 
       it("does not collapse branch when cell clicked", function() {
-        expect(this.subject.treeTable("node", 1).row).to.be.visible;
-        this.subject.treeTable("node", 0).row.find("td").first().click();
-        expect(this.subject.treeTable("node", 1).row).to.be.visible;
+        expect(this.subject.treetable("node", 1).row).to.be.visible;
+        this.subject.treetable("node", 0).row.find("td").first().click();
+        expect(this.subject.treetable("node", 1).row).to.be.visible;
       });
 
       describe("for nodes with children", function() {
         it("renders a clickable node toggler", function() {
-          expect(this.subject.treeTable("node", 0).row).to.have("a");
+          expect(this.subject.treetable("node", 0).row).to.have("a");
         });
       });
 
       describe("for nodes without children", function() {
         it("does not render a clickable node toggler", function() {
-          expect(this.subject.treeTable("node", 1).row).to.not.have("a");
+          expect(this.subject.treetable("node", 1).row).to.not.have("a");
         });
       });
 
       describe("for nodes without children but with branch node data attribute", function() {
         it("renders a clickable node toggler", function() {
-          expect(this.subject.treeTable("node", 2).row).to.have("a");
+          expect(this.subject.treetable("node", 2).row).to.have("a");
         });
       });
     });
 
     describe("with expandable: true and clickableNodeNames: true", function() {
       beforeEach(function() {
-        this.subject.treeTable({
+        this.subject.treetable({
           expandable: true,
           clickableNodeNames: true
         }).appendTo("body");
@@ -119,28 +119,28 @@
       });
 
       it("expands branch when node toggler clicked", function() {
-        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
-        this.subject.treeTable("node", 0).row.find(".indenter a").click();
-        expect(this.subject.treeTable("node", 1).row).to.be.visible;
+        expect(this.subject.treetable("node", 1).row).to.not.be.visible;
+        this.subject.treetable("node", 0).row.find(".indenter a").click();
+        expect(this.subject.treetable("node", 1).row).to.be.visible;
       });
 
       it("expands branch when cell clicked", function() {
-        expect(this.subject.treeTable("node", 1).row).to.not.be.visible;
-        this.subject.treeTable("node", 0).row.find("td").first().click();
-        expect(this.subject.treeTable("node", 1).row).to.be.visible;
+        expect(this.subject.treetable("node", 1).row).to.not.be.visible;
+        this.subject.treetable("node", 0).row.find("td").first().click();
+        expect(this.subject.treetable("node", 1).row).to.be.visible;
       });
     });
 
     describe("collapseAll()", function() {
       beforeEach(function() {
-        this.subject.treeTable({
+        this.subject.treetable({
           initialState: "expanded"
         });
       });
 
       it("collapses all nodes", function() {
         var row, _i, _len, _ref, _results;
-        this.subject.treeTable("collapseAll");
+        this.subject.treetable("collapseAll");
         _ref = this.subject[0].rows;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -151,26 +151,26 @@
       });
 
       it("maintains chainability", function() {
-        expect(this.subject.treeTable("collapseAll")).to.equal(this.subject);
+        expect(this.subject.treetable("collapseAll")).to.equal(this.subject);
       });
     });
 
     describe("collapseNode()", function() {
       beforeEach(function() {
-        this.subject.treeTable({
+        this.subject.treetable({
           initialState: "expanded"
         });
       });
 
       it("collapses a root node", function() {
         var row = $(this.subject[0].rows[0]);
-        this.subject.treeTable("collapseNode", row.data("ttId"));
+        this.subject.treetable("collapseNode", row.data("ttId"));
         expect(row.hasClass("collapsed")).to.be.true;
       });
 
       it("collapses a branch node", function() {
         var row = $(this.subject[0].rows[1]);
-        this.subject.treeTable("collapseNode", row.data("ttId"));
+        this.subject.treetable("collapseNode", row.data("ttId"));
         expect(row.hasClass("collapsed")).to.be.true;
       });
 
@@ -178,27 +178,27 @@
         var fn, subject;
         subject = this.subject;
         fn = function() {
-          subject.treeTable("collapseNode", "whatever");
+          subject.treetable("collapseNode", "whatever");
         };
         expect(fn).to["throw"](Error, "Unknown node 'whatever'");
       });
 
       it("maintains chainability", function() {
         var row = $(this.subject[0].rows[0]);
-        expect(this.subject.treeTable("collapseNode", row.data("ttId"))).to.equal(this.subject);
+        expect(this.subject.treetable("collapseNode", row.data("ttId"))).to.equal(this.subject);
       });
     });
 
     describe("expandAll()", function() {
       beforeEach(function() {
-        this.subject.treeTable({
+        this.subject.treetable({
           initialState: "collapsed"
         });
       });
 
       it("expands all nodes", function() {
         var row, _i, _len, _ref, _results;
-        this.subject.treeTable("expandAll");
+        this.subject.treetable("expandAll");
         _ref = this.subject[0].rows;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -209,26 +209,26 @@
       });
 
       it("maintains chainability", function() {
-        expect(this.subject.treeTable("expandAll")).to.equal(this.subject);
+        expect(this.subject.treetable("expandAll")).to.equal(this.subject);
       });
     });
 
     describe("expandNode()", function() {
       beforeEach(function() {
-        this.subject.treeTable({
+        this.subject.treetable({
           initialState: "collapsed"
         });
       });
 
       it("expands a root node", function() {
         var row = $(this.subject[0].rows[0]);
-        this.subject.treeTable("expandNode", row.data("ttId"));
+        this.subject.treetable("expandNode", row.data("ttId"));
         expect(row.hasClass("expanded")).to.be.true;
       });
 
       it("expands a branch node", function() {
         var row = $(this.subject[0].rows[1]);
-        this.subject.treeTable("expandNode", row.data("ttId"));
+        this.subject.treetable("expandNode", row.data("ttId"));
         expect(row.hasClass("expanded")).to.be.true;
       });
 
@@ -236,14 +236,14 @@
         var fn, subject;
         subject = this.subject;
         fn = function() {
-          subject.treeTable("expandNode", "whatever");
+          subject.treetable("expandNode", "whatever");
         };
         expect(fn).to["throw"](Error, "Unknown node 'whatever'");
       });
 
       it("maintains chainability", function() {
         var row = $(this.subject[0].rows[0]);
-        expect(this.subject.treeTable("expandNode", row.data("ttId"))).to.equal(this.subject);
+        expect(this.subject.treetable("expandNode", row.data("ttId"))).to.equal(this.subject);
       });
     });
 
@@ -251,61 +251,61 @@
       beforeEach(function() {
         this.newRows = "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>"
 
-        this.subject.treeTable();
-        this.parentNode = this.subject.treeTable("node", 2);
+        this.subject.treetable();
+        this.parentNode = this.subject.treetable("node", 2);
       });
 
       it("inserts rows into DOM", function() {
         expect(this.subject[0].rows.length).to.equal(3);
-        this.subject.treeTable("loadBranch", this.parentNode, this.newRows);
+        this.subject.treetable("loadBranch", this.parentNode, this.newRows);
         expect(this.subject[0].rows.length).to.equal(5);
       });
 
       it("inserts rows into tree", function() {
-        expect(this.subject.data("treeTable").tree[3]).to.be.undefined;
-        expect(this.subject.data("treeTable").tree[4]).to.be.undefined;
-        this.subject.treeTable("loadBranch", this.parentNode, this.newRows);
-        expect(this.subject.data("treeTable").tree[3]).to.be.defined;
-        expect(this.subject.data("treeTable").tree[4]).to.be.defined;
+        expect(this.subject.data("treetable").tree[3]).to.be.undefined;
+        expect(this.subject.data("treetable").tree[4]).to.be.undefined;
+        this.subject.treetable("loadBranch", this.parentNode, this.newRows);
+        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+        expect(this.subject.data("treetable").tree[4]).to.be.defined;
       });
 
       it("maintains chainability", function() {
-        expect(this.subject.treeTable("loadBranch", 1, 2)).to.equal(this.subject);
+        expect(this.subject.treetable("loadBranch", 1, 2)).to.equal(this.subject);
       });
     });
 
     describe("move()", function() {
       beforeEach(function() {
-        this.subject.treeTable();
+        this.subject.treetable();
       });
 
       it("maintains chainability", function() {
-        expect(this.subject.treeTable("move", 1, 2)).to.equal(this.subject);
+        expect(this.subject.treetable("move", 1, 2)).to.equal(this.subject);
       });
     });
 
     describe("node()", function() {
       beforeEach(function() {
-        this.subject.treeTable();
+        this.subject.treetable();
       });
 
       it("returns node by id", function() {
-        expect(this.subject.treeTable("node", "0")).to.equal(this.subject.data("treeTable").tree[0]);
-        expect(this.subject.treeTable("node", 0)).to.equal(this.subject.data("treeTable").tree[0]);
+        expect(this.subject.treetable("node", "0")).to.equal(this.subject.data("treetable").tree[0]);
+        expect(this.subject.treetable("node", 0)).to.equal(this.subject.data("treetable").tree[0]);
       });
 
       it("returns undefined for unknown node", function() {
-        expect(this.subject.treeTable("node", "unknown")).to.be.undefined;
+        expect(this.subject.treetable("node", "unknown")).to.be.undefined;
       });
     });
 
     describe("reveal()", function() {
       beforeEach(function() {
-        this.subject.treeTable();
+        this.subject.treetable();
       });
 
       it("maintains chainability", function() {
-        expect(this.subject.treeTable("reveal", 2)).to.equal(this.subject);
+        expect(this.subject.treetable("reveal", 2)).to.equal(this.subject);
       });
     });
 
@@ -313,39 +313,39 @@
       beforeEach(function() {
         this.newRows = "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>"
 
-        this.subject.treeTable();
-        this.parentNode = this.subject.treeTable("node", 2);
-        this.subject.treeTable("loadBranch", this.parentNode, this.newRows);
+        this.subject.treetable();
+        this.parentNode = this.subject.treetable("node", 2);
+        this.subject.treetable("loadBranch", this.parentNode, this.newRows);
       });
 
       it("removes rows from DOM", function() {
         expect(this.subject[0].rows.length).to.equal(5);
-        this.subject.treeTable("unloadBranch", this.parentNode);
+        this.subject.treetable("unloadBranch", this.parentNode);
         expect(this.subject[0].rows.length).to.equal(3);
       });
 
       it("removes rows from tree", function() {
-        expect(this.subject.data("treeTable").tree[3]).to.be.defined;
-        expect(this.subject.data("treeTable").tree[4]).to.be.defined;
-        this.subject.treeTable("unloadBranch", this.parentNode);
-        expect(this.subject.data("treeTable").tree[3]).to.be.undefined;
-        expect(this.subject.data("treeTable").tree[4]).to.be.undefined;
+        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+        expect(this.subject.data("treetable").tree[4]).to.be.defined;
+        this.subject.treetable("unloadBranch", this.parentNode);
+        expect(this.subject.data("treetable").tree[3]).to.be.undefined;
+        expect(this.subject.data("treetable").tree[4]).to.be.undefined;
       });
 
       it("removes nodes from node cache", function() {
-        expect(this.subject.data("treeTable").nodes.length).to.equal(5);
-        this.subject.treeTable("unloadBranch", this.parentNode);
-        expect(this.subject.data("treeTable").nodes.length).to.equal(3);
+        expect(this.subject.data("treetable").nodes.length).to.equal(5);
+        this.subject.treetable("unloadBranch", this.parentNode);
+        expect(this.subject.data("treetable").nodes.length).to.equal(3);
       });
 
       it("removes nodes from parent's list of children", function() {
         expect(this.parentNode.children.length).to.equal(2);
-        this.subject.treeTable("unloadBranch", this.parentNode);
+        this.subject.treetable("unloadBranch", this.parentNode);
         expect(this.parentNode.children.length).to.equal(0);
       });
 
       it("maintains chainability", function() {
-        expect(this.subject.treeTable("unloadBranch", this.parentNode)).to.equal(this.subject);
+        expect(this.subject.treetable("unloadBranch", this.parentNode)).to.equal(this.subject);
       });
     });
 
@@ -355,9 +355,9 @@
     describe("addChild()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1'><td>N1</td></tr></table>");
-        this.table.treeTable();
-        this.parent = this.table.data("treeTable").tree["n0"];
-        this.child = this.table.data("treeTable").tree["n1"];
+        this.table.treetable();
+        this.parent = this.table.data("treetable").tree["n0"];
+        this.child = this.table.data("treetable").tree["n1"];
       });
 
       it("adds child to collection of children", function() {
@@ -369,7 +369,7 @@
 
     describe("ancestors()", function() {
       beforeEach(function() {
-        this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree;
+        this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treetable().data("treetable").tree;
       });
 
       it("has correct size", function() {
@@ -395,7 +395,7 @@
 
     describe("children", function() {
       beforeEach(function() {
-        this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td><tr data-tt-id='5' data-tt-parent-id='2'><td>N5</td></tr></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree;
+        this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td><tr data-tt-id='5' data-tt-parent-id='2'><td>N5</td></tr></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treetable().data("treetable").tree;
       });
 
       it("includes direct children", function() {
@@ -419,10 +419,10 @@
 
     describe("collapse()", function() {
       beforeEach(function() {
-        this.table = $("<table id='subject'><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treeTable({
+        this.table = $("<table id='subject'><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treetable({
           initialState: "expanded"
         });
-        this.subject = this.table.data("treeTable").tree;
+        this.subject = this.table.data("treetable").tree;
       });
 
       afterEach(function() {
@@ -450,10 +450,10 @@
 
     describe("expand()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treeTable({
+        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr></table>").appendTo("body").treetable({
           expandable: true
         });
-        this.subject = this.table.data("treeTable").tree;
+        this.subject = this.table.data("treetable").tree;
       });
 
       afterEach(function() {
@@ -489,7 +489,7 @@
 
     describe("expanded()", function() {
       beforeEach(function() {
-        this.subject = $("<table><tr data-tt-id='0'><td>Node</td></tr></table>").treeTable().data("treeTable").tree[0];
+        this.subject = $("<table><tr data-tt-id='0'><td>Node</td></tr></table>").treetable().data("treetable").tree[0];
       });
 
       it("returns true when expanded", function() {
@@ -505,9 +505,9 @@
 
     describe("indenter", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='0'><td>Root Node</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>Branch Node</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>Leaf Node</td></tr></table>").treeTable({
+        this.table = $("<table><tr data-tt-id='0'><td>Root Node</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>Branch Node</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>Leaf Node</td></tr></table>").treetable({
           initialState: "expanded"
-        }).data("treeTable");
+        }).data("treetable");
         this.rootNode = this.table.tree[0];
         this.branchNode = this.table.tree[1];
         this.leafNode = this.table.tree[2];
@@ -543,9 +543,9 @@
 
       describe("when expandable is false", function() {
         beforeEach(function() {
-          this.subject = this.table.treeTable({
+          this.subject = this.table.treetable({
             expandable: false
-          }).data("treeTable").tree;
+          }).data("treetable").tree;
           this.rootNode = this.subject[0];
           this.leafNode = this.subject[1];
         });
@@ -561,10 +561,10 @@
 
       describe("when expandable is true and initialState is 'collapsed'", function() {
         beforeEach(function() {
-          this.subject = this.table.treeTable({
+          this.subject = this.table.treetable({
             expandable: true,
             initialState: "collapsed"
-          }).data("treeTable").tree;
+          }).data("treetable").tree;
           this.rootNode = this.subject[0];
           this.leafNode = this.subject[1];
         });
@@ -580,10 +580,10 @@
 
       describe("when expandable is true and initialState is 'expanded'", function() {
         beforeEach(function() {
-          this.subject = this.table.treeTable({
+          this.subject = this.table.treetable({
             expandable: true,
             initialState: "expanded"
-          }).data("treeTable").tree;
+          }).data("treetable").tree;
           this.rootNode = this.subject[0];
           this.leafNode = this.subject[1];
         });
@@ -600,8 +600,8 @@
 
     describe("hide()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treeTable();
-        this.subject = this.table.data("treeTable").tree;
+        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treetable();
+        this.subject = this.table.data("treetable").tree;
         this.subject[0].expand();
       });
 
@@ -629,43 +629,43 @@
     describe("id", function() {
       it("is extracted from row attributes", function() {
         var subject;
-        subject = $("<table><tr data-tt-id='42'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
+        subject = $("<table><tr data-tt-id='42'><td>N42</td></tr></table>").treetable().data("treetable").tree[42];
         expect(subject.id).to.equal(42);
       });
     });
 
     describe("isBranchNode()", function() {
       it("is true when node has children", function() {
-        var subject = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='21' data-tt-parent-id='42'><td>N21</td></tr></table>").treeTable().data("treeTable").tree[42];
+        var subject = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='21' data-tt-parent-id='42'><td>N21</td></tr></table>").treetable().data("treetable").tree[42];
         expect(subject.isBranchNode()).to.be.true;
       });
 
       it("is true when node has data attribute tt-branch with value 'true'", function() {
-        var subject = $("<table><tr data-tt-id='42' data-tt-branch='true'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
+        var subject = $("<table><tr data-tt-id='42' data-tt-branch='true'><td>N42</td></tr></table>").treetable().data("treetable").tree[42];
         expect(subject.isBranchNode()).to.be.true;
       });
 
       // This would be an error in the tree, but I consider having children
       // more important than the ttBranch attribute.
       it("is true when node has children but also a tt-branch attribute with value 'false'", function() {
-        var subject = $("<table><tr data-tt-id='42' data-tt-branch='false'><td>N42</td></tr><tr data-tt-id='21' data-tt-parent-id='42'><td>N21</td></tr></table>").treeTable().data("treeTable").tree[42];
+        var subject = $("<table><tr data-tt-id='42' data-tt-branch='false'><td>N42</td></tr><tr data-tt-id='21' data-tt-parent-id='42'><td>N21</td></tr></table>").treetable().data("treetable").tree[42];
         expect(subject.isBranchNode()).to.be.true;
       });
 
       it("is false when node has data attribute tt-branch with value 'false'", function() {
-        var subject = $("<table><tr data-tt-id='42' data-tt-branch='false'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
+        var subject = $("<table><tr data-tt-id='42' data-tt-branch='false'><td>N42</td></tr></table>").treetable().data("treetable").tree[42];
         expect(subject.isBranchNode()).to.be.false;
       });
 
       it("is false when node has no children and no tt-branch attribute", function() {
-        var subject = $("<table><tr data-tt-id='42'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
+        var subject = $("<table><tr data-tt-id='42'><td>N42</td></tr></table>").treetable().data("treetable").tree[42];
         expect(subject.isBranchNode()).to.be.false;
       });
     });
 
     describe("level()", function() {
       beforeEach(function() {
-        this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treeTable().data("treeTable").tree;
+        this.subject = $("<table id='subject'><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr></table>").treetable().data("treetable").tree;
       });
 
       it("equals the number of ancestors", function() {
@@ -679,26 +679,26 @@
     describe("parentId", function() {
       it("is extracted from row attributes", function() {
         var subject;
-        subject = $("<table><tr data-tt-id='12'><td>N12</td></tr><tr data-tt-id='42' data-tt-parent-id='12'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[42];
+        subject = $("<table><tr data-tt-id='12'><td>N12</td></tr><tr data-tt-id='42' data-tt-parent-id='12'><td>N42</td></tr></table>").treetable().data("treetable").tree[42];
         expect(subject.parentId).to.equal(12);
       });
 
       it("is undefined when not available", function() {
         var subject;
-        subject = $("<table><tr data-tt-id='0'><td>N42</td></tr></table>").treeTable().data("treeTable").tree[0];
+        subject = $("<table><tr data-tt-id='0'><td>N42</td></tr></table>").treetable().data("treetable").tree[0];
         expect(subject.parentId).to.be.undefined;
       });
 
       it("is undefined when empty", function() {
         var subject;
-        subject = $("<table><tr data-tt-id='0' data-tt-parent-id=''><td>N42</td></tr></table>").treeTable().data("treeTable").tree[0];
+        subject = $("<table><tr data-tt-id='0' data-tt-parent-id=''><td>N42</td></tr></table>").treetable().data("treetable").tree[0];
         expect(subject.parentId).to.be.undefined;
       });
     });
 
     describe("parentNode()", function() {
       beforeEach(function() {
-        this.subject = $("<table id='subject'><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree;
+        this.subject = $("<table id='subject'><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treetable().data("treetable").tree;
       });
 
       describe("when node has a parent", function() {
@@ -730,9 +730,9 @@
     describe("removeChild()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr></table>");
-        this.table.treeTable();
-        this.parent = this.table.data("treeTable").tree["n0"];
-        this.child = this.table.data("treeTable").tree["n1"];
+        this.table.treetable();
+        this.parent = this.table.data("treetable").tree["n0"];
+        this.child = this.table.data("treetable").tree["n1"];
       });
 
       it("removes child from collection of children", function() {
@@ -745,7 +745,7 @@
     describe("render()", function() {
       it("maintains chainability", function() {
         var subject;
-        subject = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree["n0"];
+        subject = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr></table>").treetable().data("treetable").tree["n0"];
         expect(subject.render()).to.equal(subject);
       });
     });
@@ -753,10 +753,10 @@
     describe("setParent()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2'><td>N2</td></tr></table>");
-        this.table.treeTable();
-        this.oldParent = this.table.data("treeTable").tree["n0"];
-        this.subject = this.table.data("treeTable").tree["n1"];
-        this.newParent = this.table.data("treeTable").tree["n2"];
+        this.table.treetable();
+        this.oldParent = this.table.data("treetable").tree["n0"];
+        this.subject = this.table.data("treetable").tree["n1"];
+        this.newParent = this.table.data("treetable").tree["n2"];
       });
 
       it("updates node's parent id", function() {
@@ -794,8 +794,8 @@
 
     describe("show()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treeTable();
-        this.subject = this.table.data("treeTable").tree;
+        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").appendTo("body").treetable();
+        this.subject = this.table.data("treetable").tree;
         this.subject[0].hide();
       });
 
@@ -840,10 +840,10 @@
 
     describe("toggle()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='24' data-tt-parent-id='42'><td>N24</td></tr></table>").appendTo("body").treeTable({
+        this.table = $("<table><tr data-tt-id='42'><td>N42</td></tr><tr data-tt-id='24' data-tt-parent-id='42'><td>N24</td></tr></table>").appendTo("body").treetable({
           expandable: true
         });
-        this.subject = this.table.data("treeTable").tree;
+        this.subject = this.table.data("treetable").tree;
       });
 
       afterEach(function() {
@@ -866,7 +866,7 @@
     describe("treeCell", function() {
       describe("with default column setting", function() {
         beforeEach(function() {
-          this.subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr>").treeTable().data("treeTable").tree[0].treeCell;
+          this.subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr>").treetable().data("treetable").tree[0].treeCell;
         });
 
         it("is an object", function() {
@@ -889,9 +889,9 @@
 
       describe("with custom column setting", function() {
         beforeEach(function() {
-          this.subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr></table>").treeTable({
+          this.subject = $("<table><tr data-tt-id='0'><th>Not part of tree</th><td>Column 1</td><td>Column 2</td></tr></table>").treetable({
             column: 1
-          }).data("treeTable").tree[0].treeCell;
+          }).data("treetable").tree[0].treeCell;
         });
 
         it("is configurable", function() {
@@ -917,7 +917,7 @@
 
       describe("a table with tree rows", function() {
         it("caches all tree nodes", function() {
-          var subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treeTable().data("treeTable").tree;
+          var subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treetable().data("treetable").tree;
           expect(_.size(subject)).to.equal(2);
           expect(_.keys(subject)).to.include('0');
           expect(_.keys(subject)).to.include('1');
@@ -927,7 +927,7 @@
       describe("a table without tree rows", function() {
         it("results in an empty node cache", function() {
           var subject;
-          subject = $("<table><tr></tr><tr></tr></table>").treeTable().data("treeTable").tree;
+          subject = $("<table><tr></tr><tr></tr></table>").treetable().data("treetable").tree;
           expect(_.size(subject)).to.equal(0);
         });
       });
@@ -935,7 +935,7 @@
       describe("a table with both tree rows and non tree rows", function() {
         it("only caches tree nodes", function() {
           var subject;
-          subject = $("<table><tr></tr><tr data-tt-id='21'><td>N21</td></tr></table>").treeTable().data("treeTable").tree;
+          subject = $("<table><tr></tr><tr data-tt-id='21'><td>N21</td></tr></table>").treetable().data("treetable").tree;
           expect(_.size(subject)).to.equal(1);
           expect(_.keys(subject)).to.include('21');
         });
@@ -945,14 +945,14 @@
     describe("move()", function() {
       beforeEach(function() {
         this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr></table>");
-        this.table.treeTable();
+        this.table.treetable();
       });
 
       it("moves node to new destination", function() {
         var subject;
-        subject = this.table.data("treeTable").tree["n2"];
+        subject = this.table.data("treetable").tree["n2"];
         expect(subject.parentId).to.equal("n1");
-        this.table.treeTable("move", "n2", "n3");
+        this.table.treetable("move", "n2", "n3");
         expect(subject.parentId).to.equal("n3");
       });
 
@@ -960,7 +960,7 @@
         var fn, table;
         table = this.table;
         fn = function() {
-          table.treeTable("move", "n1", "n2");
+          table.treetable("move", "n1", "n2");
         };
         expect(fn).to.not.throw();
       });
@@ -969,21 +969,21 @@
         var fn, table;
         table = this.table;
         fn = function() {
-          table.treeTable("move", "n1", "n1");
+          table.treetable("move", "n1", "n1");
         };
         expect(fn).to.not.throw();
       });
 
       it("does nothing when node is moved to current location", function() {
         // TODO How to test? Nothing is happening...
-        this.table.treeTable("move", "n1", "n0");
+        this.table.treetable("move", "n1", "n0");
       });
 
       it("maintains chainability", function() {
         var destination, node, tree;
-        tree = this.table.data("treeTable");
-        node = this.table.data("treeTable").tree["n1"];
-        destination = this.table.data("treeTable").tree["n3"];
+        tree = this.table.data("treetable");
+        node = this.table.data("treetable").tree["n1"];
+        destination = this.table.data("treetable").tree["n3"];
         expect(tree.move(node, destination)).to.equal(tree);
       });
     });
@@ -998,10 +998,10 @@
 
     describe("reveal()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+        this.table = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable({
           expandable: true
         }).appendTo("body");
-        this.subject = this.table.data("treeTable");
+        this.subject = this.table.data("treetable");
       });
 
       afterEach(function() {
@@ -1010,13 +1010,13 @@
 
       it("reveals a node", function() {
         expect(this.subject.tree[2].row).to.not.be.visible;
-        this.table.treeTable("reveal", 2);
+        this.table.treetable("reveal", 2);
         expect(this.subject.tree[2].row).to.be.visible;
       });
 
       it("expands the ancestors of the node", function() {
         expect(this.subject.tree[1].row).to.not.be.visible;
-        this.table.treeTable("reveal", 2);
+        this.table.treetable("reveal", 2);
         expect(this.subject.tree[1].row).to.be.visible;
       });
 
@@ -1024,7 +1024,7 @@
         var fn, table;
         table = this.table;
         fn = function() {
-          table.treeTable("reveal", "whatever");
+          table.treetable("reveal", "whatever");
         };
         expect(fn).to["throw"](Error, "Unknown node 'whatever'");
       });
@@ -1034,14 +1034,14 @@
       describe("when no rows", function() {
         it("is empty", function() {
           var subject;
-          subject = $("<table></table>").treeTable().data("treeTable");
+          subject = $("<table></table>").treetable().data("treetable");
           expect(_.size(subject.roots)).to.equal(0);
         });
       });
 
       describe("when single root node", function() {
         beforeEach(function() {
-          this.subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable().data("treeTable");
+          this.subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable().data("treetable");
         });
 
         it("includes root node when only one root node exists", function() {
@@ -1058,7 +1058,7 @@
 
       describe("when multiple root nodes", function() {
         beforeEach(function() {
-          this.subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3'><td>N3</td></tr></table>").treeTable().data("treeTable");
+          this.subject = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr><tr data-tt-id='3'><td>N3</td></tr></table>").treetable().data("treetable");
         });
 
         it("includes all root nodes", function() {
@@ -1081,7 +1081,7 @@
       describe("when no callback function given", function() {
         it("does not complain", function() {
           var table;
-          table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treetable({
             onInitialized: null
           });
         });
@@ -1092,7 +1092,7 @@
           var callback, table;
 
           callback = sinon.spy();
-          table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treetable({
             onInitialized: callback
           });
 
@@ -1105,10 +1105,10 @@
       describe("when no callback function given", function() {
         it("does not complain", function() {
           var table;
-          table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable({
             initialState: "expanded",
             onNodeCollapse: null
-          }).data("treeTable");
+          }).data("treetable");
           table.roots[0].collapse();
         });
       });
@@ -1116,10 +1116,10 @@
       describe("when callback function given", function() {
         beforeEach(function() {
           this.callback = sinon.spy();
-          this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+          this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable({
             initialState: "expanded",
             onNodeCollapse: this.callback
-          }).data("treeTable");
+          }).data("treetable");
         });
 
         it("is called when node is being hidden", function() {
@@ -1144,9 +1144,9 @@
       describe("when no callback function given", function() {
         it("does not complain", function() {
           var table;
-          table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treetable({
             onNodeInitialized: null
-          }).data("treeTable");
+          }).data("treetable");
           table.roots[0].initialized = false;
           table.roots[0].show();
         });
@@ -1155,9 +1155,9 @@
       describe("when callback function given", function() {
         beforeEach(function() {
           this.callback = sinon.spy();
-          this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treeTable({
+          this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr></table>").treetable({
             onNodeInitialized: this.callback
-          }).data("treeTable");
+          }).data("treetable");
         });
 
         it("is called when node is not initialized yet", function() {
@@ -1179,10 +1179,10 @@
       describe("when no callback given", function() {
         it("does not complain", function() {
           var table;
-          table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+          table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable({
             initialState: "expanded",
             onNodeExpand: null
-          }).data("treeTable");
+          }).data("treetable");
           table.roots[0].expand();
         });
       });
@@ -1190,10 +1190,10 @@
       describe("when callback function given", function() {
         beforeEach(function() {
           this.callback = sinon.spy();
-          this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treeTable({
+          this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable({
             initialState: "expanded",
             onNodeExpand: this.callback
-          }).data("treeTable");
+          }).data("treetable");
         });
 
         it("is called when node is being shown", function() {
