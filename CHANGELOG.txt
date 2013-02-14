@@ -1,4 +1,4 @@
-== 3.0.0 - NOT RELEASED YET
+== 3.0.0 - February 14, 2013
 
 * [ENHANCEMENT] Use 'treetable' everywhere instead of a mix between 'treeTable' and 'treetable'
 
