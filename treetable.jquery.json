@@ -1,6 +1,6 @@
 {
   "name": "treetable",
-  "title": "jQuery treeTable",
+  "title": "jQuery treetable",
   "description": "jQuery plugin for displaying a tree structure in a (HTML) table, i.e. a directory structure or a nested list.",
   "keywords": [
     "explorer",
