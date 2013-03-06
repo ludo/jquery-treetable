@@ -418,7 +418,11 @@
 
     loadBranch: function(node, rows) {
       rows = $(rows);
-      rows.insertAfter(node.row);
+      if (node.children.length > 0) {
+        rows.insertAfter(node.children[node.children.length-1].row);
+      } else {
+        rows.insertAfter(node.row);
+      }
       this.data("treetable").loadRows(rows);
 
       return this;

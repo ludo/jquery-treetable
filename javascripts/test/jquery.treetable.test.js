@@ -250,15 +250,22 @@
     describe("loadBranch()", function() {
       beforeEach(function() {
         this.newRows = "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>"
+        this.moreRows = "<tr data-tt-id='5' data-tt-parent-id='2'><td>N5</td></tr>"
 
         this.subject.treetable();
         this.parentNode = this.subject.treetable("node", 2);
       });
 
-      it("inserts rows into DOM", function() {
+      it("inserts rows into DOM, appending new rows to end of children", function() {
         expect(this.subject[0].rows.length).to.equal(3);
         this.subject.treetable("loadBranch", this.parentNode, this.newRows);
         expect(this.subject[0].rows.length).to.equal(5);
+        this.subject.treetable("loadBranch", this.parentNode, this.moreRows);
+        expect(this.subject[0].rows.length).to.equal(6);
+
+        // Verify order
+        var order = _.map(this.subject[0].rows, function(row) { return $(row).data("ttId"); })
+        expect(order).to.deep.equal([0,1,2,3,4,5]);
       });
 
       it("inserts rows into tree", function() {
@@ -270,7 +277,7 @@
       });
 
       it("maintains chainability", function() {
-        expect(this.subject.treetable("loadBranch", 1, 2)).to.equal(this.subject);
+        expect(this.subject.treetable("loadBranch", this.parentNode, this.newRows)).to.equal(this.subject);
       });
     });
 
