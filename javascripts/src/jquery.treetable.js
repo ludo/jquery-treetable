@@ -111,14 +111,24 @@
     };
 
     Node.prototype.render = function() {
-      var settings = this.settings, target;
+      var handler,
+          settings = this.settings,
+          target;
 
       if (settings.expandable === true && this.isBranchNode()) {
+        handler = function(e) {
+          $(this).parents("table").treetable("node", $(this).parents("tr").data(settings.nodeIdAttr)).toggle();
+          return e.preventDefault();
+        };
+
         this.indenter.html(this.expander);
         target = settings.clickableNodeNames === true ? this.treeCell : this.expander;
-        target.unbind("click.treetable").bind("click.treetable", function(event) {
-          $(this).parents("table").treetable("node", $(this).parents("tr").data(settings.nodeIdAttr)).toggle();
-          return event.preventDefault();
+
+        target.unbind("click.treetable").bind("click.treetable", handler);
+        target.unbind("keydown.treetable").bind("keydown.treetable", function(e) {
+          if (e.keyCode == 13) {
+            handler.apply(this, [e]);
+          }
         });
       }
 
