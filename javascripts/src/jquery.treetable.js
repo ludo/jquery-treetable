@@ -124,8 +124,8 @@
         this.indenter.html(this.expander);
         target = settings.clickableNodeNames === true ? this.treeCell : this.expander;
 
-        target.unbind("click.treetable").bind("click.treetable", handler);
-        target.unbind("keydown.treetable").bind("keydown.treetable", function(e) {
+        target.off("click.treetable").on("click.treetable", handler);
+        target.off("keydown.treetable").on("keydown.treetable", function(e) {
           if (e.keyCode == 13) {
             handler.apply(this, [e]);
           }
