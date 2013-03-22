@@ -1,5 +1,6 @@
-== NOT RELEASED
+== HEAD
 
+* [FEATURE] Allow root nodes to be added to the tree with loadBranch (#56)
 * [ENHANCEMENT] Add new nodes at the end of children (#52)
 
 == 3.0.0 - February 14, 2013

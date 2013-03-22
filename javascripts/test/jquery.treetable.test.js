@@ -250,7 +250,7 @@
     describe("loadBranch()", function() {
       beforeEach(function() {
         this.newRows = "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>"
-        this.moreRows = "<tr data-tt-id='5' data-tt-parent-id='2'><td>N5</td></tr>"
+        this.moreRows = "<tr data-tt-id='5' data-tt-parent-id='2'><td>N5</td></tr>";
 
         this.subject.treetable();
         this.parentNode = this.subject.treetable("node", 2);
@@ -276,8 +276,31 @@
         expect(this.subject.data("treetable").tree[4]).to.be.defined;
       });
 
+      it("registers nodes", function() {
+        expect(this.subject.data("treetable").nodes.length).to.equal(3);
+        this.subject.treetable("loadBranch", this.parentNode, this.newRows);
+        expect(this.subject.data("treetable").nodes.length).to.equal(5);
+      });
+
       it("maintains chainability", function() {
         expect(this.subject.treetable("loadBranch", this.parentNode, this.newRows)).to.equal(this.subject);
+      });
+
+      describe("adding nodes at root level", function() {
+        beforeEach(function() {
+          this.rootRows = "<tr data-tt-id='6'><td>N6</td></tr>";
+        });
+
+        it("registers nodes as root nodes", function () {
+          expect(this.subject.data("treetable").roots.length).to.equal(1);
+          this.subject.treetable("loadBranch", null, this.rootRows);
+          expect(this.subject.data("treetable").roots.length).to.equal(2);
+        });
+
+        it("inserts rows into DOM", function () {
+          this.subject.treetable("loadBranch", null, this.rootRows);
+          expect($(this.subject[0].rows[3]).data("ttId")).to.equal(6);
+        });
       });
     });
 
