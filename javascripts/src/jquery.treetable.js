@@ -427,7 +427,11 @@
     },
 
     loadBranch: function(node, rows) {
+      var settings = this.data("treetable").settings,
+          tree = this.data("treetable").tree;
+
       rows = $(rows);
+
       if (node == null) { // Inserting new root nodes
         this.append(rows);
       } else if (node.children.length > 0) {
@@ -435,7 +439,14 @@
       } else {
         rows.insertAfter(node.row);
       }
+
       this.data("treetable").loadRows(rows);
+
+      // Make sure nodes are properly initialized
+      // TODO Review implementation
+      rows.each(function() {
+        tree[$(this).data(settings.nodeIdAttr)].show();
+      });
 
       return this;
     },

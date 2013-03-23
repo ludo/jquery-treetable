@@ -264,7 +264,7 @@
         expect(this.subject[0].rows.length).to.equal(6);
 
         // Verify order
-        var order = _.map(this.subject[0].rows, function(row) { return $(row).data("ttId"); })
+        var order = _.map(this.subject[0].rows, function(row) { return $(row).data("ttId"); });
         expect(order).to.deep.equal([0,1,2,3,4,5]);
       });
 
@@ -280,6 +280,12 @@
         expect(this.subject.data("treetable").nodes.length).to.equal(3);
         this.subject.treetable("loadBranch", this.parentNode, this.newRows);
         expect(this.subject.data("treetable").nodes.length).to.equal(5);
+      });
+
+      it("initializes nodes", function() {
+        this.subject.treetable("loadBranch", this.parentNode, this.newRows);
+        expect(this.subject.data("treetable").tree[3].initialized).to.be.true;
+        expect(this.subject.data("treetable").tree[4].initialized).to.be.true;
       });
 
       it("maintains chainability", function() {
