@@ -2,6 +2,7 @@
 
 * [FEATURE] Expand/collapse nodes using keyboard Return key (#27, #30)
 * [FEATURE] Allow root nodes to be added to the tree with loadBranch (#56)
+* [ENHANCEMENT] Prevent potential reinitialization (#58)
 * [ENHANCEMENT] Add new nodes at the end of children (#52)
 * [ENHANCEMENT] Use on/off instead of bind/unbind for ataching event handlers (as per jQuery preferred guidelines)
 * [BUG] Nodes wouldn't initialize properly when using loadBranch (#55)

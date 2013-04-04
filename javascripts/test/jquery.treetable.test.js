@@ -24,6 +24,14 @@
       expect(this.subject.hasClass("treetable")).to.be.true;
     });
 
+    it("does not initialize twice", function() {
+      var data;
+      this.subject.treetable();
+      data = this.subject.data("treetable");
+      this.subject.treetable();
+      expect(this.subject.data("treetable")).to.equal(data);
+    });
+
     describe("destroy()", function() {
       it("removes treetable object from element", function() {
         this.subject.treetable();

@@ -371,15 +371,17 @@
       }, options);
 
       return this.each(function() {
-        var el, tree;
+        var el = $(this), tree;
 
-        tree = new Tree(this, settings);
-        tree.loadRows(this.rows).render();
+        if (el.data("treetable") === undefined) {
+          tree = new Tree(this, settings);
+          tree.loadRows(this.rows).render();
 
-        el = $(this).addClass("treetable").data("treetable", tree);
+          el.addClass("treetable").data("treetable", tree);
 
-        if (settings.onInitialized != null) {
-          settings.onInitialized.apply(tree);
+          if (settings.onInitialized != null) {
+            settings.onInitialized.apply(tree);
+          }
         }
 
         return el;
