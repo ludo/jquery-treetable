@@ -1,5 +1,5 @@
 /*
- * jQuery treeTable Plugin 3.0.0
+ * jQuery treeTable Plugin 3.0.1
  * http://ludo.cubicphuse.nl/jquery-treetable
  *
  * Copyright 2013, Ludo van den Boom
