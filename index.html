@@ -247,6 +247,19 @@ $("<b>#your_table_id</b>").treetable();
 
       <h2><a name="api">4. Public API</a></h2>
 
+      <h3><tt>treetable()</tt> Plugin Function</h3>
+
+      <p>The <tt>treetable()</tt> function accepts the following arguments:</p>
+
+      <dl>
+        <dt><tt>options</tt> (optional)</dt>
+        <dd>A Javascript object of configuration settings as described in the chapter on <a href="#configuration">configuration</a>.</dd>
+        <dt><tt>force</tt> (optional)</dt>
+        <dd>Pass the boolean <tt>true</tt> to force reinitialization of the tree.</dd>
+      </dl>
+
+      <h3>Additional Functions</h3>
+
       <p>Use the following functions to manipulate the tree programmatically. Calling a function should be done through the <tt>treetable()</tt> function. For example, to collapse node '42' use <tt>$("#tree").treetable("collapseNode", "42")</tt>.</p>
 
       <dl>

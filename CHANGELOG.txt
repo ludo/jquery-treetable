@@ -1,3 +1,7 @@
+== HEAD
+
+* [FEATURE] Add argument to treetable plugin function to force reinitialization (#65)
+
 == 3.0.1 - April 6, 2013
 
 * [FEATURE] Expand/collapse nodes using keyboard Return key (#27, #30)

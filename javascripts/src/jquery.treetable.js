@@ -345,7 +345,7 @@
 
   // jQuery Plugin
   methods = {
-    init: function(options) {
+    init: function(options, force) {
       var settings;
 
       settings = $.extend({
@@ -373,7 +373,7 @@
       return this.each(function() {
         var el = $(this), tree;
 
-        if (el.data("treetable") === undefined) {
+        if (force || el.data("treetable") === undefined) {
           tree = new Tree(this, settings);
           tree.loadRows(this.rows).render();
 

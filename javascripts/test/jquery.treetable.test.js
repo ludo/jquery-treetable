@@ -32,6 +32,16 @@
       expect(this.subject.data("treetable")).to.equal(data);
     });
 
+    it("initializes twice when explicitly requested", function() {
+      var newData, oldData;
+      this.subject.treetable();
+      oldData = this.subject.data("treetable");
+      this.subject.treetable({}, true);
+      newData = this.subject.data("treetable");
+      expect(newData).not.to.equal(oldData);
+      expect(this.subject.data("treetable")).to.equal(newData);
+    });
+
     describe("destroy()", function() {
       it("removes treetable object from element", function() {
         this.subject.treetable();
