@@ -435,7 +435,12 @@
       rows = $(rows);
 
       if (node == null) { // Inserting new root nodes
-        this.append(rows);
+        var tbody = this.find('tbody');
+        if (tbody.length) {
+          tbody.append(rows)
+        } else {
+          this.append(rows);
+        }
       } else if (node.children.length > 0) {
         rows.insertAfter(node.children[node.children.length-1].row);
       } else {
