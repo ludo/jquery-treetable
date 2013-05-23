@@ -446,7 +446,7 @@
 
       // Make sure nodes are properly initialized
       // TODO Review implementation
-      rows.each(function() {
+      rows.filter('tr').each(function() {
         tree[$(this).data(settings.nodeIdAttr)].show();
       });
 
