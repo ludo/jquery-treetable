@@ -286,6 +286,24 @@
         expect(order).to.deep.equal([0,1,2,3,4,5]);
       });
 
+      it("does not choke on leading whitespace", function() {
+        expect(this.subject.data("treetable").tree[3]).to.be.undefined;
+        this.subject.treetable("loadBranch", this.parentNode, "   <tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr>");
+        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+      });
+
+      it("does not choke on whitespace between rows", function() {
+        expect(this.subject.data("treetable").tree[3]).to.be.undefined;
+        this.subject.treetable("loadBranch", this.parentNode, "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr>     <tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>");
+        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+      });
+
+      it("does not choke on non-row elements", function() {
+        expect(this.subject.data("treetable").tree[3]).to.be.undefined;
+        this.subject.treetable("loadBranch", this.parentNode, "<b>Wish you were here</b><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr>");
+        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+      });
+
       it("inserts rows into tree", function() {
         expect(this.subject.data("treetable").tree[3]).to.be.undefined;
         expect(this.subject.data("treetable").tree[4]).to.be.undefined;

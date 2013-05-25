@@ -432,7 +432,7 @@
       var settings = this.data("treetable").settings,
           tree = this.data("treetable").tree;
 
-      rows = $(rows);
+      rows = $($.trim(rows));
 
       if (node == null) { // Inserting new root nodes
         this.append(rows);
@@ -445,8 +445,7 @@
       this.data("treetable").loadRows(rows);
 
       // Make sure nodes are properly initialized
-      // TODO Review implementation
-      rows.filter('tr').each(function() {
+      rows.filter("tr").each(function() {
         tree[$(this).data(settings.nodeIdAttr)].show();
       });
 
