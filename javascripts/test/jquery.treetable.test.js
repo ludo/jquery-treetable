@@ -286,6 +286,12 @@
         expect(order).to.deep.equal([0,1,2,3,4,5]);
       });
 
+      it("does not choke when fed a collection object with rows instead of a string", function() {
+        expect(this.subject.data("treetable").tree[3]).to.be.undefined;
+        this.subject.treetable("loadBranch", this.parentNode, $.parseHTML(this.newRows));
+        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+      });
+
       it("does not choke on leading whitespace", function() {
         expect(this.subject.data("treetable").tree[3]).to.be.undefined;
         this.subject.treetable("loadBranch", this.parentNode, "   <tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr>");

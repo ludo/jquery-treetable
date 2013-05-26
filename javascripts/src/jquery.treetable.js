@@ -432,7 +432,8 @@
       var settings = this.data("treetable").settings,
           tree = this.data("treetable").tree;
 
-      rows = $($.trim(rows));
+      // TODO Switch to $.parseHTML
+      rows = $(rows);
 
       if (node == null) { // Inserting new root nodes
         this.append(rows);
