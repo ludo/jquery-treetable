@@ -881,8 +881,8 @@ $("#example-advanced .folder").each(function() {
 
       // Highlight selected row
       $("#example-advanced tbody tr").on('mousedown', 'tbody tr', function() {
-        $('.selected').not(this).removeClass('ui-state-highlight');
-        $(this).toggleClass('ui-state-highlight');
+        $('.selected').not(this).removeClass('selected');
+        $(this).toggleClass('selected');
       });
 
       // Drag & Drop Example Code
