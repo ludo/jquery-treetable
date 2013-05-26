@@ -361,6 +361,18 @@
           this.subject.treetable("loadBranch", null, this.rootRows);
           expect($(this.subject[0].rows[3]).data("ttId")).to.equal(6);
         });
+
+        describe("when table uses a tbody element", function() {
+          beforeEach(function() {
+            this.subject = $("<table><tbody><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0' data-tt-branch='true'><td>N2</td></tr></tbody></table>");
+            this.subject.treetable();
+          });
+
+          it("appends nodes to tbody", function() {
+            this.subject.treetable("loadBranch", null, this.rootRows);
+            expect($(this.subject.find("tbody tr:last")).data("ttId")).to.equal(6);
+          });
+        });
       });
     });
 
