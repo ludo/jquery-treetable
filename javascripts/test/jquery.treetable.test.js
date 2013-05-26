@@ -286,6 +286,18 @@
         expect(order).to.deep.equal([0,1,2,3,4,5]);
       });
 
+      it("inserts rows after any descendants (#73)", function() {
+        var childRows = "<tr data-tt-id='6' data-tt-parent-id='4'><td>N6</td></tr>";
+
+        this.subject.treetable("loadBranch", this.parentNode, this.newRows);
+        this.subject.treetable("loadBranch", this.parentNode, childRows);
+        this.subject.treetable("loadBranch", this.parentNode, this.moreRows);
+
+        // Verify order
+        var order = _.map(this.subject[0].rows, function(row) { return $(row).data("ttId"); });
+        expect(order).to.deep.equal([0,1,2,3,4,6,5]);
+      });
+
       it("does not choke when fed a collection object with rows instead of a string", function() {
         expect(this.subject.data("treetable").tree[3]).to.be.undefined;
         this.subject.treetable("loadBranch", this.parentNode, $.parseHTML(this.newRows));

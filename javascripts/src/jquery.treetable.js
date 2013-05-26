@@ -438,11 +438,11 @@
       if (node == null) { // Inserting new root nodes
         this.append(rows);
       } else if (node.children.length > 0) {
-    	  var current = node;
-    	  while (current.children.length > 0) {
-    		  current = current.children[current.children.length - 1];
-    	  }
-    	  rows.insertAfter(current.row);
+        var current = node;
+        while (current.children.length > 0) {
+          current = current.children[current.children.length - 1];
+        }
+        rows.insertAfter(current.row);
       } else {
         rows.insertAfter(node.row);
       }

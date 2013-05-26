@@ -2,6 +2,7 @@
 
 * [FEATURE] Add argument to treetable plugin function to force reinitialization (#65)
 * [BUG] Prevent error when new rows have leading white space (#77)
+* [BUG] Fix loadBranch case when new nodes end up at wrong position when added to a branch with already expanded child nodes (#73)
 
 == 3.0.1 - April 6, 2013
 
