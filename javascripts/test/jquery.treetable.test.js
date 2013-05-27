@@ -373,6 +373,19 @@
             expect($(this.subject.find("tbody tr:last")).data("ttId")).to.equal(6);
           });
         });
+
+        describe("when table uses tbody and tfoot elements", function() {
+          beforeEach(function() {
+            this.subject = $("<table><tbody><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0' data-tt-branch='true'><td>N2</td></tr></tbody><tfoot><tr><td>Footer</td></tr></table>");
+            this.subject.treetable();
+          });
+
+          it("still appends nodes to tbody", function() {
+            this.subject.treetable("loadBranch", null, this.rootRows);
+            console.log(this.subject);
+            expect($(this.subject.find("tbody tr:last")).data("ttId")).to.equal(6);
+          });
+        });
       });
     });
 
