@@ -382,7 +382,6 @@
 
           it("still appends nodes to tbody", function() {
             this.subject.treetable("loadBranch", null, this.rootRows);
-            console.log(this.subject);
             expect($(this.subject.find("tbody tr:last")).data("ttId")).to.equal(6);
           });
         });
