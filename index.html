@@ -880,9 +880,9 @@ $("#example-advanced .folder").each(function() {
       $("#example-advanced").treetable({ expandable: true });
 
       // Highlight selected row
-      $("#example-advanced tbody tr").mousedown(function() {
-        $("tr.selected").removeClass("selected");
-        $(this).addClass("selected");
+      $("#example-advanced tbody tr").on('mousedown', 'tbody tr', function() {
+        $('.selected').not(this).removeClass('selected');
+        $(this).toggleClass('selected');
       });
 
       // Drag & Drop Example Code
