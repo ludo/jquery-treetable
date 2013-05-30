@@ -330,7 +330,7 @@
 
         // Clean up Tree object (so Node objects are GC-ed)
         delete this.tree[child.id];
-        this.nodes.splice($.inArray(child, this.nodes), 1)
+        this.nodes.splice($.inArray(child, this.nodes), 1);
       }
 
       // Reset node's collection of children
