@@ -93,6 +93,12 @@
       }
     };
 
+    Node.prototype.updateBranchLeafClass = function(){
+      this.row.removeClass('branch');
+      this.row.removeClass('leaf');
+      this.row.addClass(this.isBranchNode()?'branch':'leaf');
+    };
+
     Node.prototype.level = function() {
       return this.ancestors().length;
     };
@@ -266,6 +272,10 @@
         }
       }
 
+      for (i = 0; i < this.nodes.length; i++) {
+        node = this.nodes[i].updateBranchLeafClass();
+      }
+
       return this;
     };
 
@@ -277,6 +287,7 @@
       //    is).
       // 3: +node+ should not be inserted in a location in a branch if this would
       //    result in +node+ being an ancestor of itself.
+      var nodeParent = node.parentNode();
       if (node !== destination && destination.id !== node.parentId && $.inArray(node, destination.ancestors()) === -1) {
         node.setParent(destination);
         this._moveRows(node, destination);
@@ -287,6 +298,14 @@
           node.parentNode().render();
         }
       }
+
+      if(nodeParent){
+        nodeParent.updateBranchLeafClass();
+      }
+      if(node.parentNode()){
+        node.parentNode().updateBranchLeafClass();
+      }
+      node.updateBranchLeafClass();
       return this;
     };
 
@@ -330,11 +349,14 @@
 
         // Clean up Tree object (so Node objects are GC-ed)
         delete this.tree[child.id];
-        this.nodes.splice($.inArray(child, this.nodes), 1)
+        this.nodes.splice($.inArray(child, this.nodes), 1);
+
       }
 
       // Reset node's collection of children
       node.children = [];
+
+      node.updateBranchLeafClass();
 
       return this;
     };

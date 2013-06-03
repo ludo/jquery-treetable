@@ -52,6 +52,10 @@ table.treetable tr.expanded span.indenter a {
   background-image: url(../images/collapse.png);
 }
 
+table.treetable tr.branch {
+    background-color: #f9f9f9;
+}
+
 table.treetable tr.selected {
   background-color: #3875d7;
   color: #fff;
