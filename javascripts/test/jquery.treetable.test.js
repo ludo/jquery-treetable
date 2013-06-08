@@ -446,6 +446,16 @@
         expect(this.subject.data("treetable").tree[4]).to.be.undefined;
       });
 
+      it("updates the branch and leaf classes", function() {
+        this.subject.treetable("unloadBranch", this.subject.treetable("node", 0));
+          expect($(this.subject[0].rows[0])).to.have.class('leaf');
+      });
+
+      it("updates the branch and leaf classes when has branchAttr", function() {
+        this.subject.treetable("unloadBranch", this.parentNode);
+          expect($(this.subject[0].rows[2])).to.have.class('branch');
+      });
+
       it("removes nodes from node cache", function() {
         expect(this.subject.data("treetable").nodes.length).to.equal(5);
         this.subject.treetable("unloadBranch", this.parentNode);
@@ -1030,11 +1040,18 @@
       });
 
       describe("a table with tree rows", function() {
+        beforeEach(function() {
+            this.subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treetable().data("treetable").tree;
+        });
         it("caches all tree nodes", function() {
-          var subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr></table>").treetable().data("treetable").tree;
-          expect(_.size(subject)).to.equal(2);
-          expect(_.keys(subject)).to.include('0');
-          expect(_.keys(subject)).to.include('1');
+          expect(_.size(this.subject)).to.equal(2);
+          expect(_.keys(this.subject)).to.include('0');
+          expect(_.keys(this.subject)).to.include('1');
+        });
+
+        it("sets branch and leaf classes", function() {
+            expect(this.subject[0].row).to.have.class('branch');
+            expect(this.subject[1].row).to.have.class('leaf');
         });
       });
 
@@ -1058,7 +1075,7 @@
 
     describe("move()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr></table>");
+        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'  data-tt-branch='true'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr><tr data-tt-id='n4' data-tt-parent-id='n3'><td>N4</td></tr><tr data-tt-id='n5' data-tt-parent-id='n3'><td>N5</td></tr></table>");
         this.table.treetable();
       });
 
@@ -1068,6 +1085,34 @@
         expect(subject.parentId).to.equal("n1");
         this.table.treetable("move", "n2", "n3");
         expect(subject.parentId).to.equal("n3");
+      });
+
+      it("updates branch and leaf classes when node has siblings", function() {
+        this.table.treetable("move", "n5", "n0");
+        expect(this.table.data("treetable").tree["n0"].row).to.have.class('branch');
+        expect(this.table.data("treetable").tree["n3"].row).to.have.class('branch');
+        expect(this.table.data("treetable").tree["n5"].row).to.have.class('leaf');
+      });
+
+      it("updates branch and leaf classes when move when node has no siblings", function() {
+        this.table.treetable("move", "n1", "n3");
+        expect(this.table.data("treetable").tree["n0"].row).to.have.class('leaf');
+        expect(this.table.data("treetable").tree["n1"].row).to.have.class('branch');
+        expect(this.table.data("treetable").tree["n3"].row).to.have.class('branch');
+      });
+
+      it("updates branch and leaf classes when move when destination node has no siblings", function() {
+        expect(this.table.data("treetable").tree["n5"].row).to.have.class('leaf');
+        this.table.treetable("move", "n4", "n5");
+        expect(this.table.data("treetable").tree["n3"].row).to.have.class('branch');
+        expect(this.table.data("treetable").tree["n4"].row).to.have.class('leaf');
+        expect(this.table.data("treetable").tree["n5"].row).to.have.class('branch');
+      });
+
+      it("updates branch and leaf classes when move form branchAttr", function() {
+        this.table.treetable("move", "n2", "n0");
+        expect(this.table.data("treetable").tree["n1"].row).to.have.class('branch');
+        expect(this.table.data("treetable").tree["n2"].row).to.have.class('leaf');
       });
 
       it("cannot make node a descendant of itself", function() {
