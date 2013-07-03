@@ -1,4 +1,4 @@
-Copyright (c) 2013 Ludo van den Boom, http://ludo.is
+Copyright (c) 2013 Ludo van den Boom, http://ludovandenboom.com
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
