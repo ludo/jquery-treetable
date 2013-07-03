@@ -1,4 +1,4 @@
-== HEAD
+== 3.0.2 - July 3, 2013
 
 * [FEATURE] Add argument to treetable plugin function to force reinitialization (#65)
 * [BUG] Prevent error when new rows have leading white space (#77)
