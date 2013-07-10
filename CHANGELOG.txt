@@ -1,3 +1,7 @@
+== HEAD
+
+* [ENHANCEMENT] Do not show child nodes on expand of a hidden node (#97)
+
 == 3.0.2 - July 3, 2013
 
 * [FEATURE] Add argument to treetable plugin function to force reinitialization (#65)
