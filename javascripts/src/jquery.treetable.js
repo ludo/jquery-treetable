@@ -253,6 +253,14 @@
       return _results;
     };
 
+    Tree.prototype.findLastNode = function (node) {
+      if (node.children.length > 0) {
+        return this.findLastNode(node.children[node.children.length - 1]);
+      } else {
+        return node;
+      }
+    };
+
     Tree.prototype.loadRows = function(rows) {
       var node, row, i;
 
@@ -464,14 +472,9 @@
 
       if (node == null) { // Inserting new root nodes
         this.append(rows);
-      } else if (node.children.length > 0) {
-        var current = node;
-        while (current.children.length > 0) {
-          current = current.children[current.children.length - 1];
-        }
-        rows.insertAfter(current.row);
       } else {
-        rows.insertAfter(node.row);
+        var lastNode = this.data("treetable").findLastNode(node);
+        rows.insertAfter(lastNode.row);
       }
 
       this.data("treetable").loadRows(rows);
