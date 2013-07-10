@@ -234,6 +234,7 @@
     describe("expandNode()", function() {
       beforeEach(function() {
         this.subject.treetable({
+          expandable: true,
           initialState: "collapsed"
         });
       });
@@ -262,6 +263,12 @@
       it("maintains chainability", function() {
         var row = $(this.subject[0].rows[0]);
         expect(this.subject.treetable("expandNode", row.data("ttId"))).to.equal(this.subject);
+      });
+
+      it("initializes nodes", function() {
+        var row = $(this.subject[0].rows[2]);
+        this.subject.treetable("expandNode", row.data("ttId"));
+        expect(this.subject.treetable("node", row.data("ttId")).initialized).to.be.true;
       });
     });
 
@@ -604,6 +611,12 @@
         expect(this.subject[3].row).to.be.hidden;
         this.subject[0].expand();
         expect(this.subject[3].row).to.be.visible;
+      });
+
+      it("does not show children if the node is hidden", function() {
+        expect(this.subject[3].row).to.be.hidden;
+        this.subject[2].expand();
+        expect(this.subject[3].row).to.be.hidden;
       });
 
       it("maintains chainability", function() {

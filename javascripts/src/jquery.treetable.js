@@ -69,7 +69,9 @@
       }
 
       this.row.removeClass("collapsed").addClass("expanded");
-      this._showChildren();
+      if ($(this.row).is(":visible")) {
+        this._showChildren();
+      }
       this.expander.attr("title", this.settings.stringCollapse);
 
       return this;
@@ -441,6 +443,10 @@
       var node = this.data("treetable").tree[id];
 
       if (node) {
+        if (!node.initialized) {
+          node._initialize();
+        }
+
         node.expand();
       } else {
         throw new Error("Unknown node '" + id + "'");
