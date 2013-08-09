@@ -49,10 +49,98 @@
       return ancestors;
     };
 
+    Node.prototype.saveState = function() {
+
+      if (typeof(this.settings.saveState) != 'undefined' && typeof(this.settings.saveState.method) != 'undefined') {
+        if (this.settings.saveState.method == 'cookie') {
+          cookieName = this.settings.saveState.name || "tree-grid-state";
+          if (typeof($.cookie(cookieName)) !== 'undefined') {
+            stateArray = $.cookie(cookieName).split(',');
+            nodeId = this.id.toString();
+
+            if (this.row.hasClass("expanded")) {
+              if ($.inArray(nodeId, stateArray) == -1) {
+                stateArray.push(nodeId);
+              }
+            } else if (this.row.hasClass("collapsed")) {
+              if ($.inArray(nodeId, stateArray) != -1) {
+                stateArray.splice($.inArray(nodeId, stateArray), 1);
+              }
+            }
+            $.cookie(cookieName, stateArray.join(','));
+
+          }
+        }
+        
+        // Save method hash
+        if (this.settings.saveState.method == 'hash') {
+
+          if (typeof(window.location.hash) != 'undefined' && window.location.hash != '') {
+            stateArray = window.location.hash.split(',');
+          } else {
+            stateArray = [this.settings.saveState.name || "tree-grid-state"];
+          }
+
+          nodeId = this.id.toString();
+
+          if (this.row.hasClass("expanded")) {
+            if ($.inArray(nodeId, stateArray) == -1) {
+              stateArray.push(nodeId);
+            }
+          } else if (this.row.hasClass("collapsed")) {
+            if ($.inArray(nodeId, stateArray) != -1) {
+              stateArray.splice($.inArray(nodeId, stateArray), 1);
+            }
+          }
+
+          var x = pageXOffset, y = pageYOffset;
+          document.location.hash = stateArray.join(',');
+          scrollTo(x, y);
+        }
+      }
+    };
+
+    Node.prototype.restoreState = function() {
+      if (typeof(this.settings.saveState) != 'undefined' && typeof(this.settings.saveState.method) != 'undefined') {
+        if (this.settings.saveState.method == 'cookie') {
+
+          cookieName = this.settings.saveState.name || "tree-grid-state";
+          if (typeof($.cookie(cookieName)) != 'undefined') {
+
+            stateArray = $.cookie(cookieName).split(',');
+            if ($.inArray(this.id.toString(), stateArray) != -1) {
+              this.expand();
+            } else {
+              this.collapse();
+            }
+            return true;
+          }
+        }
+        if (this.settings.saveState.method == 'hash') {
+
+          if (typeof(window.location.hash) != 'undefined') {
+
+            stateArray = window.location.hash.split(',');
+            if ($.inArray(this.id.toString(), stateArray) != -1) {
+              this.expand();
+            } else {
+              this.collapse();
+            }
+            return true;
+          }
+        }
+      }
+      return false
+    };
+
     Node.prototype.collapse = function() {
       this._hideChildren();
       this.row.removeClass("expanded").addClass("collapsed");
       this.expander.attr("title", this.settings.stringExpand);
+
+      if (this.settings.saveState != null) {
+        this.saveState();
+      }
 
       if (this.initialized && this.settings.onNodeCollapse != null) {
         this.settings.onNodeCollapse.apply(this);
@@ -61,9 +149,11 @@
       return this;
     };
 
+
     // TODO destroy: remove event handlers, expander, indenter, etc.
 
     Node.prototype.expand = function() {
+
       if (this.initialized && this.settings.onNodeExpand != null) {
         this.settings.onNodeExpand.apply(this);
       }
@@ -73,6 +163,10 @@
         this._showChildren();
       }
       this.expander.attr("title", this.settings.stringCollapse);
+
+      if (this.settings.saveState != null) {
+        this.saveState();
+      }
 
       return this;
     };
@@ -88,17 +182,17 @@
     };
 
     Node.prototype.isBranchNode = function() {
-      if(this.children.length > 0 || this.row.data(this.settings.branchAttr) === true) {
+      if (this.children.length > 0 || this.row.data(this.settings.branchAttr) === true) {
         return true;
       } else {
         return false;
       }
     };
 
-    Node.prototype.updateBranchLeafClass = function(){
+    Node.prototype.updateBranchLeafClass = function() {
       this.row.removeClass('branch');
       this.row.removeClass('leaf');
-      this.row.addClass(this.isBranchNode()?'branch':'leaf');
+      this.row.addClass(this.isBranchNode() ? 'branch' : 'leaf');
     };
 
     Node.prototype.level = function() {
@@ -120,8 +214,8 @@
 
     Node.prototype.render = function() {
       var handler,
-          settings = this.settings,
-          target;
+              settings = this.settings,
+              target;
 
       if (settings.expandable === true && this.isBranchNode()) {
         handler = function(e) {
@@ -140,11 +234,18 @@
         });
       }
 
-      if (settings.expandable === true && settings.initialState === "collapsed") {
-        this.collapse();
+      if (settings.expandable === true) {
+        if (settings.saveState == null || !this.restoreState()) {
+          if (settings.initialState === "collapsed") {
+            this.collapse();
+          } else {
+            this.expand();
+          }
+        }
       } else {
         this.expand();
       }
+
 
       this.indenter[0].style.paddingLeft = "" + (this.level() * settings.indent) + "px";
 
@@ -253,7 +354,29 @@
       return _results;
     };
 
-    Tree.prototype.findLastNode = function (node) {
+    Tree.prototype.saveStateAll = function() {
+      var node, _i, _len, _ref, _results;
+      _ref = this.nodes;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        node = _ref[_i];
+        _results.push(node.saveState());
+      }
+      return _results;
+    };
+
+    Tree.prototype.initSaveState = function() {
+      if (typeof(this.settings.saveState) != 'undefined' && typeof(this.settings.saveState.method) != 'undefined') {
+        if (this.settings.saveState.method == 'cookie') {
+          cookieName = this.settings.saveState.name || "tree-grid-state";
+          if (typeof($.cookie(cookieName)) == 'undefined') {
+            $.cookie(cookieName, '');
+          }
+        }
+      }
+    }
+
+    Tree.prototype.findLastNode = function(node) {
       if (node.children.length > 0) {
         return this.findLastNode(node.children[node.children.length - 1]);
       } else {
@@ -309,10 +432,10 @@
         }
       }
 
-      if(nodeParent){
+      if (nodeParent) {
         nodeParent.updateBranchLeafClass();
       }
-      if(node.parentNode()){
+      if (node.parentNode()) {
         node.parentNode().updateBranchLeafClass();
       }
       node.updateBranchLeafClass();
@@ -393,6 +516,7 @@
         parentIdAttr: "ttParentId", // maps to data-tt-parent-id
         stringExpand: "Expand",
         stringCollapse: "Collapse",
+        saveState: null, // {methodName: 'cookie', name: 'name-of-cookie'}
 
         // Events
         onInitialized: null,
@@ -410,26 +534,31 @@
 
           el.addClass("treetable").data("treetable", tree);
 
+
+
           if (settings.onInitialized != null) {
             settings.onInitialized.apply(tree);
           }
+
+          if (settings.saveState != null) {
+            tree.initSaveState();
+            tree.saveStateAll();
+          }
+
         }
 
         return el;
       });
     },
-
     destroy: function() {
       return this.each(function() {
         return $(this).removeData("treetable").removeClass("treetable");
       });
     },
-
     collapseAll: function() {
       this.data("treetable").collapseAll();
       return this;
     },
-
     collapseNode: function(id) {
       var node = this.data("treetable").tree[id];
 
@@ -441,12 +570,10 @@
 
       return this;
     },
-
     expandAll: function() {
       this.data("treetable").expandAll();
       return this;
     },
-
     expandNode: function(id) {
       var node = this.data("treetable").tree[id];
 
@@ -462,10 +589,9 @@
 
       return this;
     },
-
     loadBranch: function(node, rows) {
       var settings = this.data("treetable").settings,
-          tree = this.data("treetable").tree;
+              tree = this.data("treetable").tree;
 
       // TODO Switch to $.parseHTML
       rows = $(rows);
@@ -486,7 +612,6 @@
 
       return this;
     },
-
     move: function(nodeId, destinationId) {
       var destination, node;
 
@@ -496,11 +621,9 @@
 
       return this;
     },
-
     node: function(id) {
       return this.data("treetable").tree[id];
     },
-
     reveal: function(id) {
       var node = this.data("treetable").tree[id];
 
@@ -512,7 +635,6 @@
 
       return this;
     },
-
     unloadBranch: function(node) {
       this.data("treetable").unloadBranch(node);
       return this;
