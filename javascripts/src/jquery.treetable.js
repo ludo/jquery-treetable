@@ -484,6 +484,11 @@
         tree[$(this).data(settings.nodeIdAttr)].show();
       });
 
+      if (node != null) {
+        // Re-render parent to ensure expander icon is shown (#79)
+        node.render();
+      }
+
       return this;
     },
 
