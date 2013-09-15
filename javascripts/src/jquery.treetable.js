@@ -98,7 +98,7 @@
     Node.prototype.updateBranchLeafClass = function(){
       this.row.removeClass('branch');
       this.row.removeClass('leaf');
-      this.row.addClass(this.isBranchNode()?'branch':'leaf');
+      this.row.addClass(this.isBranchNode() ? 'branch' : 'leaf');
     };
 
     Node.prototype.level = function() {
