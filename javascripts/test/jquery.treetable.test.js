@@ -302,6 +302,22 @@
       });
 
       it("shows parent expanded when child nodes loaded (#79)", function() {
+        var childRow,
+            rootNode,
+            rootRow;
+
+        // This row won't show an expander
+        rootRow = "<tr data-tt-id='3'><td>N3</td></tr>";
+
+        // But when this row is added as a child it should add expander to N3
+        childRow = "<tr data-tt-id='4' data-tt-parent-id='3'><td>N4</td></tr>";
+
+        // First add nonBranchRow as a new root node
+        this.subject.treetable("loadBranch", null, rootRow);
+        rootNode = this.subject.treetable("node", "3");
+
+        this.subject.treetable("loadBranch", rootNode, childRow);
+        expect(rootNode.row).to.have.class("expanded");
       });
 
       it("inserts rows into DOM, appending new rows to end of children", function() {

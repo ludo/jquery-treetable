@@ -505,7 +505,7 @@
 
       if (node != null) {
         // Re-render parent to ensure expander icon is shown (#79)
-        node.render();
+        node.render().expand();
       }
 
       return this;
