@@ -692,12 +692,12 @@
 
       it("returns true when expanded", function() {
         this.subject.expand();
-        expect(this.subject.expanded()).to.be["true"];
+        expect(this.subject.expanded()).to.be.true;
       });
 
       it("returns false when collapsed", function() {
         this.subject.collapse();
-        expect(this.subject.expanded()).to.be["false"];
+        expect(this.subject.expanded()).to.be.false;
       });
     });
 
@@ -749,11 +749,11 @@
         });
 
         it("initializes root nodes immediately", function() {
-          expect(this.rootNode.initialized).to.be["true"];
+          expect(this.rootNode.initialized).to.be.true;
         });
 
         it("initializes non-root nodes immediately", function() {
-          expect(this.leafNode.initialized).to.be["true"];
+          expect(this.leafNode.initialized).to.be.true;
         });
       });
 
@@ -768,11 +768,11 @@
         });
 
         it("initializes root nodes immediately", function() {
-          expect(this.rootNode.initialized).to.be["true"];
+          expect(this.rootNode.initialized).to.be.true;
         });
 
         it("does not initialize non-root nodes immediately", function() {
-          expect(this.leafNode.initialized).to.be["false"];
+          expect(this.leafNode.initialized).to.be.false;
         });
       });
 
@@ -787,11 +787,11 @@
         });
 
         it("initializes root nodes immediately", function() {
-          expect(this.rootNode.initialized).to.be["true"];
+          expect(this.rootNode.initialized).to.be.true;
         });
 
         it("initializes non-root nodes immediately", function() {
-          expect(this.leafNode.initialized).to.be["true"];
+          expect(this.leafNode.initialized).to.be.true;
         });
       });
     });
@@ -1359,18 +1359,18 @@
 
         it("is called when node is being hidden", function() {
           this.table.roots[0].collapse();
-          expect(this.callback.called).to.be["true"];
+          expect(this.callback.called).to.be.true;
         });
 
         it("is not called when node is being shown", function() {
           this.table.roots[0].expand();
-          expect(this.callback.called).to.be["false"];
+          expect(this.callback.called).to.be.false;
         });
 
         it("is not called when node is not initialized yet", function() {
           this.table.roots[0].initialized = false;
           this.table.roots[0].collapse();
-          expect(this.callback.called).to.be["false"];
+          expect(this.callback.called).to.be.false;
         });
       });
     });
@@ -1435,18 +1435,18 @@
 
         it("is called when node is being shown", function() {
           this.table.roots[0].expand();
-          expect(this.callback.called).to.be["true"];
+          expect(this.callback.called).to.be.true;
         });
 
         it("is not called when node is being hidden", function() {
           this.table.roots[0].collapse();
-          expect(this.callback.called).to.be["false"];
+          expect(this.callback.called).to.be.false;
         });
 
         it("is not called when node is not initialized yet", function() {
           this.table.roots[0].initialized = false;
           this.table.roots[0].expand();
-          expect(this.callback.called).to.be["false"];
+          expect(this.callback.called).to.be.false;
         });
       });
     });
