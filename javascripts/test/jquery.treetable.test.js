@@ -1301,6 +1301,7 @@
         it("does not complain", function() {
           var table;
           table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable({
+            expandable: true,
             initialState: "expanded",
             onNodeCollapse: null
           }).data("treetable");
@@ -1312,6 +1313,7 @@
         beforeEach(function() {
           this.callback = sinon.spy();
           this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable({
+            expandable: true,
             initialState: "expanded",
             onNodeCollapse: this.callback
           }).data("treetable");
@@ -1375,7 +1377,8 @@
         it("does not complain", function() {
           var table;
           table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable({
-            initialState: "expanded",
+            expandable: true,
+            initialState: "collapsed",
             onNodeExpand: null
           }).data("treetable");
           table.roots[0].expand();
@@ -1386,7 +1389,8 @@
         beforeEach(function() {
           this.callback = sinon.spy();
           this.table = $("<table><tr data-tt-id='1'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='1'><td>N2</td></tr></table>").treetable({
-            initialState: "expanded",
+            expandable: true,
+            initialState: "collapsed",
             onNodeExpand: this.callback
           }).data("treetable");
         });
