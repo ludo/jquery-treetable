@@ -583,6 +583,17 @@
         this.table.remove();
       });
 
+      it("ignores multiple invokes", function() {
+        var callback = sinon.spy(),
+            node = this.subject[0];
+
+        this.table.data("treetable").settings.onNodeCollapse = callback;
+
+        node.collapse();
+        node.collapse();
+        expect(callback.calledOnce).to.be.true;
+      });
+
       it("hides children", function() {
         expect(this.subject[1].row).to.be.visible;
         expect(this.subject[2].row).to.be.visible;
@@ -599,6 +610,22 @@
 
       it("maintains chainability", function() {
         expect(this.subject[0].collapse()).to.equal(this.subject[0]);
+      });
+    });
+
+    describe("collapsed()", function() {
+      beforeEach(function() {
+        this.subject = $("<table><tr data-tt-id='0'><td>Node</td></tr></table>").treetable().data("treetable").tree[0];
+      });
+
+      it("returns true when collapsed", function() {
+        this.subject.collapse();
+        expect(this.subject.collapsed()).to.be.true;
+      });
+
+      it("returns false when expanded", function() {
+        this.subject.expand();
+        expect(this.subject.collapsed()).to.be.false;
       });
     });
 
@@ -620,6 +647,17 @@
         this.subject[0].expand();
         expect(this.subject[1].row).to.be.visible;
         expect(this.subject[2].row).to.be.visible;
+      });
+
+      it("ignores multiple invokes", function() {
+        var callback = sinon.spy(),
+            node = this.subject[0];
+
+        this.table.data("treetable").settings.onNodeExpand = callback;
+
+        node.expand();
+        node.expand();
+        expect(callback.calledOnce).to.be.true;
       });
 
       it("does not recursively show collapsed grandchildren", function() {
