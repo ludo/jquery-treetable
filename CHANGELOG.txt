@@ -1,6 +1,7 @@
 == HEAD
 
 * [ENHANCEMENT] Do not show child nodes on expand of a hidden node (#97)
+* [ENHANCEMENT] Embed Base64 encoded theme images in CSS (#103)
 * [BUG] Node expanders wouldn't render correctly when nodes added dynamically (#79)
 
 == 3.0.2 - July 3, 2013
