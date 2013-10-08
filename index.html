@@ -857,7 +857,7 @@ $("#example-advanced .file, #example-advanced .folder").draggable({
 });
 
 $("#example-advanced .folder").each(function() {
-  $(this).parents("tr").droppable({
+  $(this).parents("#example-advanced tr").droppable({
     accept: ".file, .folder",
     drop: function(e, ui) {
       var droppedEl = ui.draggable.parents("tr");
@@ -911,7 +911,7 @@ $("#example-advanced .folder").each(function() {
       });
 
       $("#example-advanced .folder").each(function() {
-        $(this).parents("tr").droppable({
+        $(this).parents("#example-advanced tr").droppable({
           accept: ".file, .folder",
           drop: function(e, ui) {
             var droppedEl = ui.draggable.parents("tr");
