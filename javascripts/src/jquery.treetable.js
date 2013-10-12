@@ -364,6 +364,24 @@
       return _results;
     };
 
+    Tree.prototype.sortBranch = function(node, column) {
+      var sortFun;
+
+      column = column || this.settings.column;
+      sortFun = function(a, b) {
+        var valA = a.row.find("td:eq(" + column + ")").text(),
+            valB = b.row.find("td:eq(" + column + ")").text();
+        return (valA > valB);
+      };
+
+      return this.sortBranchWithFunction(node, sortFun);
+    };
+
+    Tree.prototype.sortBranchWithFunction = function(node, sortFun) {
+      node.children.sort(sortFun);
+      return this;
+    };
+
     Tree.prototype.unloadBranch = function(node) {
       var child, children, i;
 
@@ -534,6 +552,16 @@
         throw new Error("Unknown node '" + id + "'");
       }
 
+      return this;
+    },
+
+    sortBranch: function(node, column) {
+      this.data("treetable").sortBranch(node, column);
+      return this;
+    },
+
+    sortBranchWithFunction: function(node, sortFun) {
+      this.data("treetable").sortBranchWithFunction(node, sortFun);
       return this;
     },
 

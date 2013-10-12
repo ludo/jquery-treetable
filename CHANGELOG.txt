@@ -1,5 +1,6 @@
 == HEAD
 
+* [FEATURE] Added branch sort API (#87)
 * [ENHANCEMENT] Do not show child nodes on expand of a hidden node (#97)
 * [ENHANCEMENT] Embed Base64 encoded theme images in CSS (#103)
 * [BUG] Bootstrap v3 compatibility fix for indenter (#111)

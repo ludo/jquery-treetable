@@ -469,6 +469,54 @@
       });
     });
 
+    describe("sortBranch()", function() {
+      beforeEach(function() {
+        this.subject = $("<table><tr data-tt-id='0'><td>ROOT</td><td>Col 2</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>C1C</td><td>C2A</tr><tr data-tt-id='2' data-tt-parent-id='0' data-tt-branch='true'><td>C1A</td><td>C2C</td></tr><tr data-tt-id='3' data-tt-parent-id='0'><td>C1B</td><td>C2B</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>CHILD</td><td>Col 2</td></tr></table>");
+
+        this.subject.treetable();
+        this.parentNode = this.subject.treetable("node", "0");
+      });
+
+      it("defaults to sorting a node's children alphabetically", function() {
+        expect(collectValues(this.parentNode.children)).to.eql(["C1C", "C1A", "C1B"]);
+        this.subject.treetable("sortBranch", this.parentNode);
+        expect(collectValues(this.parentNode.children)).to.eql(["C1A", "C1B", "C1C"]);
+      });
+
+      it("sorts on chosen column", function() {
+        expect(collectValues(this.parentNode.children)).to.eql(["C1C", "C1A", "C1B"]);
+        this.subject.treetable("sortBranch", this.parentNode, 1);
+        expect(collectValues(this.parentNode.children)).to.eql(["C1C", "C1B", "C1A"]);
+      });
+
+      it("accepts custom sorting functions", function() {
+        var sortOnNumOfChildrenFun = function(a, b) {
+          console.log(a.children.length);
+          console.log(b.children.length);
+
+          return (a.children.length < b.children.length);
+        };
+
+        var sortAlphabeticallyDescending = function(a, b) {
+          var valA = a.row.find("td:eq(0)").text(),
+              valB = b.row.find("td:eq(0)").text();
+          return (valA < valB);
+        };
+
+        expect(collectValues(this.parentNode.children)).to.eql(["C1C", "C1A", "C1B"]);
+        this.subject.treetable("sortBranchWithFunction", this.parentNode, sortOnNumOfChildrenFun);
+        expect(collectValues(this.parentNode.children)).to.eql(["C1B", "C1C", "C1A"]);
+        this.subject.treetable("sortBranchWithFunction", this.parentNode, sortAlphabeticallyDescending);
+        expect(collectValues(this.parentNode.children)).to.eql(["C1C", "C1B", "C1A"]);
+      });
+
+      function collectValues(nodes) {
+        return $.map(nodes, function(node, i) {
+          return node.row.find("td").first().text();
+        });
+      }
+    });
+
     describe("unloadBranch()", function() {
       beforeEach(function() {
         this.newRows = "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>"
