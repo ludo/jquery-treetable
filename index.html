@@ -279,10 +279,8 @@ $("<b>#your_table_id</b>").treetable();
         <dd>Select a node from the tree. Returns a <tt>TreeTable.Node</tt> object.</dd>
         <dt><tt>reveal(id)</tt></dt>
         <dd>Reveal a node in the tree.</dd>
-        <dt><tt>sortBranch(node)</tt>, <tt>sortBranch(node, column)</tt></dt>
-        <dd>Sort <tt>node</tt>'s children alphabetically. Pass an optional <tt>column</tt> number to select column on which to sort, defaults to the configured tree column (see settings). Does not recursively sort children of children.</dd>
-        <dt><tt>sortBranchWithFunction(node, sortFun)</tt></dt>
-        <dd>Sort <tt>node</tt>'s children using custom <tt>sortFun</tt>. See <a href="test.html?grep=treetable()%20sortBranch()%20accepts%20custom%20sorting%20functions">the tests</a> for some examples. Does not recursively sort children of children.</dd>
+        <dt><tt>sortBranch(node)</tt>, <tt>sortBranch(node, columnOrFunction)</tt></dt>
+        <dd>Sort <tt>node</tt>'s children alphabetically. Defaults to sorting on the values in the configured tree column (see settings). Pass an optional column number or sorting function as the second argument <tt>columnOrFunction</tt>. See <a href="test.html?grep=treetable()%20sortBranch()">the tests</a> for examples of custom sorting functions. Does not recursively sort children of children.</dd>
         <dt><tt>unloadBranch(node)</tt></dt>
         <dd>Remove nodes/rows (HTML <tt>&lt;tr&gt;</tt>s) from the tree, with parent <tt>node</tt>. Note that the parent (<tt>node</tt>) will not be removed.</dd>
       </dl>
