@@ -351,19 +351,6 @@
       return this;
     };
 
-    Tree.prototype._moveRows = function(node, destination) {
-      var child, _i, _len, _ref, _results;
-      node.row.insertAfter(destination.row);
-      node.render();
-      _ref = node.children;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        child = _ref[_i];
-        _results.push(this._moveRows(child, node));
-      }
-      return _results;
-    };
-
     Tree.prototype.sortBranch = function(node, column) {
       var sortFun;
 
@@ -407,6 +394,18 @@
       return this;
     };
 
+    Tree.prototype._moveRows = function(node, destination) {
+      var child, _i, _len, _ref, _results;
+      node.row.insertAfter(destination.row);
+      node.render();
+      _ref = node.children;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        child = _ref[_i];
+        _results.push(this._moveRows(child, node));
+      }
+      return _results;
+    };
 
     return Tree;
   })();
