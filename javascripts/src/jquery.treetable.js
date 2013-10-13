@@ -387,31 +387,19 @@
     };
 
     Tree.prototype._moveRows = function(node, destination) {
-      var child, _i, _len, _ref, _results;
+      var children = node.children, i, len;
+
       node.row.insertAfter(destination.row);
       node.render();
-      _ref = node.children;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        child = _ref[_i];
-        _results.push(this._moveRows(child, node));
+
+      for (i = 0, len = children.length; i < len; i++) {
+        this._moveRows(children[i], node);
       }
-      return _results;
     };
 
+    // Special _moveRows case, move children to itself to force sorting
     Tree.prototype._sortChildRows = function(parentNode) {
-      var children, i;
-
-      children = parentNode.children;
-
-      // Insert first child from children after parentNode
-      this._moveRows(children[0], parentNode);
-
-      // Sort other children (+i+ deliberately starts at 1 because first child
-      // is already taken care of)
-      for (i = 1; i < children.length; i++) {
-        this._moveRows(children[i], children[i-1]);
-      }
+      return this._moveRows(parentNode, parentNode);
     };
 
     return Tree;
@@ -588,8 +576,6 @@
           return 0;
         };
       }
-
-      console.log(sortFun);
 
       this.data("treetable").sortBranch(node, sortFun);
       return this;

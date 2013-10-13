@@ -8,6 +8,20 @@
       this.subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0' data-tt-branch='true'><td>N2</td></tr></table>");
     });
 
+    function collectValues(nodes) {
+      return $.map(nodes, function(node, i) {
+        return node.row.find("td").first().text();
+      });
+    };
+
+    function collectValuesInTable(table) {
+      var result = table.find("tbody tr td:first-child").map(function() {
+        return $(this).text();
+      });
+
+      return $.makeArray(result);
+    };
+
     it("maintains chainability", function() {
       expect(this.subject.treetable()).to.equal(this.subject);
     });
@@ -477,16 +491,16 @@
         this.parentNode = this.subject.treetable("node", "0");
       });
 
-      function collectValues(nodes) {
-        return $.map(nodes, function(node, i) {
-          return node.row.find("td").first().text();
-        });
-      }
-
       it("defaults to sorting a node's children alphabetically (case-insensitive)", function() {
         expect(collectValues(this.parentNode.children)).to.eql(["C1C", " C1a", "C1B"]);
         this.subject.treetable("sortBranch", this.parentNode);
         expect(collectValues(this.parentNode.children)).to.eql([" C1a", "C1B", "C1C"]);
+      });
+
+      it("updates UI", function() {
+        expect(collectValuesInTable(this.subject)).to.eql(["ROOT", "C1C", " C1a", "C1B", "CHILD"]);
+        this.subject.treetable("sortBranch", this.parentNode);
+        expect(collectValuesInTable(this.subject)).to.eql(["ROOT", " C1a", "C1B", "CHILD", "C1C"]);
       });
 
       it("sorts on chosen column", function() {
@@ -1220,7 +1234,7 @@
 
     describe("move()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0'  data-tt-branch='true'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr><tr data-tt-id='n4' data-tt-parent-id='n3'><td>N4</td></tr><tr data-tt-id='n5' data-tt-parent-id='n3'><td>N5</td></tr></table>");
+        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0' data-tt-branch='true'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr><tr data-tt-id='n4' data-tt-parent-id='n3'><td>N4</td></tr><tr data-tt-id='n5' data-tt-parent-id='n3'><td>N5</td></tr></table>");
         this.table.treetable();
       });
 
@@ -1231,6 +1245,8 @@
         this.table.treetable("move", "n2", "n3");
         expect(subject.parentId).to.equal("n3");
       });
+
+      it("updates UI");
 
       it("updates branch and leaf classes when node has siblings", function() {
         this.table.treetable("move", "n5", "n0");
