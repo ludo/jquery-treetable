@@ -387,12 +387,14 @@
     };
 
     Tree.prototype._moveRows = function(node, destination) {
-      var children = node.children, i, len;
+      var children = node.children, i;
 
       node.row.insertAfter(destination.row);
       node.render();
 
-      for (i = 0, len = children.length; i < len; i++) {
+      // Loop backwards through children to have them end up on UI in correct
+      // order (see #112)
+      for (i = children.length - 1; i >= 0; i--) {
         this._moveRows(children[i], node);
       }
     };

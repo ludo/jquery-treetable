@@ -3,6 +3,7 @@
 * [FEATURE] Added branch sort API (#87)
 * [ENHANCEMENT] Do not show child nodes on expand of a hidden node (#97)
 * [ENHANCEMENT] Embed Base64 encoded theme images in CSS (#103)
+* [BUG] Moving nodes around caused order of children to be reversed (#112)
 * [BUG] Bootstrap v3 compatibility fix for indenter (#111)
 * [BUG] D&D example code should not break when nested inside other table (#108)
 * [BUG] Node expanders wouldn't render correctly when nodes added dynamically (#79)

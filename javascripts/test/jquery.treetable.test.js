@@ -1234,7 +1234,7 @@
 
     describe("move()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0' data-tt-branch='true'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n2c1' data-tt-parent-id='n2'><td>N2C1</td></tr><tr data-tt-id='n2c2' data-tt-parent-id='n2'><td>N2C2</td></tr><tr data-tt-id='n3'><td>N3</td></tr><tr data-tt-id='n4' data-tt-parent-id='n3'><td>N4</td></tr><tr data-tt-id='n5' data-tt-parent-id='n3'><td>N5</td></tr></table>");
+        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0' data-tt-branch='true'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n2c1' data-tt-parent-id='n2'><td>N2C1</td></tr><tr data-tt-id='n2c2' data-tt-parent-id='n2'><td>N2C2</td></tr><tr data-tt-id='n3'><td>N3</td></tr><tr data-tt-id='n3c1' data-tt-parent-id='n3'><td>N3C1</td></tr><tr data-tt-id='n4' data-tt-parent-id='n3'><td>N4</td></tr><tr data-tt-id='n5' data-tt-parent-id='n3'><td>N5</td></tr></table>");
         this.table.treetable();
       });
 
@@ -1247,9 +1247,9 @@
       });
 
       it("updates UI", function() {
-        expect(collectValuesInTable(this.table)).to.eql(["N0", "N1", "N2", "N2C1", "N2C2", "N3", "N4", "N5"]);
+        expect(collectValuesInTable(this.table)).to.eql(["N0", "N1", "N2", "N2C1", "N2C2", "N3", "N3C1", "N4", "N5"]);
         this.table.treetable("move", "n2", "n3");
-        expect(collectValuesInTable(this.table)).to.eql(["N0", "N1", "N3", "N2", "N2C1", "N2C2", "N4", "N5"]);
+        expect(collectValuesInTable(this.table)).to.eql(["N0", "N1", "N3", "N2", "N2C1", "N2C2", "N3C1", "N4", "N5"]);
       });
 
       it("updates branch and leaf classes when node has siblings", function() {
