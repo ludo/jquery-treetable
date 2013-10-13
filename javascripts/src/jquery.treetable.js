@@ -351,21 +351,13 @@
       return this;
     };
 
-    Tree.prototype.sortBranch = function(node, column) {
-      var sortFun;
-
-      column = column || this.settings.column;
-      sortFun = function(a, b) {
-        var valA = a.row.find("td:eq(" + column + ")").text(),
-            valB = b.row.find("td:eq(" + column + ")").text();
-        return (valA > valB);
-      };
-
-      return this.sortBranchWithFunction(node, sortFun);
-    };
-
-    Tree.prototype.sortBranchWithFunction = function(node, sortFun) {
+    Tree.prototype.sortBranch = function(node, sortFun) {
+      // First sort internal array of children
       node.children.sort(sortFun);
+
+      // Next render rows in correct order on page
+      this._sortChildRows(node);
+
       return this;
     };
 
@@ -405,6 +397,21 @@
         _results.push(this._moveRows(child, node));
       }
       return _results;
+    };
+
+    Tree.prototype._sortChildRows = function(parentNode) {
+      var children, i;
+
+      children = parentNode.children;
+
+      // Insert first child from children after parentNode
+      this._moveRows(children[0], parentNode);
+
+      // Sort other children (+i+ deliberately starts at 1 because first child
+      // is already taken care of)
+      for (i = 1; i < children.length; i++) {
+        this._moveRows(children[i], children[i-1]);
+      }
     };
 
     return Tree;
@@ -554,13 +561,37 @@
       return this;
     },
 
-    sortBranch: function(node, column) {
-      this.data("treetable").sortBranch(node, column);
-      return this;
-    },
+    sortBranch: function(node, columnOrFunction) {
+      var settings = this.data("treetable").settings,
+          prepValue,
+          sortFun;
 
-    sortBranchWithFunction: function(node, sortFun) {
-      this.data("treetable").sortBranchWithFunction(node, sortFun);
+      columnOrFunction = columnOrFunction || settings.column;
+      sortFun = columnOrFunction;
+
+      if ($.isNumeric(columnOrFunction)) {
+        sortFun = function(a, b) {
+          var extractValue, valA, valB;
+
+          extractValue = function(node) {
+            var val = node.row.find("td:eq(" + columnOrFunction + ")").text();
+            // Ignore trailing/leading whitespace and use uppercase values for
+            // case insensitive ordering
+            return $.trim(val).toUpperCase();
+          }
+
+          valA = extractValue(a);
+          valB = extractValue(b);
+
+          if (valA < valB) return -1;
+          if (valA > valB) return 1;
+          return 0;
+        };
+      }
+
+      console.log(sortFun);
+
+      this.data("treetable").sortBranch(node, sortFun);
       return this;
     },
 
