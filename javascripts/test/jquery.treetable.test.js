@@ -3,24 +3,24 @@
 
   expect = chai.expect;
 
+  function collectValues(nodes) {
+    return $.map(nodes, function(node, i) {
+      return node.row.find("td").first().text();
+    });
+  };
+
+  function collectValuesInTable(table) {
+    var result = table.find("tbody tr td:first-child").map(function() {
+      return $(this).text();
+    });
+
+    return $.makeArray(result);
+  };
+
   describe("treetable()", function() {
     beforeEach(function() {
       this.subject = $("<table><tr data-tt-id='0'><td>N0</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>N1</td></tr><tr data-tt-id='2' data-tt-parent-id='0' data-tt-branch='true'><td>N2</td></tr></table>");
     });
-
-    function collectValues(nodes) {
-      return $.map(nodes, function(node, i) {
-        return node.row.find("td").first().text();
-      });
-    };
-
-    function collectValuesInTable(table) {
-      var result = table.find("tbody tr td:first-child").map(function() {
-        return $(this).text();
-      });
-
-      return $.makeArray(result);
-    };
 
     it("maintains chainability", function() {
       expect(this.subject.treetable()).to.equal(this.subject);
@@ -485,7 +485,7 @@
 
     describe("sortBranch()", function() {
       beforeEach(function() {
-        this.subject = $("<table><tr data-tt-id='0'><td>ROOT</td><td>Col 2</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>C1C</td><td>C2A</tr><tr data-tt-id='2' data-tt-parent-id='0' data-tt-branch='true'><td> C1a</td><td>C2C</td></tr><tr data-tt-id='3' data-tt-parent-id='0'><td>C1B</td><td>C2B</td></tr><tr data-tt-id='4' data-tt-parent-id='3'><td>CHILD</td><td>Col 2</td></tr></table>");
+        this.subject = $("<table><tr data-tt-id='0'><td>ROOT</td><td>Col 2</td></tr><tr data-tt-id='1' data-tt-parent-id='0'><td>C1C</td><td>C2A</tr><tr data-tt-id='2' data-tt-parent-id='0' data-tt-branch='true'><td> C1a</td><td>C2C</td></tr><tr data-tt-id='2-1' data-tt-parent-id='2'><td>CHILD</td><td>Col 2</td></tr><tr data-tt-id='3' data-tt-parent-id='0'><td>C1B</td><td>C2B</td></tr></table>");
 
         this.subject.treetable();
         this.parentNode = this.subject.treetable("node", "0");
@@ -498,9 +498,9 @@
       });
 
       it("updates UI", function() {
-        expect(collectValuesInTable(this.subject)).to.eql(["ROOT", "C1C", " C1a", "C1B", "CHILD"]);
+        expect(collectValuesInTable(this.subject)).to.eql(["ROOT", "C1C", " C1a", "CHILD", "C1B"]);
         this.subject.treetable("sortBranch", this.parentNode);
-        expect(collectValuesInTable(this.subject)).to.eql(["ROOT", " C1a", "C1B", "CHILD", "C1C"]);
+        expect(collectValuesInTable(this.subject)).to.eql(["ROOT", " C1a", "CHILD", "C1B", "C1C"]);
       });
 
       it("sorts on chosen column", function() {
@@ -513,22 +513,22 @@
         var sortOnNumOfChildrenFun = function(a, b) {
           var valA = a.children.length,
               valB = b.children.length;
-          if (valA < valB) return 1;
-          if (valA > valB) return -1;
+          if (valA < valB) return -1;
+          if (valA > valB) return 1;
           return 0;
         };
 
         expect(collectValues(this.parentNode.children)).to.eql(["C1C", " C1a", "C1B"]);
         this.subject.treetable("sortBranch", this.parentNode, sortOnNumOfChildrenFun);
-        expect(collectValues(this.parentNode.children)).to.eql(["C1B", "C1C", " C1a"]);
+        expect(collectValues(this.parentNode.children)).to.eql(["C1C", "C1B", " C1a"]);
       });
 
       it("accepts custom sorting functions (example: alphabeticallyDescending)", function() {
         var sortAlphabeticallyDescending = function(a, b) {
           var valA = $.trim(a.row.find("td:eq(0)").text()).toUpperCase(),
               valB = $.trim(b.row.find("td:eq(0)").text()).toUpperCase();
-          if (valA < valB) return 1;
           if (valA > valB) return -1;
+          if (valA < valB) return 1;
           return 0;
         };
 
@@ -1234,7 +1234,7 @@
 
     describe("move()", function() {
       beforeEach(function() {
-        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0' data-tt-branch='true'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n3'><td>N3</td></tr><tr data-tt-id='n4' data-tt-parent-id='n3'><td>N4</td></tr><tr data-tt-id='n5' data-tt-parent-id='n3'><td>N5</td></tr></table>");
+        this.table = $("<table><tr data-tt-id='n0'><td>N0</td></tr><tr data-tt-id='n1' data-tt-parent-id='n0' data-tt-branch='true'><td>N1</td></tr><tr data-tt-id='n2' data-tt-parent-id='n1'><td>N2</td></tr><tr data-tt-id='n2c1' data-tt-parent-id='n2'><td>N2C1</td></tr><tr data-tt-id='n2c2' data-tt-parent-id='n2'><td>N2C2</td></tr><tr data-tt-id='n3'><td>N3</td></tr><tr data-tt-id='n4' data-tt-parent-id='n3'><td>N4</td></tr><tr data-tt-id='n5' data-tt-parent-id='n3'><td>N5</td></tr></table>");
         this.table.treetable();
       });
 
@@ -1246,7 +1246,11 @@
         expect(subject.parentId).to.equal("n3");
       });
 
-      it("updates UI");
+      it("updates UI", function() {
+        expect(collectValuesInTable(this.table)).to.eql(["N0", "N1", "N2", "N2C1", "N2C2", "N3", "N4", "N5"]);
+        this.table.treetable("move", "n2", "n3");
+        expect(collectValuesInTable(this.table)).to.eql(["N0", "N1", "N3", "N2", "N2C1", "N2C2", "N4", "N5"]);
+      });
 
       it("updates branch and leaf classes when node has siblings", function() {
         this.table.treetable("move", "n5", "n0");
@@ -1270,10 +1274,10 @@
         expect(this.table.data("treetable").tree["n5"].row).to.have.class('branch');
       });
 
-      it("updates branch and leaf classes when move form branchAttr", function() {
+      it("updates branch and leaf classes when move from node with branchAttr", function() {
+        expect(this.table.data("treetable").tree["n1"].row).to.have.class('branch');
         this.table.treetable("move", "n2", "n0");
         expect(this.table.data("treetable").tree["n1"].row).to.have.class('branch');
-        expect(this.table.data("treetable").tree["n2"].row).to.have.class('leaf');
       });
 
       it("cannot make node a descendant of itself", function() {
