@@ -473,13 +473,23 @@
       });
     });
 
+    describe("removeNode()", function() {
+      beforeEach(function() {
+        this.subject.treetable();
+      });
+
+      it("maintains chainability", function() {
+        expect(this.subject.treetable("removeNode", "2")).to.equal(this.subject);
+      });
+    });
+
     describe("reveal()", function() {
       beforeEach(function() {
         this.subject.treetable();
       });
 
       it("maintains chainability", function() {
-        expect(this.subject.treetable("reveal", 2)).to.equal(this.subject);
+        expect(this.subject.treetable("reveal", "2")).to.equal(this.subject);
       });
     });
 

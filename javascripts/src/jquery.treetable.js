@@ -338,6 +338,18 @@
       return this;
     };
 
+    Tree.prototype.removeNode = function(node) {
+      // Recursively remove all descendants of +node+
+      this.unloadBranch(node);
+
+      // Remove node from DOM (<tr>)
+      node.row.remove();
+
+      // Clean up Tree object (so Node objects are GC-ed)
+      delete this.tree[node.id];
+      this.nodes.splice($.inArray(node, this.nodes), 1);
+    }
+
     Tree.prototype.render = function() {
       var root, _i, _len, _ref;
       _ref = this.roots;
@@ -362,20 +374,10 @@
     };
 
     Tree.prototype.unloadBranch = function(node) {
-      var child, children, i;
+      var children, i;
 
       for (i = 0; i < node.children.length; i++) {
-        child = node.children[i];
-
-        // Recursively remove all descendants of +node+
-        this.unloadBranch(child);
-
-        // Remove child from DOM (<tr>)
-        child.row.remove();
-
-        // Clean up Tree object (so Node objects are GC-ed)
-        delete this.tree[child.id];
-        this.nodes.splice($.inArray(child, this.nodes), 1);
+        this.removeNode(node.children[i]);
       }
 
       // Reset node's collection of children
@@ -537,6 +539,18 @@
 
     node: function(id) {
       return this.data("treetable").tree[id];
+    },
+
+    removeNode: function(id) {
+      var node = this.data("treetable").tree[id];
+
+      if (node) {
+        this.data("treetable").removeNode(node);
+      } else {
+        throw new Error("Unknown node '" + id + "'");
+      }
+
+      return this;
     },
 
     reveal: function(id) {
