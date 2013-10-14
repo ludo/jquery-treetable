@@ -1,4 +1,4 @@
-== HEAD
+== 3.1.0 - October 14, 2013
 
 * [FEATURE] Added branch sort API (#87)
 * [FEATURE] Added removeNode function to completely remove a node and its descendants (#75)
