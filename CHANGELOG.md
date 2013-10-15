@@ -1,4 +1,4 @@
-== 3.1.0 - October 14, 2013
+## 3.1.0 - October 14, 2013
 
 * [FEATURE] Added branch sort API (#87)
 * [FEATURE] Added removeNode function to completely remove a node and its descendants (#75)
@@ -9,13 +9,13 @@
 * [BUG] D&D example code should not break when nested inside other table (#108)
 * [BUG] Node expanders wouldn't render correctly when nodes added dynamically (#79)
 
-== 3.0.2 - July 3, 2013
+## 3.0.2 - July 3, 2013
 
 * [FEATURE] Add argument to treetable plugin function to force reinitialization (#65)
 * [BUG] Prevent error when new rows have leading white space (#77)
 * [BUG] Fix loadBranch case when new nodes end up at wrong position when added to a branch with already expanded child nodes (#73)
 
-== 3.0.1 - April 6, 2013
+## 3.0.1 - April 6, 2013
 
 * [FEATURE] Expand/collapse nodes using keyboard Return key (#27, #30)
 * [FEATURE] Allow root nodes to be added to the tree with loadBranch (#56)
@@ -24,11 +24,11 @@
 * [ENHANCEMENT] Use on/off instead of bind/unbind for ataching event handlers (as per jQuery preferred guidelines)
 * [BUG] Nodes wouldn't initialize properly when using loadBranch (#55)
 
-== 3.0.0 - February 14, 2013
+## 3.0.0 - February 14, 2013
 
 * [ENHANCEMENT] Use 'treetable' everywhere instead of a mix between 'treeTable' and 'treetable'
 
-== 3.0.0-rc.2 - February 10, 2013
+## 3.0.0-rc.2 - February 10, 2013
 
 NOTE: This is a release candidate. Please test this version and report any
 issues found.
@@ -42,7 +42,7 @@ issues found.
 * [BUG] Having an empty data-tt-parent-id attribute would result in an error
 * [BUG] A hardcoded reference to 'ttId' prevented proper use of nodeIdAttr setting
 
-== 3.0.0-rc.1 - February 3, 2013
+## 3.0.0-rc.1 - February 3, 2013
 
 NOTE: This is a release candidate. Please test this version and report any
 issues found.
@@ -59,7 +59,8 @@ options that are supported.
 * [REMOVED] Built-in persistence feature has been removed
 * [REMOVED] IE6 support
 
-== 2.3.1 - 18 January 2013
+## 2.3.1 - 18 January 2013
+
 * [FEATURE] Keyboard accessibility (#27, #30)
 * [FEATURE] Optionally persist expanded node state using $.cookie (requires
 jquery-cookie plugin) (#19)
@@ -74,37 +75,44 @@ same page (#16)
 * [BUG] Wrong documentation for "initialState" (#11)
 * [BUG] failed to reveal a node for a pitfall in parentOf (#8)
 
-== 2.3.0 - 16 March 2010
+## 2.3.0 - 16 March 2010
+
 * Added GPL-LICENSE. The jQuery treeTable plugin is now dual-licensed under both the MIT and GPLv2 license.
 * Added reveal function to expand a tree to a given node.
 * Verified compatibility with jQuery 1.4.2.
 
-== 2.2.3 - 18 August 2009
+## 2.2.3 - 18 August 2009
+
 * Further optimized performance by eliminating most calls to jQuery's css function
 
-== 2.2.2 - 25 July 2009
+## 2.2.2 - 25 July 2009
+
 * Optimized performance of tree initialization (with initialState is collapsed)
 * Added option 'clickableNodeNames' to make entire node name clickable to expand branch
 * Updated jQuery to version 1.3.2
 * Updated jQuery UI components to version 1.7.2 (Core, Draggable, Droppable)
 
-== 2.2.1 - 15 February 2009
+## 2.2.1 - 15 February 2009
+
 * Updated jQuery to version 1.3.1
 * Updated jQuery UI components to 1.6rc6 (Core, Draggable, Droppable)
 
-== 2.2 - 18 January 2009
+## 2.2 - 18 January 2009
+
 * Fixed expander icon not showing on lazy-initialized nodes
 * Fixed drag and drop example code to work for tables within tables
 * Updated jQuery to version 1.3.0
 * Updated jQuery UI components to 1.6rc5 (Core, Draggable, Droppable)
 
-== 2.1 - 16 November 2008
+## 2.1 - 16 November 2008
+
 * Optimized for faster initial loading (Issue #1)
 * Implemented lazy initialization of nodes (Issue #1)
 * Added information about the order of the rows in the HTML table to the documentation (Issue 2)
 * Added performance.html with an example of a large table with drag and drop
 
-== 2.0 - 12 November 2008
+## 2.0 - 12 November 2008
+
 * Renamed plugin from ActsAsTreeTable to treeTable
 * Added a minified version of the source code (jquery.treeTable.min.js)
 * Added appendBranchTo function for easier manipulation of the tree with drag & drop (see docs for an example)
@@ -114,13 +122,16 @@ same page (#16)
 * Refactored collapse/expand behavior
 * Moved private function bodies to their respective public function
 
-== 1.2 - 3 November 2008
+## 1.2 - 3 November 2008
+
 * Added option 'default_state'
 * Expose additional functions: collapse, expand and toggleBranch
 
-== 1.1 - 21 October 2008
+## 1.1 - 21 October 2008
+
 * Fix JavaScript errors in IE7 due to comma-madness
 * Fix collapse/expand behavior in IE7
 
-== 1.0 - 2 October 2008
+## 1.0 - 2 October 2008
+
 * Public release
