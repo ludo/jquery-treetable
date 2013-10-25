@@ -1,0 +1,25 @@
+{
+  "name": "jquery-treetable",
+  "version": "3.1.0",
+  "description": "jQuery plugin for displaying a tree structure in a (HTML) table, i.e. a directory structure or a nested list.",
+  "keywords": [
+    "explorer",
+    "file",
+    "table",
+    "tree",
+    "ui"
+  ],
+  "main": [
+    "javascripts/src/jquery.treetable.js",
+    "stylesheets/jquery.treetable.css",
+    "stylesheets/jquery.treetable.theme.default.css"
+  ],
+  "ignore": [
+    "*.html",
+    "javascripts/test",
+    "vendor"
+  ],
+  "dependencies": {
+    "jquery": ">=1.6"
+  }
+}
