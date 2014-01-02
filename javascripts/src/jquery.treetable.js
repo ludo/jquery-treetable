@@ -600,6 +600,13 @@
     unloadBranch: function(node) {
       this.data("treetable").unloadBranch(node);
       return this;
+    },
+
+    removeAllNodes: function() {
+        var me = this;
+        $.each(this.data("treetable").tree, function (i, node) {
+            me.data("treetable").removeNode(node);
+        });
     }
   };
 
