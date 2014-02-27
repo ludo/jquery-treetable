@@ -1,3 +1,8 @@
+/* for better interaction with other script, uses class to hide rows */
+table.treetable tr.hidden {
+  display:none;
+}
+
 table.treetable span.indenter {
   display: inline-block;
   margin: 0;

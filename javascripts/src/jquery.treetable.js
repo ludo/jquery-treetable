@@ -98,7 +98,7 @@
 
     Node.prototype.hide = function() {
       this._hideChildren();
-      this.row.hide();
+      this.row.addClass("hidden");
       return this;
     };
 
@@ -180,7 +180,7 @@
       if (!this.initialized) {
         this._initialize();
       }
-      this.row.show();
+      this.row.removeClass("hidden");
       if (this.expanded()) {
         this._showChildren();
       }
