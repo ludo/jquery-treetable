@@ -98,7 +98,7 @@
 
     Node.prototype.hide = function() {
       this._hideChildren();
-      this.row.hide();
+      this.row.addClass("hidden");
       return this;
     };
 
@@ -180,7 +180,7 @@
       if (!this.initialized) {
         this._initialize();
       }
-      this.row.show();
+      this.row.removeClass("hidden");
       if (this.expanded()) {
         this._showChildren();
       }
@@ -345,6 +345,11 @@
       // Remove node from DOM (<tr>)
       node.row.remove();
 
+      // Remove node from parent children list
+      if (node.parentId) {
+        this.tree[node.parentId].removeChild(node);
+      }
+      
       // Clean up Tree object (so Node objects are GC-ed)
       delete this.tree[node.id];
       this.nodes.splice($.inArray(node, this.nodes), 1);
@@ -428,7 +433,8 @@
         parentIdAttr: "ttParentId", // maps to data-tt-parent-id
         stringExpand: "Expand",
         stringCollapse: "Collapse",
-
+        insertAfterLastChild: true,
+        
         // Events
         onInitialized: null,
         onNodeCollapse: null,
@@ -508,8 +514,13 @@
       if (node == null) { // Inserting new root nodes
         this.append(rows);
       } else {
-        var lastNode = this.data("treetable").findLastNode(node);
-        rows.insertAfter(lastNode.row);
+        if(settings.insertAfterLastChild){
+        	var lastNode = this.data("treetable").findLastNode(node);
+        	rows.insertAfter(lastNode.row);
+        } else {
+        	lastNode = node;
+        	rows.insertAfter(lastNode.row);
+        }
       }
 
       this.data("treetable").loadRows(rows);
