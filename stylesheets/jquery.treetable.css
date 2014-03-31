@@ -1,5 +1,5 @@
 table.treetable span.indenter {
-  display: inline-block;
+  display: flex;
   margin: 0;
   padding: 0;
   text-align: right;
@@ -25,4 +25,8 @@ table.treetable span.indenter a {
   display: inline-block;
   text-decoration: none;
   width: 19px;
+}
+
+table.treetable div.cell-wrapper {
+  display: flex;
 }

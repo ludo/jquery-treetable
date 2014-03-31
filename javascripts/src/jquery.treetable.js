@@ -30,9 +30,12 @@
       this.treeCell = $(this.row.children(this.settings.columnElType)[this.settings.column]);
       this.expander = $(this.settings.expanderTemplate);
       this.indenter = $(this.settings.indenterTemplate);
+      this.cellWrapper = $(this.settings.cellWrapper);
       this.children = [];
       this.initialized = false;
+
       this.treeCell.prepend(this.indenter);
+      this.treeCell.wrapInner(this.cellWrapper);
     }
 
     Node.prototype.addChild = function(child) {
@@ -156,6 +159,9 @@
       }
 
       this.indenter[0].style.paddingLeft = "" + (this.level() * settings.indent) + "px";
+      if (!(settings.expandable === true && this.isBranchNode())) {
+        this.treeCell.find('.indent-wrapper').css('padding-left', '' + this.settings.indent + 'px');
+      }
 
       return this;
     };
@@ -391,8 +397,10 @@
     Tree.prototype._moveRows = function(node, destination) {
       var children = node.children, i;
 
-      node.row.insertAfter(destination.row);
-      node.render();
+      if( node != destination){
+        node.row.insertAfter(destination.row);
+        node.render();
+      }
 
       // Loop backwards through children to have them end up on UI in correct
       // order (see #112)
@@ -424,6 +432,7 @@
         indent: 19,
         indenterTemplate: "<span class='indenter'></span>",
         initialState: "collapsed",
+        cellWrapper: "<div class='cell-wrapper'></div>",
         nodeIdAttr: "ttId", // maps to data-tt-id
         parentIdAttr: "ttParentId", // maps to data-tt-parent-id
         stringExpand: "Expand",
