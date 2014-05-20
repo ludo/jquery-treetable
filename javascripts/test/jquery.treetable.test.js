@@ -1240,6 +1240,16 @@
           expect(_.keys(subject)).to.include('21');
         });
       });
+
+      describe("a table with a node with a non-existing parent (#132)", function() {
+        it("does not err", function() {
+          var fn, table;
+          fn = function() {
+            $("<table><tr></tr><tr data-tt-id='21' data-tt-parent-id='dunno'><td>N21</td></tr></table>").treetable();
+          };
+          expect(fn).to.not.throw();
+        });
+      });
     });
 
     describe("move()", function() {
