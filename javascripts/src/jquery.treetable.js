@@ -5,10 +5,8 @@
  * Copyright 2013, Ludo van den Boom
  * Dual licensed under the MIT or GPL Version 2 licenses.
  */
-(function() {
-  var $, Node, Tree, methods;
-
-  $ = jQuery;
+(function($) {
+  var Node, Tree, methods;
 
   Node = (function() {
     function Node(row, tree, settings) {
@@ -628,4 +626,4 @@
   this.TreeTable || (this.TreeTable = {});
   this.TreeTable.Node = Node;
   this.TreeTable.Tree = Tree;
-}).call(this);
+})(jQuery);

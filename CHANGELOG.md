@@ -1,8 +1,9 @@
 ## HEAD
 
 * [ENHANCEMENT] Do not show outline around indenter (#141)
+* [ENHANCEMENT] Use closure for better compatibility with other jQuery versions/plugins (#138)
+* [BUG] Fix for nodes with undefined parent (#132)
 * [BUG] Fix removeNode() not deleting node from parent (#131)
-* [BUG] Fix for nodes with undefined parent (#131)
 
 ## 3.1.0 - October 14, 2013
 
