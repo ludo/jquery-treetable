@@ -1,5 +1,6 @@
 ## HEAD
 
+* [ENHANCEMENT] Do not show outline around indenter (#141)
 * [BUG] Fix removeNode() not deleting node from parent (#131)
 * [BUG] Fix for nodes with undefined parent (#131)
 
