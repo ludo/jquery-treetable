@@ -344,6 +344,11 @@
 
       // Remove node from DOM (<tr>)
       node.row.remove();
+      
+      // Remove node from parent children list
+      if (node.parentId) {
+          this.tree[node.parentId].removeChild(node);
+      }
 
       // Clean up Tree object (so Node objects are GC-ed)
       delete this.tree[node.id];
