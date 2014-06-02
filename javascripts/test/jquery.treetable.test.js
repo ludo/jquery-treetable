@@ -481,6 +481,14 @@
       it("maintains chainability", function() {
         expect(this.subject.treetable("removeNode", "2")).to.equal(this.subject);
       });
+
+      it("removes node from parent's children list", function() {
+        var node = this.subject.treetable("node", "2");
+
+        expect(node.parentNode().children).to.include(node);
+        this.subject.treetable("removeNode", "2");
+        expect(node.parentNode().children).to.not.include(node);
+      });
     });
 
     describe("reveal()", function() {
@@ -550,7 +558,7 @@
 
     describe("unloadBranch()", function() {
       beforeEach(function() {
-        this.newRows = "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>"
+        this.newRows = "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr><tr data-tt-id='5' data-tt-parent-id='3'><td>N5</td></tr><tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>"
 
         this.subject.treetable();
         this.parentNode = this.subject.treetable("node", 2);
@@ -558,7 +566,7 @@
       });
 
       it("removes rows from DOM", function() {
-        expect(this.subject[0].rows.length).to.equal(5);
+        expect(this.subject[0].rows.length).to.equal(6);
         this.subject.treetable("unloadBranch", this.parentNode);
         expect(this.subject[0].rows.length).to.equal(3);
       });
@@ -582,7 +590,7 @@
       });
 
       it("removes nodes from node cache", function() {
-        expect(this.subject.data("treetable").nodes.length).to.equal(5);
+        expect(this.subject.data("treetable").nodes.length).to.equal(6);
         this.subject.treetable("unloadBranch", this.parentNode);
         expect(this.subject.data("treetable").nodes.length).to.equal(3);
       });

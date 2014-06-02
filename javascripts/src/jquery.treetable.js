@@ -345,9 +345,16 @@
       // Remove node from DOM (<tr>)
       node.row.remove();
 
+      // Remove node from parent children list
+      if (node.parentId != null) {
+        node.parentNode().removeChild(node);
+      }
+
       // Clean up Tree object (so Node objects are GC-ed)
       delete this.tree[node.id];
       this.nodes.splice($.inArray(node, this.nodes), 1);
+
+      return this;
     }
 
     Tree.prototype.render = function() {
@@ -374,10 +381,14 @@
     };
 
     Tree.prototype.unloadBranch = function(node) {
-      var children, i;
+      // Use a copy of the children array to not have other functions interfere
+      // with this function if they manipulate the children array
+      // (eg removeNode).
+      var children = node.children.slice(0),
+          i;
 
-      for (i = 0; i < node.children.length; i++) {
-        this.removeNode(node.children[i]);
+      for (i = 0; i < children.length; i++) {
+        this.removeNode(children[i]);
       }
 
       // Reset node's collection of children
