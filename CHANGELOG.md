@@ -1,3 +1,8 @@
+## HEAD
+
+* [BUG] Fix removeNode() not deleting node from parent (#131)
+* [BUG] Fix for nodes with undefined parent (#131)
+
 ## 3.1.0 - October 14, 2013
 
 * [FEATURE] Added branch sort API (#87)

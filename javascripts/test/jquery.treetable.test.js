@@ -1003,27 +1003,23 @@
       });
 
       describe("when node has a parent", function() {
-        beforeEach(function() {
-          this.subject = this.subject[1];
-        });
-
         it("is a node object", function() {
+          var subject = this.subject[1];
+
           // to.be.an.instanceof fails in IE9, is this a chai bug?
-          expect(this.subject.parentNode()).that.is.an.instanceof(TreeTable.Node);
+          expect(subject.parentNode()).that.is.an.instanceof(TreeTable.Node);
         });
 
-        it("'s id equals this node's parentId", function() {
-          expect(this.subject.parentNode().id).to.equal(this.subject.parentId);
+        it("it's id equals this node's parentId", function() {
+          var subject = this.subject[1];
+
+          expect(subject.parentNode().id).to.equal(subject.parentId);
         });
       });
 
       describe("when node has no parent", function() {
-        beforeEach(function() {
-          this.subject = this.subject[0];
-        });
-
         it("is null", function() {
-          expect(this.subject.parentNode()).to.be.null;
+          expect(this.subject[0].parentNode()).to.be.null;
         });
       });
     });
