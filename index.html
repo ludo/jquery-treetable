@@ -4,9 +4,9 @@
   <head>
     <meta charset="utf-8">
     <title>jQuery treetable</title>
-    <link rel="stylesheet" href="stylesheets/screen.css" media="screen" />
-    <link rel="stylesheet" href="stylesheets/jquery.treetable.css" />
-    <link rel="stylesheet" href="stylesheets/jquery.treetable.theme.default.css" />
+    <link rel="stylesheet" href="css/screen.css" media="screen" />
+    <link rel="stylesheet" href="css/jquery.treetable.css" />
+    <link rel="stylesheet" href="css/jquery.treetable.theme.default.css" />
   </head>
   <body>
     <div id="main">
@@ -78,7 +78,18 @@
 
       <h3><a name="head">Include the plugin in your document</a></h3>
 
-      <p>Copy the files <tt>javascripts/src/jquery.treetable.js</tt> and <tt>stylesheets/jquery.treetable.css</tt> to your project. Paste the following code right before the closing <tt>body</tt> tag in your HTML document. Make sure these lines are <b>below</b> the line where you include jQuery. Change the <b style="color: #f00;">red</b> parts to reflect your situation.</p>
+      <p>The plugin can either be installed manually or by using the <a href="http://bower.io">Bower</a> package manager.</p>
+
+      <h4>Installing with Bower</h4>
+
+      <pre class="listing">
+bower install jquery-treetable</pre>
+
+      <p>Note that the only listed dependency is jQuery. If you also want to use the drag &amp; drop feature you'll have to install jQuery UI yourself.</p>
+
+      <h4>Installing manually</h4>
+
+      <p>Copy the files <tt>jquery.treetable.js</tt> and <tt>css/jquery.treetable.css</tt> to your project. Paste the following code right before the closing <tt>body</tt> tag in your HTML document. Make sure these lines are <b>below</b> the line where you include jQuery. Change the <b style="color: #f00;">red</b> parts to reflect your situation.</p>
 
       <pre class="listing">
 &lt;link href="<b>path/to/</b>jquery.treetable.css" rel="stylesheet" type="text/css" /&gt;
@@ -89,7 +100,7 @@ $("<b>#your_table_id</b>").treetable();
 
       <h3><a name="theme">Styling the tree</a></h3>
 
-      <p>By default the tree has little styling. Use the file <tt>stylesheets/jquery.treetable.theme.default.css</tt> as a template for your own styling, or just use this default theme.</p>
+      <p>By default the tree has little styling. Use the file <tt>css/jquery.treetable.theme.default.css</tt> as a template for your own styling, or just use this default theme.</p>
 
       <h3><a name="tree">Representing your tree in a table</a></h3>
       <p>When you pasted the above code and adjusted it to reflect your situation, you enabled the <em>possibility</em> of displaying a tree in your table. To make the tree actually display as a tree you have to add <tt>data-tt-id</tt> and <tt>data-tt-parent-id</tt> attributes to your table rows (<tt>tr</tt>).</p>
@@ -892,7 +903,7 @@ $("#example-advanced .folder").each(function() {
     <script src="bower_components/jquery-ui/ui/jquery.ui.mouse.js"></script>
     <script src="bower_components/jquery-ui/ui/jquery.ui.draggable.js"></script>
     <script src="bower_components/jquery-ui/ui/jquery.ui.droppable.js"></script>
-    <script src="javascripts/src/jquery.treetable.js"></script>
+    <script src="jquery.treetable.js"></script>
     <script>
       $("#example-basic").treetable({ expandable: true });
 
