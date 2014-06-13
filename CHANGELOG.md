@@ -1,5 +1,6 @@
-## HEAD
+## 3.2.0 - June 13, 2014
 
+* [ENHANCEMENT] Simplified directory structure
 * [ENHANCEMENT] Do not show outline around indenter (#141)
 * [ENHANCEMENT] Use closure for better compatibility with other jQuery versions/plugins (#138)
 * [ENHANCEMENT] Bowerified (#113)
