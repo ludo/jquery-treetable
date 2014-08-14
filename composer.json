@@ -1,0 +1,23 @@
+{
+  "name": "ludo/jquery-treetable",
+  "description": "jQuery plugin for displaying a tree structure in a (HTML) table, i.e. a directory structure or a nested list.",
+  "keywords": [
+    "explorer",
+    "file",
+    "table",
+    "tree",
+    "ui"
+  ],
+  "authors": [{
+    "name": "Ludo van den Boom",
+    "homepage": "http://ludovandenboom.com"
+  }],
+  "license": [
+      "GPLv2",
+      "MIT"
+  ],
+  "homepage": "https://github.com/ludo/jquery-treetable",
+  "require": {
+    "jquery": ">=1.6"
+  }
+}
