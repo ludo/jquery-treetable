@@ -506,6 +506,21 @@
 
       return this;
     },
+	toggleNode: function(id) {
+      var node = this.data("treetable").tree[id];
+
+      if (node) {
+        if (!node.initialized) {
+          node._initialize();
+        }
+
+        node.toggle();
+      } else {
+        throw new Error("Unknown node '" + id + "'");
+      }
+
+      return this;
+    },
 
     loadBranch: function(node, rows) {
       var settings = this.data("treetable").settings,
