@@ -11,10 +11,13 @@ Download the latest release from the jQuery Plugin Registry or grab the source
 code from Github. Please report issues through Github issues. This plugin is
 released under both the MIT and the GPLv2 license by Ludo van den Boom.
 
-## Documentation and Examples
+## Documentation
 
 See index.html for technical documentation and examples. The most recent version
 of this document is also available online at
-http://ludo.cubicphuse.nl/jquery-treetable. An AJAX enabled example built with
-Ruby on Rails can be found at
-https://github.com/ludo/jquery-treetable-ajax-example.
+http://ludo.cubicphuse.nl/jquery-treetable. 
+
+## Examples
+
+* JSFiddle with AJAX example: http://jsfiddle.net/djlerman/bbj8k9pe/ [@djlerman]
+* Example Ruby on Rails project with AJAX treetable: https://github.com/ludo/jquery-treetable-ajax-example
