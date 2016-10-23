@@ -121,19 +121,19 @@
 
       describe("for nodes with children", function() {
         it("renders a clickable node toggler", function() {
-          expect(this.subject.treetable("node", 0).row).to.have("a");
+          expect(this.subject.treetable("node", 0).row.find("a").first()).to.be.visible;
         });
       });
 
       describe("for nodes without children", function() {
         it("does not render a clickable node toggler", function() {
-          expect(this.subject.treetable("node", 1).row).to.not.have("a");
+          expect(this.subject.treetable("node", 1).row.find("a").first()).to.be.not.visible;
         });
       });
 
       describe("for nodes without children but with branch node data attribute", function() {
         it("renders a clickable node toggler", function() {
-          expect(this.subject.treetable("node", 2).row).to.have("a");
+          expect(this.subject.treetable("node", 2).row.find("a").first()).to.be.visible;
         });
       });
     });
@@ -1172,7 +1172,7 @@
         });
 
         it("maps to a td", function() {
-          expect(this.subject).to.be("td");
+          expect(this.subject.prop('tagName').toLowerCase()).to.equal("td");
         });
 
         it("maps to the first column by default", function() {
@@ -1180,7 +1180,7 @@
         });
 
         it("contains an indenter", function() {
-          expect(this.subject).to.have("span.indenter");
+          expect(this.subject.find("span").first().prop("class")).to.equal("indenter");
         });
       });
 
