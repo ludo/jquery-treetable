@@ -173,9 +173,16 @@
       if (this.parentId != null) {
         this.tree[this.parentId].removeChild(this);
       }
-      this.parentId = node.id;
-      this.row.data(this.settings.parentIdAttr, node.id);
-      return node.addChild(this);
+      if (node === null) {
+        this.parentId = null;
+        this.row.data(this.settings.parentIdAttr, null);
+        // Need add this to roots array after if this is not already in it
+        return 0;
+      } else {
+        this.parentId = node.id;
+        this.row.data(this.settings.parentIdAttr, node.id);
+        return node.addChild(this);
+      }
     };
 
     Node.prototype.show = function() {
@@ -316,10 +323,28 @@
       // 2: +destination+ should not be the same as +node+'s current parent (this
       //    prevents +node+ from being moved to the same location where it already
       //    is).
+      //    +destination+ may be null for moving +node+ to roots.
       // 3: +node+ should not be inserted in a location in a branch if this would
       //    result in +node+ being an ancestor of itself.
-      var nodeParent = node.parentNode();
-      if (node !== destination && destination.id !== node.parentId && $.inArray(node, destination.ancestors()) === -1) {
+      var nodeParent = node.parentNode(), rootid;
+
+      if (destination === null) {
+        // Move to roots
+        node.setParent(destination);
+        this._moveRows(node, destination);
+
+        // Update roots
+        // Remove node from roots
+        if (!nodeParent) {
+          rootid = $.inArray(node, this.roots);
+          if (rootid > -1) {
+            this.roots[rootid] = undefined;
+            this.roots.splice(rootid,1);
+          }
+        }
+        // Add node to roots
+        this.roots.unshift(node);
+      } else if (node !== destination && destination.id !== node.parentId && $.inArray(node, destination.ancestors()) === -1) {
         node.setParent(destination);
         this._moveRows(node, destination);
 
@@ -404,7 +429,12 @@
     Tree.prototype._moveRows = function(node, destination) {
       var children = node.children, i;
 
-      node.row.insertAfter(destination.row);
+      if (destination !== null) {
+        node.row.insertAfter(destination.row);
+      } else {
+        // Insert node in the beginning of table (of roots)
+        $(this.table).prepend(node.row);
+      }
       node.render();
 
       // Loop backwards through children to have them end up on UI in correct
@@ -545,7 +575,11 @@
       var destination, node;
 
       node = this.data("treetable").tree[nodeId];
-      destination = this.data("treetable").tree[destinationId];
+      if (destinationId !== null) {
+        destination = this.data("treetable").tree[destinationId];
+      } else {
+        destination = null;
+      }
       this.data("treetable").move(node, destination);
 
       return this;
