@@ -30,9 +30,11 @@
       this.treeCell = $(this.row.children(this.settings.columnElType)[this.settings.column]);
       this.expander = $(this.settings.expanderTemplate);
       this.indenter = $(this.settings.indenterTemplate);
+      this.cell = $(this.settings.cellTemplate);
       this.children = [];
       this.initialized = false;
       this.treeCell.prepend(this.indenter);
+      this.treeCell.wrapInner(this.cell);
     }
 
     Node.prototype.addChild = function(child) {
@@ -434,6 +436,7 @@
         expanderTemplate: "<a href='#'>&nbsp;</a>",
         indent: 19,
         indenterTemplate: "<span class='indenter'></span>",
+        cellTemplate: '',
         initialState: "collapsed",
         nodeIdAttr: "ttId", // maps to data-tt-id
         parentIdAttr: "ttParentId", // maps to data-tt-parent-id

@@ -448,6 +448,26 @@
       });
     });
 
+    describe("cellTemplate option", function() {
+
+      it("when provided - wraps the cell content in custom template", function() {
+
+        var tableWithCellTemplate = this.subject.clone().treetable({
+           cellTemplate: "<dd class=\"cell-wrapper\"></dd>"
+        });
+
+        expect($(tableWithCellTemplate.find("dd.cell-wrapper")).length).to.equal(3);
+
+      });
+
+      it("when not provided - leaves the cell html content untouched", function() {
+        var originalTreetable = this.subject.clone().treetable();
+        this.subject.treetable({});
+        expect(originalTreetable.html()).to.equal(this.subject.html());
+      });
+
+    });
+
     describe("move()", function() {
       beforeEach(function() {
         this.subject.treetable();
