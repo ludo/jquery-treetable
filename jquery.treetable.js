@@ -295,6 +295,10 @@
             this.tree[node.id] = node;
 
             if (node.parentId != null && this.tree[node.parentId]) {
+              //Sort rows of DOM before initializing the tree to 
+				      //allows for unordered HTML to render correctly
+				      $(row).insertAfter("tr[data-tt-id='" + node.parentId + "']");
+              
               this.tree[node.parentId].addChild(node);
             } else {
               this.roots.push(node);
