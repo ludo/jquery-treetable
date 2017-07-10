@@ -297,7 +297,9 @@
                         if (node.parentId != null && this.tree[node.parentId]) {
                             //Sort rows of DOM before initializing the tree to 
                             //allows for unordered HTML to render correctly
-                            $(row).insertAfter("tr[data-tt-id='" + node.parentId + "']");
+                            if (this.settings.allowUnsortedHtml) {
+                                $(row).insertAfter("tr[data-tt-id='" + node.parentId + "']");
+                            }
 
                             this.tree[node.parentId].addChild(node);
                         } else {
@@ -447,6 +449,7 @@
                 parentIdAttr: "ttParentId", // maps to data-tt-parent-id
                 stringExpand: "Expand",
                 stringCollapse: "Collapse",
+                allowUnsortedHtml: false,
 
                 // Events
                 onInitialized: null,
