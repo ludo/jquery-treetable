@@ -274,14 +274,6 @@
       return _results;
     };
 	
-	Tree.prototype.findFirstNode = function (node) {
-      if (node.children.length > 0) {
-        return this.findLastNode(node.children[0]);
-      } else {
-        return node;
-      }
-    };
-	
     Tree.prototype.findLastNode = function (node) {
       if (node.children.length > 0) {
         return this.findLastNode(node.children[node.children.length - 1]);
@@ -534,8 +526,9 @@
 		else
 			this.append(rows);
       } else {
-		  if(prepend){
-			var firstNode = this.data("treetable").findFirstNode(node);
+		  var hasChildNodes = node.children.length > 0;
+		  if(prepend && hasChildNodes){ // we can only prepend if there are childs
+			var firstNode = node.children[0];
 			rows.insertBefore(firstNode.row);
 		  } else {
 			var lastNode = this.data("treetable").findLastNode(node);
