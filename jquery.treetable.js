@@ -273,7 +273,15 @@
       }
       return _results;
     };
-
+	
+	Tree.prototype.findFirstNode = function (node) {
+      if (node.children.length > 0) {
+        return this.findLastNode(node.children[0]);
+      } else {
+        return node;
+      }
+    };
+	
     Tree.prototype.findLastNode = function (node) {
       if (node.children.length > 0) {
         return this.findLastNode(node.children[node.children.length - 1]);
@@ -442,7 +450,8 @@
         parentIdAttr: "ttParentId", // maps to data-tt-parent-id
         stringExpand: "Expand",
         stringCollapse: "Collapse",
-
+		prependRootNodes: false, // if true, prepend top level nodes instead of appending.
+		
         // Events
         onInitialized: null,
         onNodeCollapse: null,
@@ -512,7 +521,7 @@
       return this;
     },
 
-    loadBranch: function(node, rows) {
+    loadBranch: function(node, rows, prepend) {
       var settings = this.data("treetable").settings,
           tree = this.data("treetable").tree;
 
@@ -520,10 +529,18 @@
       rows = $(rows);
 
       if (node == null) { // Inserting new root nodes
-        this.append(rows);
+	    if(prepend || settings.prependRootNodes)
+			this.prepend(rows);
+		else
+			this.append(rows);
       } else {
-        var lastNode = this.data("treetable").findLastNode(node);
-        rows.insertAfter(lastNode.row);
+		  if(prepend){
+			var firstNode = this.data("treetable").findFirstNode(node);
+			rows.insertBefore(firstNode.row);
+		  } else {
+			var lastNode = this.data("treetable").findLastNode(node);
+			rows.insertAfter(lastNode.row);
+		  }
       }
 
       this.data("treetable").loadRows(rows);
