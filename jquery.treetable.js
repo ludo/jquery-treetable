@@ -41,6 +41,12 @@
       return this.children.push(child);
     };
 
+ 	Node.prototype.addChildren = function (children, prepend) {
+		if (prepend)
+            return this.children.unshift.apply(this.children, children);
+        else
+            return this.children.push.apply(this.children, children);
+	};
     Node.prototype.ancestors = function() {
       var ancestors, node;
       node = this;
@@ -273,7 +279,7 @@
       }
       return _results;
     };
-
+	
     Tree.prototype.findLastNode = function (node) {
       if (node.children.length > 0) {
         return this.findLastNode(node.children[node.children.length - 1]);
@@ -282,33 +288,51 @@
       }
     };
 
-    Tree.prototype.loadRows = function(rows) {
-      var node, row, i;
+	Tree.prototype.loadRows = function (rows, prepend) {
+		var node, row, i;
 
-      if (rows != null) {
-        for (i = 0; i < rows.length; i++) {
-          row = $(rows[i]);
+		if (rows != null) {
+			var nodesToAdd = [];
+			var rootsToAdd = [];
+			for (i = 0; i < rows.length; i++) {
+				row = $(rows[i]);
 
-          if (row.data(this.settings.nodeIdAttr) != null) {
-            node = new Node(row, this.tree, this.settings);
-            this.nodes.push(node);
-            this.tree[node.id] = node;
+				if (row.data(this.settings.nodeIdAttr) != null) {
+					node = new Node(row, this.tree, this.settings);
+					this.nodes.push(node);
+					this.tree[node.id] = node;
 
-            if (node.parentId != null && this.tree[node.parentId]) {
-              this.tree[node.parentId].addChild(node);
-            } else {
-              this.roots.push(node);
-            }
-          }
-        }
-      }
+					if (node.parentId != null && this.tree[node.parentId]) {
 
-      for (i = 0; i < this.nodes.length; i++) {
-        node = this.nodes[i].updateBranchLeafClass();
-      }
+						if (nodesToAdd[node.parentId] == null)
+							nodesToAdd[node.parentId] = [];
 
-      return this;
-    };
+						nodesToAdd[node.parentId].push(node);
+					} else {
+						rootsToAdd.push(node);
+					}
+				}
+			}
+
+			for (var key in nodesToAdd) {
+				var nodeList = nodesToAdd[key];
+				this.tree[key].addChildren(nodeList, prepend);
+			}
+
+			if (rootsToAdd && rootsToAdd.length) {
+				if (prepend)
+					this.roots.unshift.apply(this.roots, rootsToAdd);
+				else
+					this.roots.push.apply(this.roots, rootsToAdd);
+			}
+		}
+
+		for (i = 0; i < this.nodes.length; i++) {
+			node = this.nodes[i].updateBranchLeafClass();
+		}
+
+		return this;
+	};
 
     Tree.prototype.move = function(node, destination) {
       // Conditions:
@@ -442,7 +466,8 @@
         parentIdAttr: "ttParentId", // maps to data-tt-parent-id
         stringExpand: "Expand",
         stringCollapse: "Collapse",
-
+		prependRootNodes: false, // if true, prepend top level nodes instead of appending.
+		
         // Events
         onInitialized: null,
         onNodeCollapse: null,
@@ -512,34 +537,47 @@
       return this;
     },
 
-    loadBranch: function(node, rows) {
-      var settings = this.data("treetable").settings,
-          tree = this.data("treetable").tree;
+    loadBranch: function (node, rows, prepend) {
+		var settings = this.data("treetable").settings,
+			tree = this.data("treetable").tree;
 
-      // TODO Switch to $.parseHTML
-      rows = $(rows);
+		// TODO Switch to $.parseHTML
+		rows = $(rows);
 
-      if (node == null) { // Inserting new root nodes
-        this.append(rows);
-      } else {
-        var lastNode = this.data("treetable").findLastNode(node);
-        rows.insertAfter(lastNode.row);
-      }
+		var didPrepend = false;
+		if (node == null) { // Inserting new root nodes
+			if (prepend || settings.prependRootNodes) {
+				this.prepend(rows);
+				didPrepend = true;
+			} else {
+				this.append(rows);
+			}
+		} else {
+			var hasChildNodes = node.children.length > 0;
+			if (prepend && hasChildNodes) { // we can only prepend if there are children
+				var firstNode = node.children[0];
+				rows.insertBefore(firstNode.row);
+				didPrepend = true;
+			} else {
+				var lastNode = this.data("treetable").findLastNode(node);
+				rows.insertAfter(lastNode.row);
+			}
+		}
 
-      this.data("treetable").loadRows(rows);
+		this.data("treetable").loadRows(rows, didPrepend);
 
-      // Make sure nodes are properly initialized
-      rows.filter("tr").each(function() {
-        tree[$(this).data(settings.nodeIdAttr)].show();
-      });
+		// Make sure nodes are properly initialized
+		rows.filter("tr").each(function () {
+			tree[$(this).data(settings.nodeIdAttr)].show();
+		});
 
-      if (node != null) {
-        // Re-render parent to ensure expander icon is shown (#79)
-        node.render().expand();
-      }
+		if (node != null) {
+			// Re-render parent to ensure expander icon is shown (#79)
+			node.render().expand();
+		}
 
-      return this;
-    },
+		return this;
+	},
 
     move: function(nodeId, destinationId) {
       var destination, node;
