@@ -41,13 +41,12 @@
       return this.children.push(child);
     };
 
- 	Node.prototype.addChilds = function (childs, prepend) {
-            if (prepend)
-            return this.children.unshift.apply(this.children, childs);
+ 	Node.prototype.addChildren = function (children, prepend) {
+		if (prepend)
+            return this.children.unshift.apply(this.children, children);
         else
-            return this.children.push.apply(this.children, childs);
+            return this.children.push.apply(this.children, children);
 	};
-
     Node.prototype.ancestors = function() {
       var ancestors, node;
       node = this;
@@ -289,52 +288,51 @@
       }
     };
 
-    Tree.prototype.loadRows = function (rows, prepend) {
-            var node, row, i;
+	Tree.prototype.loadRows = function (rows, prepend) {
+		var node, row, i;
 
-            if (rows != null) {
-                var nodesToAdd = [];
-                var rootsToAdd = [];
-                for (i = 0; i < rows.length; i++) {
-                    row = $(rows[i]);
+		if (rows != null) {
+			var nodesToAdd = [];
+			var rootsToAdd = [];
+			for (i = 0; i < rows.length; i++) {
+				row = $(rows[i]);
 
-                    if (row.data(this.settings.nodeIdAttr) != null) {
-                        node = new Node(row, this.tree, this.settings);
-                        this.nodes.push(node);
-                        this.tree[node.id] = node;
+				if (row.data(this.settings.nodeIdAttr) != null) {
+					node = new Node(row, this.tree, this.settings);
+					this.nodes.push(node);
+					this.tree[node.id] = node;
 
-                        if (node.parentId != null && this.tree[node.parentId]) {
+					if (node.parentId != null && this.tree[node.parentId]) {
 
-                            if (nodesToAdd[node.parentId] == null)
-                                nodesToAdd[node.parentId] = [];
+						if (nodesToAdd[node.parentId] == null)
+							nodesToAdd[node.parentId] = [];
 
-                            nodesToAdd[node.parentId].push(node);
-                        } else {
-                            rootsToAdd.push(node);
-                        }
-                    }
-                }
+						nodesToAdd[node.parentId].push(node);
+					} else {
+						rootsToAdd.push(node);
+					}
+				}
+			}
 
-                for (var key in nodesToAdd) {
-                    var nodeList = nodesToAdd[key];
-                    debugger
-                    this.tree[key].addChilds(nodeList, prepend);
-                }
+			for (var key in nodesToAdd) {
+				var nodeList = nodesToAdd[key];
+				this.tree[key].addChildren(nodeList, prepend);
+			}
 
-                if (rootsToAdd && rootsToAdd.length)
-                    if (prepend)
-                        this.roots.unshift(node);
-                    else
-                        this.roots.push(node);
+			if (rootsToAdd && rootsToAdd.length) {
+				if (prepend)
+					this.roots.unshift.apply(this.roots, rootsToAdd);
+				else
+					this.roots.push.apply(this.roots, rootsToAdd);
+			}
+		}
 
-            }
+		for (i = 0; i < this.nodes.length; i++) {
+			node = this.nodes[i].updateBranchLeafClass();
+		}
 
-            for (i = 0; i < this.nodes.length; i++) {
-                node = this.nodes[i].updateBranchLeafClass();
-            }
-
-            return this;
-        };
+		return this;
+	};
 
     Tree.prototype.move = function(node, destination) {
       // Conditions:
@@ -540,46 +538,46 @@
     },
 
     loadBranch: function (node, rows, prepend) {
-            var settings = this.data("treetable").settings,
-                tree = this.data("treetable").tree;
+		var settings = this.data("treetable").settings,
+			tree = this.data("treetable").tree;
 
-            // TODO Switch to $.parseHTML
-            rows = $(rows);
+		// TODO Switch to $.parseHTML
+		rows = $(rows);
 
-            var didPrepend = false;
-            if (node == null) { // Inserting new root nodes
-                if (prepend || settings.prependRootNodes) {
-                    this.prepend(rows);
-                    didPrepend = true;
-                } else {
-                    this.append(rows);
-                }
-            } else {
-                var hasChildNodes = node.children.length > 0;
-                if (prepend && hasChildNodes) { // we can only prepend if there are children
-                    var firstNode = node.children[0];
-                    rows.insertBefore(firstNode.row);
-                    didPrepend = true;
-                } else {
-                    var lastNode = this.data("treetable").findLastNode(node);
-                    rows.insertAfter(lastNode.row);
-                }
-            }
+		var didPrepend = false;
+		if (node == null) { // Inserting new root nodes
+			if (prepend || settings.prependRootNodes) {
+				this.prepend(rows);
+				didPrepend = true;
+			} else {
+				this.append(rows);
+			}
+		} else {
+			var hasChildNodes = node.children.length > 0;
+			if (prepend && hasChildNodes) { // we can only prepend if there are children
+				var firstNode = node.children[0];
+				rows.insertBefore(firstNode.row);
+				didPrepend = true;
+			} else {
+				var lastNode = this.data("treetable").findLastNode(node);
+				rows.insertAfter(lastNode.row);
+			}
+		}
 
-            this.data("treetable").loadRows(rows, didPrepend);
+		this.data("treetable").loadRows(rows, didPrepend);
 
-            // Make sure nodes are properly initialized
-            rows.filter("tr").each(function () {
-                tree[$(this).data(settings.nodeIdAttr)].show();
-            });
+		// Make sure nodes are properly initialized
+		rows.filter("tr").each(function () {
+			tree[$(this).data(settings.nodeIdAttr)].show();
+		});
 
-            if (node != null) {
-                // Re-render parent to ensure expander icon is shown (#79)
-                node.render().expand();
-            }
+		if (node != null) {
+			// Re-render parent to ensure expander icon is shown (#79)
+			node.render().expand();
+		}
 
-            return this;
-        },
+		return this;
+	},
 
     move: function(nodeId, destinationId) {
       var destination, node;
