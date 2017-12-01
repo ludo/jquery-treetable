@@ -85,7 +85,7 @@
         this.settings.onNodeExpand.apply(this);
       }
 
-      if ($(this.row).is(":visible")) {
+      if ($(this.row).css("display") !== "none") {
         this._showChildren();
       }
 

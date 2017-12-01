@@ -29,7 +29,7 @@
     it("adds treetable object to element", function() {
       expect(this.subject.data("treetable")).to.be.undefined;
       this.subject.treetable();
-      expect(this.subject.data("treetable")).to.be.defined;
+      expect(this.subject.data("treetable")).to.exist;
     });
 
     it("adds .treetable css class to element", function() {
@@ -59,7 +59,7 @@
     describe("destroy()", function() {
       it("removes treetable object from element", function() {
         this.subject.treetable();
-        expect(this.subject.data("treetable")).to.be.defined;
+        expect(this.subject.data("treetable")).to.exist;
         this.subject.treetable("destroy");
         expect(this.subject.data("treetable")).to.be.undefined;
       });
@@ -361,33 +361,33 @@
       it("does not choke when fed a collection object with rows instead of a string", function() {
         expect(this.subject.data("treetable").tree[3]).to.be.undefined;
         this.subject.treetable("loadBranch", this.parentNode, $.parseHTML(this.newRows));
-        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+        expect(this.subject.data("treetable").tree[3]).to.exist;
       });
 
       it("does not choke on leading whitespace", function() {
         expect(this.subject.data("treetable").tree[3]).to.be.undefined;
         this.subject.treetable("loadBranch", this.parentNode, "   <tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr>");
-        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+        expect(this.subject.data("treetable").tree[3]).to.exist;
       });
 
       it("does not choke on whitespace between rows", function() {
         expect(this.subject.data("treetable").tree[3]).to.be.undefined;
         this.subject.treetable("loadBranch", this.parentNode, "<tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr>     <tr data-tt-id='4' data-tt-parent-id='2'><td>N4</td></tr>");
-        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+        expect(this.subject.data("treetable").tree[3]).to.exist;
       });
 
       it("does not choke on non-row elements", function() {
         expect(this.subject.data("treetable").tree[3]).to.be.undefined;
         this.subject.treetable("loadBranch", this.parentNode, "<b>Wish you were here</b><tr data-tt-id='3' data-tt-parent-id='2'><td>N3</td></tr>");
-        expect(this.subject.data("treetable").tree[3]).to.be.defined;
+        expect(this.subject.data("treetable").tree[3]).to.exist;
       });
 
       it("inserts rows into tree", function() {
         expect(this.subject.data("treetable").tree[3]).to.be.undefined;
         expect(this.subject.data("treetable").tree[4]).to.be.undefined;
         this.subject.treetable("loadBranch", this.parentNode, this.newRows);
-        expect(this.subject.data("treetable").tree[3]).to.be.defined;
-        expect(this.subject.data("treetable").tree[4]).to.be.defined;
+        expect(this.subject.data("treetable").tree[3]).to.exist;
+        expect(this.subject.data("treetable").tree[4]).to.exist;
       });
 
       it("registers nodes", function() {
@@ -592,8 +592,8 @@
       });
 
       it("removes rows from tree", function() {
-        expect(this.subject.data("treetable").tree[3]).to.be.defined;
-        expect(this.subject.data("treetable").tree[4]).to.be.defined;
+        expect(this.subject.data("treetable").tree[3]).to.exist;
+        expect(this.subject.data("treetable").tree[4]).to.exist;
         this.subject.treetable("unloadBranch", this.parentNode);
         expect(this.subject.data("treetable").tree[3]).to.be.undefined;
         expect(this.subject.data("treetable").tree[4]).to.be.undefined;
