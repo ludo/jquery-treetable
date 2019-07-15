@@ -517,7 +517,7 @@
       var settings = treetable.settings,
           tree = treetable.tree;
 
-      // TODO Switch to $.parseHTML
+      // do NOT switch to $.parseHTML in order to allow raw HTML as well as a jQuery object containing rows
       rows = $(rows);
 
       if (node == null) { // Inserting new root nodes
