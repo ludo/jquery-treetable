@@ -22,7 +22,7 @@
     "jquery"
   ],
   "author": "Ludo van den Boom <ludo@cubicphuse.nl>",
-  "license": "(MIT OR GPL-2.0)",
+  "license": "(MIT OR GPL-2.0-only)",
   "bugs": {
     "url": "https://github.com/ludo/jquery-treetable/issues"
   },
