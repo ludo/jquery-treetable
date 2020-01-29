@@ -513,20 +513,21 @@
     },
 
     loadBranch: function(node, rows) {
-      var settings = this.data("treetable").settings,
-          tree = this.data("treetable").tree;
+      var treetable = this.data("treetable");
+      var settings = treetable.settings,
+          tree = treetable.tree;
 
-      // TODO Switch to $.parseHTML
+      // do NOT switch to $.parseHTML in order to allow raw HTML as well as a jQuery object containing rows
       rows = $(rows);
 
       if (node == null) { // Inserting new root nodes
         this.append(rows);
       } else {
-        var lastNode = this.data("treetable").findLastNode(node);
+        var lastNode = treetable.findLastNode(node);
         rows.insertAfter(lastNode.row);
       }
 
-      this.data("treetable").loadRows(rows);
+      treetable.loadRows(rows);
 
       // Make sure nodes are properly initialized
       rows.filter("tr").each(function() {
@@ -542,11 +543,11 @@
     },
 
     move: function(nodeId, destinationId) {
-      var destination, node;
+      var destination, node, treetable = this.data("treetable");
 
-      node = this.data("treetable").tree[nodeId];
-      destination = this.data("treetable").tree[destinationId];
-      this.data("treetable").move(node, destination);
+      node = treetable.tree[nodeId];
+      destination = treetable.tree[destinationId];
+      treetable.move(node, destination);
 
       return this;
     },
