@@ -100,7 +100,7 @@
 
     Node.prototype.hide = function() {
       this._hideChildren();
-      this.row.hide();
+      this.row.css('display','none');
       return this;
     };
 
