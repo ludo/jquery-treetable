@@ -250,6 +250,7 @@
       // Cache the nodes and roots in simple arrays for quick access/iteration
       this.nodes = [];
       this.roots = [];
+      this.orphans = [];
     }
 
     Tree.prototype.collapseAll = function() {
@@ -296,6 +297,17 @@
 
             if (node.parentId != null && this.tree[node.parentId]) {
               this.tree[node.parentId].addChild(node);
+
+              // get all children for this parent from orphans
+              let notOrphansMoreNodes = this.orphans.filter(x => x.parentId == node.parentId);
+              if (notOrphansMoreNodes && notOrphansMoreNodes.length) {
+                  notOrphansMoreNodes.forEach(e => {
+                      this.tree[node.parentId].addChild(e);
+                      this.orphans = this.orphans.filter(x => x.id != e.id);
+                  })
+              }
+            } else if (node.parentId != null && !this.tree[node.parentId]) {
+                    this.orphans.push(node)
             } else {
               this.roots.push(node);
             }
